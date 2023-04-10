@@ -67,5 +67,5 @@ const prod = new ProductManager();
 
 // prod.getProductById(4);
 
-prod.updateProduct(5, "description", "amarillo");
-// prod.deleProduct(4)
+// prod.updateProduct(5, "price", "blanco");
+prod.deleProduct(4)
