@@ -8,8 +8,16 @@ export default class ProductManager {
   }
 
   appendProducts = async() =>{
+    try {
+      await fs.promises.writeFile(
+        this.path,
+        JSON.stringify(this.products, null, "\t")
+      );
+    } catch (error) {
+      console.error(error);
+    }
     
-    await fs.promises.writeFile(this.path,JSON.stringify(this.products, null, "\t"));
+    
     
   }
 
@@ -56,7 +64,6 @@ export default class ProductManager {
         return null;
       }
       products.push(product);
-
       await fs.promises.writeFile(
         this.path,
         JSON.stringify(products, null, "\t")
@@ -117,8 +124,10 @@ export default class ProductManager {
     try {
       const produ = await this.getProducts();
       const delProd = produ.filter((p) => p.id !== _id);
-      const arrP = JSON.stringify(delProd);
-      await fs.promises.writeFile(this.path, arrP);
+      this.products = delProd;
+      this.appendProducts();
+      // const arrP = JSON.stringify(delProd);
+      // await fs.promises.writeFile(this.path, arrP);
     } catch (error) {
       console.error(error);
     }
