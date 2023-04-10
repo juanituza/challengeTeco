@@ -1,7 +1,7 @@
-import ProductManager from "./Managers/ProductManager+Mckenna.js";
+import ProductManager from "./managers/ProductManager+Mckenna.js";
 
 const prod = new ProductManager();
-prod.getProducts();
+// prod.getProducts();
 
 // const context = async()=>{
 
@@ -67,5 +67,5 @@ prod.getProducts();
 
 // prod.getProductById(4);
 
-// prod.updateProduct(4,'price',100);
-// prod.deleProduct(2)
+prod.updateProduct(5, "description", "amarillo");
+// prod.deleProduct(4)

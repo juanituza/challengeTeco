@@ -1,14 +1,16 @@
 import fs, { existsSync } from "fs";
 
 export default class ProductManager {
-  constructor(title, description, price, thumbnail, code, stock) {
-    (this.path = "./files/products.json"),
-      (this.title = title),
-      (this.description = description),
-      (this.price = price),
-      (this.thumbnail = thumbnail),
-      (this.code = code),
-      (this.stock = stock);
+  constructor() {
+    this.products = [],
+    (this.path = "./files/products.json");
+     
+  }
+
+  appendProducts =async()=>{
+    
+    await fs.promises.writeFile(this.path,JSON.stringify(this.products, null, "\t"));
+    
   }
 
   getProducts = async () => {
@@ -19,6 +21,7 @@ export default class ProductManager {
     }
     return [];
   };
+
 
   createProducts = async (product) => {
     const products = await this.getProducts();
@@ -43,10 +46,11 @@ export default class ProductManager {
     if (
       typeof products.find((item) => item.code == product.code) !== "undefined"
     ) {
-      console.log("Duplicate product code");
+      console.log(`Duplicate product code ${product.code}`);
       return null;
     }
     products.push(product);
+    
     await fs.promises.writeFile(
       this.path,
       JSON.stringify(products, null, "\t")
@@ -64,14 +68,30 @@ export default class ProductManager {
     }
   };
 
+  // updateProduct = async (_id, camp, value) => {
+  //   const produ = await this.getProducts();
+  //   const pIndex = produ.findIndex((p) => p.id === _id);
+  //   const pToUpdate = produ[pIndex];
+  //   pToUpdate[camp] = value;
+  //   produ[pIndex] = pToUpdate;
+  //   const pJson = JSON.stringify(produ);
+  //   await fs.promises.writeFile(this.path, pJson);
+  // };
+
   updateProduct = async (_id, camp, value) => {
-    const produ = await this.getProducts();
-    const pIndex = produ.findIndex((p) => p.id === _id);
-    const pToUpdate = produ[pIndex];
-    pToUpdate[camp] = value;
-    produ[pIndex] = pToUpdate;
-    const pJson = JSON.stringify(produ);
-    await fs.promises.writeFile(this.path, pJson);
+    const produ = await this.getProducts();    
+      
+    if (!produ[_id]) {     
+        console.log('no existe id');
+    }else{
+      const produID = await this.getProductById(_id);
+      produID[camp] = value;
+      Object.assign(produ[_id - 1], produID);
+      this.products = produ;
+      this.appendProducts();
+      // const pJson = JSON.stringify(produ);
+      // await fs.promises.writeFile(this.path, pJson);
+    }   
   };
 
   deleProduct = async (_id) => {
@@ -81,3 +101,4 @@ export default class ProductManager {
     await fs.promises.writeFile(this.path, arrP);
   };
 }
+  
