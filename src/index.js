@@ -1,4 +1,4 @@
-import ProductManager from "./managers/ProductManager+Mckenna.js";
+import ProductManager from "./src/ProductManager+Mckenna.js";
 
 const prod = new ProductManager();
 prod.getProducts();
