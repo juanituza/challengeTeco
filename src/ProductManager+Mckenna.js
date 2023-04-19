@@ -2,12 +2,10 @@ import fs, { existsSync } from "fs";
 
 export default class ProductManager {
   constructor() {
-    this.products = [],
-    (this.path = "./files/products.json");
-     
+    (this.products = []), (this.path = "./files/products.json");
   }
 
-  appendProducts = async() =>{
+  appendProducts = async () => {
     try {
       await fs.promises.writeFile(
         this.path,
@@ -16,10 +14,7 @@ export default class ProductManager {
     } catch (error) {
       console.error(error);
     }
-    
-    
-    
-  }
+  };
 
   getProducts = async () => {
     try {
@@ -33,7 +28,6 @@ export default class ProductManager {
       console.error(error);
     }
   };
-
 
   createProducts = async (product) => {
     try {
@@ -74,7 +68,6 @@ export default class ProductManager {
     }
   };
 
-  
   getProductById = async (ID) => {
     try {
       const prod = await this.getProducts();
@@ -82,7 +75,7 @@ export default class ProductManager {
       if (!productId) {
         return console.log("ID Not found");
       } else {
-        return productId;
+        return console.log(productId); 
       }
     } catch (error) {
       console.error(error);
@@ -99,26 +92,25 @@ export default class ProductManager {
   //   await fs.promises.writeFile(this.path, pJson);
   // };
 
-  updateProduct = async (_id, camp, value) => {
-    try{
+  updateProduct = async (_id, elem) => {
+    try {
+      const produ = await this.getProducts();
 
-      const produ = await this.getProducts();    
-      
-      if (!produ[_id]) {     
-        console.log('no existe id');
-      }else{
+      if (!produ[_id]) {
+        console.log("no existe id");
+      } else {
         const produID = await this.getProductById(_id);
-        produID[camp] = value;
-        Object.assign(produ[_id - 1], produID);
-        this.products = produ;
+        const newProduct = produ.map((p) =>
+          p.id === _id ? { ...p, ...elem } : p
+        );
+        this.products = newProduct;
         this.appendProducts();
       }
-    }   
-      catch (error) {
+    } catch (error) {
       console.error(error);
     }
-        // const pJson = JSON.stringify(produ);
-        // await fs.promises.writeFile(this.path, pJson);
+    // const pJson = JSON.stringify(produ);
+    // await fs.promises.writeFile(this.path, pJson);
   };
 
   deleProduct = async (_id) => {
@@ -134,4 +126,3 @@ export default class ProductManager {
     }
   };
 }
-  
