@@ -1,8 +1,11 @@
+
 import fs, { existsSync } from "fs";
 
 export default class ProductManager {
   constructor() {
-    (this.products = []), (this.path = "./files/products.json");
+    (this.products = []),
+      (this.status = true),
+      (this.path = "./files/products.json");
   }
 
   appendProducts = async () => {
@@ -37,34 +40,36 @@ export default class ProductManager {
         !product.title ||
         !product.description ||
         !product.price ||
-        !product.thumbnail ||
         !product.code ||
+        !product.status ||        
         !product.stock
       ) {
         console.log("Incomplete data");
-        return null;
-      }
-      if (products.length === 0) {
-        product.id = 1;
-      } else {
-        const lastProduct = products[products.length - 1];
-        product.id = lastProduct.id + 1;
+        return "Incomplete data";
       }
       if (
         typeof products.find((item) => item.code == product.code) !==
         "undefined"
-      ) {
-        console.log(`Duplicate product code ${product.code}`);
-        return null;
-      }
+        ) {
+          console.log(`Duplicate product code ${product.code}`);
+          return `Duplicate product code ${product.code}`;
+        }
+        if (products.length === 0) {
+          product.id = 1;
+        } else {
+          const lastProduct = products[products.length - 1];
+          product.id = lastProduct.id + 1;
+        }
       products.push(product);
       await fs.promises.writeFile(
         this.path,
         JSON.stringify(products, null, "\t")
       );
+      // this.appendProducts();
       return product;
     } catch (error) {
       console.error(error);
+      return error;
     }
   };
 
@@ -75,7 +80,7 @@ export default class ProductManager {
       if (!productId) {
         return console.log("ID Not found");
       } else {
-        return console.log(productId); 
+        return productId;
       }
     } catch (error) {
       console.error(error);
@@ -99,7 +104,7 @@ export default class ProductManager {
       if (!produ[_id]) {
         console.log("no existe id");
       } else {
-        const produID = await this.getProductById(_id);
+        // const produID = await this.getProductById(_id);
         const newProduct = produ.map((p) =>
           p.id === _id ? { ...p, ...elem } : p
         );
@@ -113,16 +118,16 @@ export default class ProductManager {
     // await fs.promises.writeFile(this.path, pJson);
   };
 
-  deleProduct = async (_id) => {
+  deleteProduct = async (_id) => {
     try {
       const produ = await this.getProducts();
       const delProd = produ.filter((p) => p.id !== _id);
       this.products = delProd;
       this.appendProducts();
-      // const arrP = JSON.stringify(delProd);
-      // await fs.promises.writeFile(this.path, arrP);
+   
     } catch (error) {
       console.error(error);
     }
   };
 }
+  

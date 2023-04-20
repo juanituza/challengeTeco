@@ -1,4 +1,7 @@
-import ProductManager from "./ProductManager+Mckenna.js";
+import ProductManager from "./Class/ProductManager.js";
+import CartManager from "./Class/CartManager.js";
+
+const cart =  new CartManager();
 
 const prod = new ProductManager();
 prod.getProducts();
@@ -65,7 +68,13 @@ prod.getProducts();
 
 // context();
 
-// prod.getProductById(4);
+// cart.getCarts();
+// cart.createCarts();
+// console.log(cart);
 
-prod.updateProduct(4, {"description": "pepe"})
+prod.getProductById(4);
+const produ = prod.getProducts();
+console.log(produ);
+
+// prod.updateProduct(5, "price", "blanco");
 // prod.deleProduct(5)

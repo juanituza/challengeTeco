@@ -28,7 +28,7 @@
 	},
 	{
 		"title": "remera",
-		"description": "pepe",
+		"description": "BLACK",
 		"price": 500,
 		"thumbnail": "img",
 		"code": 303,
@@ -36,7 +36,7 @@
 		"id": 4
 	},
 	{
-		"title": "pantalon",
+		"title": "remera",
 		"description": "BLACK",
 		"price": 500,
 		"thumbnail": "img",
@@ -52,5 +52,172 @@
 		"code": 305,
 		"stock": 50,
 		"id": 6
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 44,
+		"stock": 150,
+		"id": 7
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 45,
+		"stock": 150,
+		"id": 8
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 46,
+		"stock": 150,
+		"id": 9
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 47,
+		"stock": 150,
+		"id": 10
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 48,
+		"stock": 150,
+		"id": 11
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 49,
+		"stock": 150,
+		"id": 12
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 50,
+		"stock": 150,
+		"id": 13
+	},
+	{
+		"title": "buzo",
+		"description": "Verde",
+		"price": 500,
+		"thumbnail": "img",
+		"code": 51,
+		"stock": 150,
+		"id": 14
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 56,
+		"stock": 150,
+		"id": 15
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 5666,
+		"stock": 150,
+		"id": 16
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 56333366,
+		"stock": 150,
+		"id": 17
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 695516,
+		"stock": 150,
+		"id": 18
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 4836485634,
+		"stock": 150,
+		"id": 19
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 453545999654,
+		"stock": 150,
+		"status": true,
+		"id": 20
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 45354599965,
+		"stock": 150,
+		"status": false,
+		"id": 21
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 453545995,
+		"stock": 150,
+		"status": true,
+		"id": 22
+	},
+	{
+		"title": "buzo",
+		"description": "amnarillo",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 66669999,
+		"status": true,
+		"stock": 150,
+		"id": 23
+	},
+	{
+		"title": "buzo",
+		"description": "amnarillo",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 66999,
+		"status": true,
+		"stock": 150,
+		"id": 24
 	}
 ]
