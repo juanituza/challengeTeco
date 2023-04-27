@@ -1,0 +1,43 @@
+<div>
+    {{#each allProducts}}
+    <ol>
+        <li> title : {{this.title}}</li>
+        <li> description : {{this.description}}</li>
+        <li> price : {{this.price}}</li>
+        <li> thumbnail : {{this.thumbnail}}</li>
+        <li> code : {{this.code}}</li>
+        <li> stock : {{this.stock}}</li>
+        <li> id : {{this.id}}</li>
+    </ol>
+    
+    {{/each}}
+</div>
+
+<div>
+    {{#each productLimit}}
+    <ol>
+        <li> title : {{this.title}}</li>
+        <li> description : {{this.description}}</li>
+        <li> price : {{this.price}}</li>
+        <li> thumbnail : {{this.thumbnail}}</li>
+        <li> code : {{this.code}}</li>
+        <li> stock : {{this.stock}}</li>
+        <li> id : {{this.id}}</li>
+    </ol>
+    
+    {{/each}}
+
+</div>
+
+
+<div>
+
+    {{#each product}}
+    <ul>
+        <li>{{@key}} : {{this}}</li>
+    </ul>
+
+
+    {{/each}}
+
+</div>
