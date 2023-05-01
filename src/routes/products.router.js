@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-const router = Router();
 
 import ProductManager from "../Managers/ProductManager.js";
+const router = Router();
 
 const pm = new ProductManager();
 const products = await pm.getProducts();
@@ -13,8 +13,9 @@ router.get("/", async (req, res) => {
   try {
     const limProd = req.query.limit;
     const allProducts = await products;
+    // console.log(allProducts);
     if (!limProd) {
-      res.render(allProducts);
+      res.render("products", { allProducts : allProducts });
     } else if (isNaN(limProd)) {
       res.status(400).render({ error: "limit is not a number" });
     } else if (limProd < 0) {
@@ -26,7 +27,7 @@ router.get("/", async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .render({ error: "Internal server error, contact the administrator" });
+      .send({ error: "Internal server error, contact the administrator" });
   }
 });
 
@@ -73,22 +74,6 @@ router.post("/", async (req, res) => {
 
 router.put("/:pid", async (req, res) => {
   try {
-
-    const id = parseInt(req.params.pid);
-    const content= req.body;
-    // const prod = await products;
-
-    await pm.updateProduct(id, content);
-    res.status(200).render ('products',{product : products});
-  } catch (error) {
-    res
-      .status(500)
-      .render({ error: "Internal server error, contact the administrator" });
-  }
-});
-
-router.put("/:pid", async (req, res) => {
-  try {
     const id = parseInt(req.params.pid);
     const elem = req.body;
 
@@ -105,21 +90,19 @@ router.put("/:pid", async (req, res) => {
       .render({ error: "Internal server error, contact the administrator" });
   }
 });
+
 router.delete("/:pid", async (req, res) => {
   try {
     const id = parseInt(req.params.pid);
 
     await pm.deleteProduct(id);
-
-    res.status(200).render({ MessageEvent: "product removed successfully " });
+ 
+    res.status(200).render({ MessageEvent: "product removed successfully "});
   } catch (error) {
     res
       .status(500)
       .render({ error: "Internal server error, contact the administrator" });
   }
 });
-
-
-
 
 export default router;
