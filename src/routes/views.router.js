@@ -6,13 +6,15 @@ import ProductManager from "../Managers/ProductManager.js";
 
 const pm = new ProductManager();
 
-router.get("/", async (req, res) => {
-  res.render("home");
+router.get("/products", async (req, res) => {
+  const products = await pm.getProducts();
+  res.render("products" , {allProducts : products});
 });
 
 
 
 router.get("/realTimeProducts", async (req, res) => {
+  
   res.render("realTimeProducts");
 });
 

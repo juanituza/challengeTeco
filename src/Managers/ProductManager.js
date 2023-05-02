@@ -5,8 +5,7 @@ import __dirname from "../utils.js";
 export default class ProductManager {
   constructor() {
       this.products = [];
-      this.status = true;
-      this.path = `./files/products.json`;
+      this.path = './files/products.json';
    
   }
 
@@ -36,26 +35,21 @@ export default class ProductManager {
 
   createProducts = async (product) => {
     try {
-      const products = await this.getProducts();
+      const products = await this.getProducts(); 
 
-      if (
-        !product.title ||
-        !product.description ||
-        !product.price ||
-        !product.code ||
-        !product.status ||        
-        !product.stock
-      ) {
-        console.log("Incomplete data");
-        return "Incomplete data";
-      }
-      if (
-        typeof products.find((item) => item.code == product.code) !==
-        "undefined"
-        ) {
-          console.log(`Duplicate product code ${product.code}`);
-          return `Duplicate product code ${product.code}`;
-        }
+      // if (
+      
+      // ) {
+      //   console.log("Incomplete data");
+      //   return "Incomplete data";
+      // }
+      // if (
+      //   typeof products.find((item) => item.code == product.code) !==
+      //   "undefined"
+      //   ) {
+      //     console.log(`Duplicate product code ${product.code}`);
+      //     return `Duplicate product code ${product.code}`;
+      //   }
         if (products.length === 0) {
           product.id = 1;
         } else {

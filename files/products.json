@@ -219,5 +219,64 @@
 		"status": true,
 		"stock": 150,
 		"id": 24
+	},
+	{
+		"title": "remera",
+		"description": "BLACK",
+		"price": 500,
+		"thumbnail": "img",
+		"code": 693654,
+		"status": true,
+		"stock": 50,
+		"id": 25
+	},
+	{
+		"title": "remera",
+		"description": "BLACK",
+		"price": 500,
+		"thumbnail": "img",
+		"code": 6936546,
+		"status": true,
+		"stock": 50,
+		"id": 26
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"code": 453545995,
+		"status": true,
+		"stock": 150,
+		"id": 27
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": "453545995a",
+		"stock": 150,
+		"status": true,
+		"id": 28
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": "453545995aA",
+		"stock": 150,
+		"status": true,
+		"id": 29
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 982213,
+		"stock": 150,
+		"status": true,
+		"id": 30
 	}
 ]
