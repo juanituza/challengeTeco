@@ -278,5 +278,45 @@
 		"stock": 150,
 		"status": true,
 		"id": 30
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": "982213a",
+		"stock": 150,
+		"status": true,
+		"id": 31
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": "qqqq",
+		"stock": 150,
+		"status": true,
+		"id": 32
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": "12334",
+		"stock": 150,
+		"status": true,
+		"id": 33
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": "123345",
+		"stock": 150,
+		"status": true,
+		"id": 34
 	}
 ]

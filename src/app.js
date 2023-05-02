@@ -43,6 +43,6 @@ app.use('/', viewsRouter);
 //on escucha eventos
 io.on('connection', socket => {
     console.log('Socket conexion');
-    socket.on(`click`, data => {
-        socket.emit("sendProducts", products)})
+    // socket.on(`click`, data => {
+    //     socket.emit("products", products)})
 });
