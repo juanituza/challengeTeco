@@ -1,46 +1,50 @@
 <div>
-    <h1 id="h1">PRODUCTSSSSSSSSS</h1>
-    {{#each allProducts}}
+  <h1 id="h1">PRODUCTS</h1>
+  {{#each allProducts}}
+  <h3 style="color:blueviolet">Product:</h3>
     <ol>
-        <li> title : {{this.title}}</li>
-        <li> description : {{this.description}}</li>
-        <li> price : {{this.price}}</li>
-        <li> thumbnail : {{this.thumbnail}}</li>
-        <li> code : {{this.code}}</li>
-        <li> stock : {{this.stock}}</li>
-        <li> id : {{this.id}}</li>
+      <li style="color:blue"> id: {{this.id}}</li>
+      <li> title : {{this.title}}</li>
+      <li> description : {{this.description}}</li>
+      <li> price : {{this.price}}</li>
+      <li> thumbnail : {{this.thumbnail}}</li>
+      <li> code : {{this.code}}</li>
+      <li> stock : {{this.stock}}</li>
     </ol>
-    
-    {{/each}}
+  {{/each}}
 </div>
 
 <div>
-    {{#each productLimit}}
+  {{#each productLimit}}
     <ol>
-        <li> title : {{this.title}}</li>
-        <li> description : {{this.description}}</li>
-        <li> price : {{this.price}}</li>
-        <li> thumbnail : {{this.thumbnail}}</li>
-        <li> code : {{this.code}}</li>
-        <li> stock : {{this.stock}}</li>
-        <li> id : {{this.id}}</li>
+      <li> title : {{this.title}}</li>
+      <li> description : {{this.description}}</li>
+      <li> price : {{this.price}}</li>
+      <li> thumbnail : {{this.thumbnail}}</li>
+      <li> code : {{this.code}}</li>
+      <li> stock : {{this.stock}}</li>
+      <li> id : {{this.id}}</li>
     </ol>
-    
-    {{/each}}
+
+  {{/each}}
+
+</div>
+<div>
+
+  <ol>
+    <li> Title : {{productid.title}}</li>
+    <li> Description : {{productid.description}}</li>
+    <li> Price : {{productid.price}}</li>
+    <li> Thumbnail : {{productid.thumbnail}}</li>
+    <li> Code : {{productid.code}}</li>
+    <li> Stock : {{productid.stock}}</li>
+    <li> Id : {{productid.id}}</li>
+  </ol>
 
 </div>
 
-
 <div>
-
-    {{#each product}}
-    <ul>
-        <li>{{@key}} : {{this}}</li>
-    </ul>
-
-
-    {{/each}}
-
+  <h2 style="color: red">{{error}}</h2>
 </div>
 
 <script src="../public/js/products.js"></script>

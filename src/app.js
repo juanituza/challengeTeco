@@ -5,8 +5,7 @@ import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
-// import ProductManager from "../Managers/ProductManager.js";
-// const pm = new ProductManager();
+
 
 
 const app = express();
@@ -43,6 +42,6 @@ app.use('/', viewsRouter);
 //on escucha eventos
 io.on('connection', socket => {
     console.log('Socket conexion');
-    // socket.on(`click`, data => {
-    //     socket.emit("products", products)})
+    socket.on(`click`, data => {
+        socket.emit("products", products)})
 });

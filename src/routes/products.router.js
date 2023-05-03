@@ -35,7 +35,7 @@ router.get("/", async (req, res) => {
 router.get("/:pid", async (req, res) => {
   try {
     const pos = parseInt(req.params.pid);
-    
+
 
     if (isNaN(pos)) {
       return res.status(400).send({ error: "product id is not a number " });
@@ -44,7 +44,7 @@ router.get("/:pid", async (req, res) => {
       return res.status(400).send({ error: "product id must be a positive number " });
     }
     const prod = await pm.getProducts();
-    
+
     const prodSelect = prod.find((prod) => prod.id === pos);
     if (prodSelect === undefined) {
       res.status(400).send({ error: "id does not belong to a product" });
@@ -126,7 +126,7 @@ router.delete("/:pid", async (req, res) => {
 
 router.post("/realTimeProducts", async (req, res) => {
   try {
-    
+
     const prod = req.body;
     const products = await pm.getProducts();
     // console.log(prod);
@@ -147,9 +147,9 @@ router.post("/realTimeProducts", async (req, res) => {
     }
 
     const resProd = await pm.createProducts(prod);
-   
+
     const productsFinal = await pm.getProducts();
-    
+
     req.io.emit('products', productsFinal);
     res.status(201).send({ status: "success", payload: resProd });
   } catch (error) {
