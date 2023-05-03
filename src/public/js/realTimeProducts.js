@@ -1,3 +1,5 @@
+console.log('hola');
+
 const socket = io();
 
 socket.on('products' , data =>{

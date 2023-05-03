@@ -7,7 +7,10 @@ import ProductManager from "../Managers/ProductManager.js";
 
 const pm = new ProductManager();
 
-// router.get("/products", async (req, res) => {
+router.get("/products", async (req, res) => {
+  const products = await pm.getProducts();
+  res.render("products", { allProducts: products })
+});
 //   const products = await pm.getProducts();
 //   try {
 //     const limProd = req.query.limit;
@@ -69,37 +72,8 @@ router.get("/", async (req, res) => {
 
 
 
-router.get("realTimeProducts", async (req, res) => {
-  try {
-
-    const prod = req.body;
-    const products = await pm.getProducts();
-    // console.log(prod);
-    if (
-      !prod.title ||
-      !prod.description ||
-      !prod.price ||
-      !prod.code ||
-      !prod.status ||
-      !prod.stock
-    ) {
-      return res.status(400).send({ error: `Incomplete data` });
-    }
-    if (
-      typeof products.find((item) => item.code == prod.code) !== "undefined"
-    ) {
-      return res.status(400).send({ error: `Duplicate product code` });
-    }
-
-    const resProd = await pm.createProducts(prod);
-    const productsFinal = await pm.getProducts();
-    req.io.emit('products', productsFinal);
-    res.status(201).send({ status: "success", payload: resProd });
-  } catch (error) {
-    res
-      .status(500)
-      .send({ error: "Internal server error, contact the administrator" });
-  }
+router.get("/realtimeproducts", async (req, res) => {
+  
   res.render("realTimeProducts");
 });
 

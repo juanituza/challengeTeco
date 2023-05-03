@@ -124,7 +124,7 @@ router.delete("/:pid", async (req, res) => {
 });
 
 
-router.post("/realTimeProducts", async (req, res) => {
+router.post("/realtimeproducts", async (req, res) => {
   try {
 
     const prod = req.body;
