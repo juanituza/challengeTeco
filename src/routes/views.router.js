@@ -11,33 +11,14 @@ router.get("/products", async (req, res) => {
   const products = await pm.getProducts();
   res.render("products", { allProducts: products })
 });
-//   const products = await pm.getProducts();
-//   try {
-//     const limProd = req.query.limit;
-//     // const allProducts = await products;
-//     console.log(limProd);
-//     if (!limProd) {
-//       res.status(201).render("products", { allProducts: products });
-//       // res.send(products);
-//     } else if (isNaN(limProd)) {
-//       res.status(400).render("products", { error: "ERROR! Limit is not a number" });
-//     } else if (limProd < 0) {
-//       res.status(400).send("products", { error: "ERROR! Limit must be a positive number" });
-//     } else {
-//       const reduced = products.slice(0, limProd);
-//       res.status(201).render("products", { productLimit: reduced });
-//       // res.status(200).send(reduced);
-//     }
-//   } catch (error) {
-//     res
-//       .status(500)
-//       .send({ error: "Internal server error, contact the administrator" });
-//   }
-// });
 
 
 
-// router.get("/products/:pid", async (req, res) => {
+
+router.get("/products/:pid", async (req, res) => {
+  const products = await pm.getProducts();
+  res.render("products", { productLimit: products })
+});
 //   try {
 //     const pos = parseInt(req.params.pid);
 

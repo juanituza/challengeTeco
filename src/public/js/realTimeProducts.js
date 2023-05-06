@@ -1,10 +1,18 @@
-console.log('hola');
+
 
 const socket = io();
 
-socket.on('products' , data =>{
+socket.on('homeProduct', home => {
+    const homeContent = document.getElementById('productsContent');
+    let content = "";
+    home.forEach(product => {
+        content += `${product.title} --- ${product.description} --- ${product.code} --- ${product.id} <br/>`
+    });
+    homeContent.innerHTML = content;
+});
+socket.on('products', data => {
     const finalContent = document.getElementById('productsContent');
-    let content ="";
+    let content = "";
     data.forEach(product => {
         content += `${product.title} --- ${product.description} --- ${product.code} --- ${product.id} <br/>`
     });
