@@ -1,35 +1,44 @@
-<div>
-  <h1 id="h1">PRODUCTS</h1>
-  {{#each allProducts}}
-  <h3 style="color:blueviolet">Product:</h3>
-    <ol>
-      <li style="color:blue"> id: {{this.id}}</li>
-      <li> title : {{this.title}}</li>
-      <li> description : {{this.description}}</li>
-      <li> price : {{this.price}}</li>
-      <li> thumbnail : {{this.thumbnail}}</li>
-      <li> code : {{this.code}}</li>
-      <li> stock : {{this.stock}}</li>
-    </ol>
-  {{/each}}
-</div>
+<div class="container">
 
-<div>
-  {{#each productLimit}}
-    <ol>
-      <li> title : {{this.title}}</li>
-      <li> description : {{this.description}}</li>
-      <li> price : {{this.price}}</li>
-      <li> thumbnail : {{this.thumbnail}}</li>
-      <li> code : {{this.code}}</li>
-      <li> stock : {{this.stock}}</li>
-      <li> id : {{this.id}}</li>
-    </ol>
+  <div class="row mx-3">
+    <h1 class="col-12 text-center" id="h1">PRODUCTS</h1>
 
-  {{/each}}
+    {{#each allProducts}}
+      <div class="col-3 card shadow center m-3">
 
-</div>
-{{!-- <div>
+        <h3 class="text-center" style="color:red"> Product:{{this.id}}</h3>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"> title : {{this.title}}</li>
+          <li class="list-group-item"> description : {{this.description}}</li>
+          <li class="list-group-item"> price : {{this.price}}</li>
+          <li class="list-group-item"> thumbnail : {{this.thumbnail}}</li>
+          <li class="list-group-item"> code : {{this.code}}</li>
+          <li class="list-group-item"> stock : {{this.stock}}</li>
+          <li class="list-group-item"> id: {{this.id}}</li>
+        </ul>
+
+      </div>
+
+    {{/each}}
+
+  </div>
+
+  <div class="col-6">
+    {{#each productLimit}}
+      <ol>
+        <li> title : {{this.title}}</li>
+        <li> description : {{this.description}}</li>
+        <li> price : {{this.price}}</li>
+        <li> thumbnail : {{this.thumbnail}}</li>
+        <li> code : {{this.code}}</li>
+        <li> stock : {{this.stock}}</li>
+        <li> id : {{this.id}}</li>
+      </ol>
+
+    {{/each}}
+
+  </div>
+  {{!-- <div>
 
   <ol>
     <li> Title : {{productid.title}}</li>
@@ -43,8 +52,9 @@
 
 </div> --}}
 
-<div>
-  <h2 style="color: red">{{error}}</h2>
-</div>
+  <div>
+    <h2 style="color: red">{{error}}</h2>
+  </div>
 
-<script src="../public/js/products.js"></script>
+  <script src="../public/js/products.js"></script>
+</div>
