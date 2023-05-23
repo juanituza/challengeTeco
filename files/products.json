@@ -428,5 +428,25 @@
 		"stock": 150,
 		"status": true,
 		"id": 45
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 4535459956325,
+		"stock": 150,
+		"status": true,
+		"id": 46
+	},
+	{
+		"title": "pantalon",
+		"description": "Verde",
+		"price": 300,
+		"thumbnail": "img",
+		"code": 453545995632365,
+		"stock": 150,
+		"status": true,
+		"id": 47
 	}
 ]

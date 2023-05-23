@@ -1,32 +1,34 @@
 import express from "express";
 import handlebars from "express-handlebars";
+import mongoose from "mongoose";
+
+
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
+import usersRouter from "./routes/users.router.js";
 import viewsRouter from "./routes/views.router.js";
+
+
+import registerChathandler from "./listeners/chatHandler.js";
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
-import ProductManager from "./Managers/ProductManager.js";
-
-
-
-const pm = new ProductManager();
-
-
+import socketProducts from './products.socket.js';
+import socketCarts from './cart.socket.js';
 
 const app = express();
+const connection = mongoose.connect('mongodb+srv://juanituza:123@cluster0mckenna.x71myop.mongodb.net/Ecommerce?retryWrites=true&w=majority');
 const PORT = process.env.PORT || 8080;
-
-
 
 //Server de escucha
 const server = app.listen(PORT, () => { console.log(`Listening on ${PORT}`) });
 
 
 const io = new Server(server);
+// const cart = new Server(server);
 
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); //Objetos codificados desde URL
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(`${__dirname}/public`));
 
 app.engine('handlebars', handlebars.engine());
@@ -40,14 +42,21 @@ app.use((req, res, next) => {
 
 
 app.use('/api/products', productsRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/', viewsRouter);
 
 
-//on escucha eventos
-io.on('connection', async socket => {
-    console.log('Socket conexion');
-    const products = await pm.getProducts();
-    socket.emit("homeProduct", products)
-});
+io.on('connection',socket =>{
+    registerChathandler(io,socket);
+})
+// io.on('connection', async socket => {
+//     console.log('cart conexion');
+// });
+
+socketProducts(io);
+socketCarts(io);
+
+
+
 

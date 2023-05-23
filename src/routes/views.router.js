@@ -3,13 +3,41 @@ import { Router } from "express";
 
 const router = Router();
 
-import ProductManager from "../Managers/ProductManager.js";
+import ProductManager from "../dao/Managers/FileSystem/ProductManager.js";
+import CartManager from "../dao/Managers/FileSystem/CartManager.js";
+import productsModel from "../dao/Managers/Mongo/ProductManager.js";
 
+
+const productM = new productsModel();
 const pm = new ProductManager();
+const cm = new CartManager();
 
-router.get("/products", async (req, res) => {
+
+/*-----------RENDER CON MONGO---------*/
+router.get("/products" , async(req,res) => {
+  const productsM = await productM.getProducts();
+  res.render("products", { allProducts: productsM });
+
+});
+
+
+
+
+
+
+
+
+
+/*--------------RENDER FILE SYSTEM-----------*/
+router.get("/productsF", async (req, res) => {
   const products = await pm.getProducts();
-  res.render("products", { allProducts: products })
+  res.render("products", { allProducts: products });
+});
+
+
+router.get("/carts", async (req, res) => {
+  const carts = await cm.getCarts();
+  res.render("carts", { allCarts: carts })
 });
 
 
@@ -53,9 +81,25 @@ router.get("/", async (req, res) => {
 
 
 
+
+
+/*---------REAL TIME--------*/
+
+
 router.get("/realtimeproducts", async (req, res) => {
   
   res.render("realTimeProducts");
 });
+
+
+
+router.get("/realtimecart", async (req, res) => {
+  
+  res.render("realTimeCarts");
+});
+
+router.get('/chat', async (req,res) => {
+  res.render('chat');
+})
 
 export default router;

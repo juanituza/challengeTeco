@@ -1,6 +1,6 @@
 
 import fs, { existsSync } from "fs";
-import __dirname from "../utils.js";
+import __dirname from "../../../utils.js";
 
 export default class ProductManager {
   constructor() {
@@ -35,21 +35,7 @@ export default class ProductManager {
 
   createProducts = async (product) => {
     try {
-      const products = await this.getProducts(); 
-
-      // if (
-      
-      // ) {
-      //   console.log("Incomplete data");
-      //   return "Incomplete data";
-      // }
-      // if (
-      //   typeof products.find((item) => item.code == product.code) !==
-      //   "undefined"
-      //   ) {
-      //     console.log(`Duplicate product code ${product.code}`);
-      //     return `Duplicate product code ${product.code}`;
-      //   }
+      const products = await this.getProducts();
         if (products.length === 0) {
           product.id = 1;
         } else {
@@ -83,16 +69,6 @@ export default class ProductManager {
     }
   };
 
-  // updateProduct = async (_id, camp, value) => {
-  //   const produ = await this.getProducts();
-  //   const pIndex = produ.findIndex((p) => p.id === _id);
-  //   const pToUpdate = produ[pIndex];
-  //   pToUpdate[camp] = value;
-  //   produ[pIndex] = pToUpdate;
-  //   const pJson = JSON.stringify(produ);
-  //   await fs.promises.writeFile(this.path, pJson);
-  // };
-
   updateProduct = async (_id, elem) => {
     try {
       const produ = await this.getProducts();
@@ -110,8 +86,6 @@ export default class ProductManager {
     } catch (error) {
       console.error(error);
     }
-    // const pJson = JSON.stringify(produ);
-    // await fs.promises.writeFile(this.path, pJson);
   };
 
   deleteProduct = async (_id) => {

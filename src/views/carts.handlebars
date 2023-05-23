@@ -1,20 +1,20 @@
 <div class="container">
 
   <div class="row mx-3">
-    <h1 class="col-12 text-center" id="h1">PRODUCTS</h1>
+    <h1 class="col-12 text-center">Carts</h1>
 
-    {{#each allProducts}}
+    {{#each allCarts}}
       <div class="col-3 card shadow center m-3">
 
-        <h3 class="text-center" style="color:red"> Product:{{this.id}}</h3>
+        <h3 class="text-center" style="color:red"> cart:{{this.id}}</h3>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"> title : {{this.title}}</li>
-          <li class="list-group-item"> description : {{this.description}}</li>
+          <li class="list-group-item"> title : {{this.products}}</li>
+          {{!-- <li class="list-group-item"> description : {{this.description}}</li>
           <li class="list-group-item"> price : {{this.price}}</li>
           <li class="list-group-item"> thumbnail : {{this.thumbnail}}</li>
           <li class="list-group-item"> code : {{this.code}}</li>
           <li class="list-group-item"> stock : {{this.stock}}</li>
-          <li class="list-group-item"> id: {{this.id}}</li>
+          <li class="list-group-item"> id: {{this.id}}</li> --}}
         </ul>
 
       </div>
@@ -38,18 +38,6 @@
     {{/each}}
 
   </div>
-  {{!-- <div>
-    {{#each productsM}}
-      <divclass="col-3 card shadow center m-3">
-        <p>
-          {{this.title}}
-        </p>
-        <p>
-          {{this.price}}
-        </p>
-      </div>
-    {{/each}}
-  </div> --}}
   {{!-- <div>
 
   <ol>
