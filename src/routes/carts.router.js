@@ -4,9 +4,12 @@ const router = Router();
 
 import CartManager from "../dao/Managers/FileSystem/CartManager.js";
 import cartsModel from "../dao/Managers/Mongo/cartManager.js";
-import productsModel from "../dao/Mongo/models/products.js";
 
+
+//mongo
 const cartsM = new cartsModel();
+
+//file system
 const cm = new CartManager();
 const carts = await cm.getCarts();
 
@@ -42,20 +45,35 @@ router.post("/", async (req, res) => {
 });
 
 
-router.post("/:cid/product/:pid", async (req, res) => {
+router.post('/:cid/:pid', async (req, res) => {
   try {
     const { cid, pid } = req.params;
+
+
+    console.log(cid);
+    console.log(pid);
    
-    const resCart = await cartsM.addProduct(cid,pid);
+    const resultCart = await cartsM.addProduct(cid,pid);
+    console.log(resultCart);
 
+    res.status(200).send({ status: "success", payload: resultCart});
+  } catch (error) {console.log(error);
+    res
+      
+      .status(500)
+      .send({ error: error });
+  }
+});
 
-    res.status(200).send({ status: "success", payload: resCart});
+router.put('/:cid/pid' , async (req, res) =>{
+  try {
+    
   } catch (error) {
     res
       .status(500)
-      .send({ error: "Contact the administrator" });
+      .send({ error: "Internal server error,contact the administrator" });
   }
-});
+})
 
 
 
