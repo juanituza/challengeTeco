@@ -48,26 +48,30 @@ router.post("/", async (req, res) => {
 router.post('/:cid/:pid', async (req, res) => {
   try {
     const { cid, pid } = req.params;
-
-
-    console.log(cid);
-    console.log(pid);
-   
     const resultCart = await cartsM.addProduct(cid,pid);
-    console.log(resultCart);
-
+    
     res.status(200).send({ status: "success", payload: resultCart});
-  } catch (error) {console.log(error);
-    res
-      
+      } catch (error) {
+    res     
       .status(500)
-      .send({ error: error });
+      .send({ error: "Internal server error,contact the administrator" });
   }
 });
 
 router.put('/:cid/pid' , async (req, res) =>{
   try {
     
+  } catch (error) {
+    res
+      .status(500)
+      .send({ error: "Internal server error,contact the administrator" });
+  }
+})
+router.delete('/:cid' , async (req, res) =>{
+  try {
+    const { cid } = req.params;
+    const deleteCart = await cartsM.deleteCart(cid);
+    res.status(200).send({ status: "success", payload: "Cart removed successfully" });
   } catch (error) {
     res
       .status(500)

@@ -3,12 +3,11 @@ import mongoose from "mongoose";
 const collection = "Carts";
 
 const cartSchema = new mongoose.Schema({
-    
 
 
 
-    products: {
-    type:[
+
+    products: [
       {
         quantity: {
           type:Number,
@@ -23,13 +22,13 @@ const cartSchema = new mongoose.Schema({
     ],
   
     
-  }
+  
 },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
 // cartSchema.pre('find', function () {
-//     this.populate('Products.product');
+//     this.populate('products.product');
 // })
 
 const cartsModel = mongoose.model(collection, cartSchema);

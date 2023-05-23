@@ -21,16 +21,20 @@ export default class CartManager {
 
   addProduct = async (cid, pid) => {
     
-    const product = products.getProductsBy(pid);    
+    const product = await products.getProductsBy(pid); 
+      
     const cartId= await this.getCartsBy(cid);  
-
+    
     
     if (!cartId) {
       console.log("cart does not exist")
     }
+    // console.log(cartId.products)
     
     const newProduct = cartId.products.find(
-      ({product}) => product == pid);
+      ({ product }) => product == pid);
+      console.log(newProduct);
+      
     if (newProduct) {
         newProduct.quantity += 1;
       }else{
