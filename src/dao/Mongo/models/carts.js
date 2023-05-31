@@ -27,9 +27,9 @@ const cartSchema = new mongoose.Schema({
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-// cartSchema.pre('find', function () {
-//     this.populate('products.product');
-// })
+cartSchema.pre('find', function () {
+    this.populate('products.product');
+})
 
 const cartsModel = mongoose.model(collection, cartSchema);
 

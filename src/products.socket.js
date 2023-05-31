@@ -1,8 +1,11 @@
-import ProductManager from "./dao/Managers/FileSystem/ProductManager.js";
+// import ProductManager from "./dao/Managers/FileSystem/ProductManager.js";
+import productsModel from "./dao/Managers/Mongo/ProductManager.js";
 
 
 
-const pm = new ProductManager();
+// const pm = new ProductManager();
+const pm = new productsModel();
+
 
 
 //on escucha eventos

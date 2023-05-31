@@ -1,6 +1,7 @@
 import { Router } from "express";
 import productsModel from "../dao/Managers/Mongo/ProductManager.js";
 import ProductManager from "../dao/Managers/FileSystem/ProductManager.js";
+import ProdModel from '../dao/Mongo/models/products.js';
 
 const router = Router();
 
@@ -13,17 +14,22 @@ router.get("/", async (req, res) => {
   // res.send({ status: "success", payload: products });
 
   try {
-    const limProd = req.query.limit;
-    if (!limProd) {
-      res.send(products);
-    } else if (isNaN(limProd)) {
-      res.status(400).send({ error: "limit is not a number" });
-    } else if (limProd < 0) {
-      res.status(400).send({ error: "limit must be a positive number" });
-    } else {
-      const reduced = products.slice(0, limProd);
-      res.status(200).send(reduced);
-    }
+    const { page = 1 } = req.query;
+    const { docs, totalPages,hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = await ProdModel.paginate({}, { page, lean: true });
+    const products = docs;
+    
+    // const limProd = req.query.limit;
+    // if (!limProd) {
+    //   res.send(products);
+    // } else if (isNaN(limProd)) {
+    //   res.status(400).send({ error: "limit is not a number" });
+    // } else if (limProd < 0) {
+    //   res.status(400).send({ error: "limit must be a positive number" });
+    // } else {
+
+      // const reduced = products.slice(0, limProd);
+    res.status(201).send({ status: "success", payload: { products ,page: rest.page, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage }});
+    // }
   } catch (error) {
     res
       .status(500)

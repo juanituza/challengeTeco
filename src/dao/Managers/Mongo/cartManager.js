@@ -24,12 +24,9 @@ export default class CartManager {
     const product = await products.getProductsBy(pid); 
       
     const cartId= await this.getCartsBy(cid);  
+    console.log(cartId);
     
-    
-    if (!cartId) {
-      console.log("cart does not exist")
-    }
-    // console.log(cartId.products)
+   
     
     const newProduct = cartId.products.find(
       ({ product }) => product == pid);
@@ -55,27 +52,30 @@ export default class CartManager {
     
      
   
-  deleteProduct = (cid, pid) => {
-    const cart = this.getCartsBy(cid)
+  deleteProduct = async (cid, pid) => {
+    const cart = await this.getCartsBy(cid);
+    const productd = await products.getProductsBy(pid); 
     if (!cart) {
-      console.log("carrito no encontrado")
+      console.log("carrito no encontrado");
     }
+    
 
-    const productIndex = cart.products.findIndex((p) => {
-      p.product.toString() === pid
-    })
+    const productIndex = cart.products((p) => {
+      p.product === productd
+    });
+    console.log(productIndex);
     if (productIndex === -1) {
-      console.log("There is no product in the cart")
+      console.log("There is no product in the cart");
     }
-    //ahora le resto el precio al totalAmount:
+    //ahora le resto la quantity
 
-    const product = products.findById(pid)
-    cart.totalAmount -= product.price * cart.products[productIndex].quantity
+    const product = await products.findById(pid)
+    cart.products -= cart.products[productIndex].quantity;
     //borro el profucto del carrito:
-    cart.products.splice(productIndex, 1)
+    cart.products.splice(productIndex, 1);
     //guardo los cambios del carrito:
-    cart.save()
-    return cart
+    cart.save();
+    return cart;
 
   }
 

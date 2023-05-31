@@ -6,21 +6,30 @@ const router = Router();
 import ProductManager from "../dao/Managers/FileSystem/ProductManager.js";
 import CartManager from "../dao/Managers/FileSystem/CartManager.js";
 import productsModel from "../dao/Managers/Mongo/ProductManager.js";
+import cartsModel from "../dao/Managers/Mongo/cartManager.js"
+import ProdModel from '../dao/Mongo/models/products.js';
+import cModel from '../dao/Mongo/models/carts.js';
 
 
 const productM = new productsModel();
 const pm = new ProductManager();
-const cm = new CartManager();
+const cm = new cartsModel();
 
 
 /*-----------RENDER CON MONGO---------*/
-router.get("/products" , async(req,res) => {
-  const productsM = await productM.getProducts();
-  res.render("products", { allProducts: productsM });
+router.get("/products", async (req, res) => {
+  const { page = 1 } = req.query;
+  const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = await ProdModel.paginate({}, { page, limit: 10, lean: true })
+  const products = docs;
+  res.render("products", { allProducts: products, page: rest.page, hasPrevPage, hasNextPage, prevPage, nextPage });
 
 });
 
-
+router.get("/carts", async (req, res) => {
+  const carts = await cm.getCarts();
+  console.log(carts[0].products);
+  res.render("carts", { allCarts: carts })
+});
 
 
 
@@ -75,7 +84,7 @@ router.get("/products/:pid", async (req, res) => {
 
 
 router.get("/", async (req, res) => {
-  
+
   res.render("home");
 });
 
@@ -87,18 +96,18 @@ router.get("/", async (req, res) => {
 
 
 router.get("/realtimeproducts", async (req, res) => {
-  
+
   res.render("realTimeProducts");
 });
 
 
 
 router.get("/realtimecart", async (req, res) => {
-  
+
   res.render("realTimeCarts");
 });
 
-router.get('/chat', async (req,res) => {
+router.get('/chat', async (req, res) => {
   res.render('chat');
 })
 

@@ -9,8 +9,8 @@ import usersRouter from "./routes/users.router.js";
 import viewsRouter from "./routes/views.router.js";
 
 
-import registerChathandler from "./listeners/chatHandler.js";
 import __dirname from "./utils.js";
+import registerChathandler from "./listeners/chatHandler.js";
 import { Server } from "socket.io";
 import socketProducts from './products.socket.js';
 import socketCarts from './cart.socket.js';
