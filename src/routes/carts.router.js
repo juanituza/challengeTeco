@@ -66,14 +66,8 @@ router.post('/:cid/:pid', async (req, res) => {
 router.put('/:cid/:pid', async (req, res) => {
   try {
     const { cid, pid } = req.params;
-    const carts = await cartsM.getCartsBy(cid);
-    // console.log(carts);
-    console.log(cid);
-    console.log(pid);
-
-
     const removedProduct = await cartsM.deleteProduct(cid, pid);
-    console.log(removedProduct);
+    
     res.status(200).send({ status: "success", payload: removedProduct })
   } catch (error) {
     res
@@ -81,6 +75,9 @@ router.put('/:cid/:pid', async (req, res) => {
       .send({ error: "Internal server error,contact the administrator" });
   }
 })
+
+
+
 router.delete('/:cid', async (req, res) => {
   try {
     const { cid } = req.params;
