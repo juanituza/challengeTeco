@@ -18,7 +18,21 @@ const carts = await cm.getCarts();
 router.get("/", async (req, res) => {
   try {
     const carts = await cartsM.getCarts();
-    res.status(200).send(carts);
+    res.status(200).send({ status: "success", payload: carts });
+
+  } catch (error) {
+    res
+      .status(500)
+      .send({ error: "Internal server error, contact the administrator" });
+  }
+});
+router.get("/:cid", async (req, res) => {
+  try {
+    const {cid}= req.params;
+    console.log(cid);
+    const cartsId = await cartsM.getCartsBy(cid);
+    console.log(cartsId);
+    res.status(200).send({ status: "success", payload: cartsId });
 
   } catch (error) {
     res
@@ -50,6 +64,7 @@ router.post('/:cid/:pid', async (req, res) => {
     // const allCarts = await cartsM.getCarts();
     // console.log(allCarts);
     const { cid, pid } = req.params;
+   
 
 
     const resultCart = await cartsM.addProduct(cid, pid);
@@ -66,9 +81,37 @@ router.post('/:cid/:pid', async (req, res) => {
 router.put('/:cid/:pid', async (req, res) => {
   try {
     const { cid, pid } = req.params;
-    const removedProduct = await cartsM.deleteProduct(cid, pid);
+    const removedProductUnit = await cartsM.deleteProductUnit(cid, pid);
     
-    res.status(200).send({ status: "success", payload: removedProduct })
+    res.status(200).send({ status: "success", payload: removedProductUnit })
+  } catch (error) {
+    res
+      .status(500)
+      .send({ error: "Internal server error,contact the administrator" });
+  }
+})
+router.put('/:cid/products/:pid', async (req, res) => {
+  try {
+    const { cid, pid } = req.params;
+    const { cantidad } = req.body;
+    const cart = await cartsM.getCartsBy(cid);
+
+    if(!cart){
+      return res.status(404).send('The cart does not exist');
+    }
+    // Busca el producto dentro del carrito
+    const product = cart.products.find((p) => p.product._id.toString() === pid);
+
+    if (!product) {
+      return res.status(404).send('The product does not exist in the cart');
+    }
+    // Actualiza la cantidad del producto
+    product.quantity = cantidad;
+
+    // Guarda los cambios en el carrito
+    await cart.save();
+
+    res.status(200).send({ status: "success", payload: cart })
   } catch (error) {
     res
       .status(500)

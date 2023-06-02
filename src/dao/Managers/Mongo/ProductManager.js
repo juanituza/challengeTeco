@@ -4,9 +4,9 @@ export default class ProductManager {
   getProducts = async () => {
     return await  productsModel.find().lean();
   };
-  getProductsBy = async (params) => {
+  getProductsBy = async (pid) => {
     
-    return await  productsModel.findById(params);
+    return await  productsModel.findById(pid);
   };
   createProducts =async  (product) => {
     return await productsModel.create(product);
