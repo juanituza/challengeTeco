@@ -81,9 +81,38 @@ router.post('/:cid/:pid', async (req, res) => {
 router.put('/:cid/:pid', async (req, res) => {
   try {
     const { cid, pid } = req.params;
-    const removedProductUnit = await cartsM.deleteProductUnit(cid, pid);
+
+    const cart = await cartsM.getCartsBy(cid);
+    console.log(cart);
+
+    // Verificar si el carrito existe
+    if (!cart) {
+      return res.status(404).send('cart not found');
+    }
+    // Buscar el índice del producto en el carrito
+    const productIndex = cart.products.findIndex((p) => p.product._id.toString() === pid);
+    if (productIndex === -1) {
+      return res.status(404).send("There is no product in the cart");
+    }
+    //Resto la quantity  
+    const product = cart.products[productIndex];
+    product.quantity -= 1;
+    if (product.quantity === 0) {
+      // Eliminar el producto del carrito si la cantidad es cero
+      cart.products.splice(productIndex, 1);
+    }
+    //guardo los cambios del carrito:
+    cart.save();
+  
+
+
+
+
+
+
+    // const removedProductUnit = await cartsM.deleteProductUnit(cid, pid);
     
-    res.status(200).send({ status: "success", payload: removedProductUnit })
+    res.status(200).send({ status: "success", payload: cart })
   } catch (error) {
     res
       .status(500)
@@ -101,7 +130,7 @@ router.put('/:cid/products/:pid', async (req, res) => {
     }
     // Busca el producto dentro del carrito
     const product = cart.products.find((p) => p.product._id.toString() === pid);
-
+   
     if (!product) {
       return res.status(404).send('The product does not exist in the cart');
     }
@@ -111,7 +140,7 @@ router.put('/:cid/products/:pid', async (req, res) => {
     // Guarda los cambios en el carrito
     await cart.save();
 
-    res.status(200).send({ status: "success", payload: cart })
+    res.status(200).send({ status: "success", payload: cart });
   } catch (error) {
     res
       .status(500)
@@ -119,7 +148,30 @@ router.put('/:cid/products/:pid', async (req, res) => {
   }
 })
 
+router.delete('/:cid/products/:pid', async (req,res) => {
+  try {
+    
+    const { cid, pid } = req.params;
+    const cart = await cartsM.getCartsBy(cid);
+    const product = cart.products.find((p) => p.product._id.toString() === pid);
+    
+    if (!product) {
+      return res.status(404).send('The product does not exist in the cart');
+    }
+    cart.products.splice(product,1);
+    
+    await cart.save();
+    
+    res.status(200).send({ status: "success", payload: cart })
+  } catch (error) {
+    res
+      .status(500)
+      .send({ error: "Internal server error,contact the administrator" });
+  }
 
+
+
+})
 
 router.delete('/:cid', async (req, res) => {
   try {
