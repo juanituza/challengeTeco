@@ -81,9 +81,9 @@ router.post('/:cid/:pid', async (req, res) => {
 router.put('/:cid/:pid', async (req, res) => {
   try {
     const { cid, pid } = req.params;
-
+    console.log(cid);
     const cart = await cartsM.getCartsBy(cid);
-    console.log(cart);
+   
 
     // Verificar si el carrito existe
     if (!cart) {

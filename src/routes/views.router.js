@@ -52,7 +52,7 @@ router.get("/carts", async (req, res) => {
 
 
 
-router.get("/products/:pid", async (req, res) => {
+router.get("/productsF/:pid", async (req, res) => {
   const products = await pm.getProducts();
   res.render("products", { productLimit: products })
 });

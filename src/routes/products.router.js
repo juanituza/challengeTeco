@@ -1,7 +1,7 @@
 import { Router } from "express";
 import productsModel from "../dao/Managers/Mongo/ProductManager.js";
 import ProductManager from "../dao/Managers/FileSystem/ProductManager.js";
-import ProdModel from '../dao/Mongo/models/products.js';
+import ProdModel from "../dao/Mongo/models/products.js";
 
 const router = Router();
 
@@ -10,137 +10,55 @@ const productM = new productsModel();
 const pm = new ProductManager();
 
 /* ------------------BASE DE DATOS MONGODB----------- */
-// router.get("/", async (req, res) => {
-//   try {
-
-
-//     const category = req.query;
-//     const availability = req.query.availability;
-//     const order = req.query.order;
-//     console.log(category);
-
-//     const products = await productM.getProducts();
-
-
-//     // let getProductsBytitle = await ProdModel.aggregate([
-//     //   { $match: { title: 'remera' } },
-//     //   { $group: { _id: '$description', totalStock: {$sum:'$stock'} } },
-//     //   { $sort: { totalStock: -1 } },
-//     //   { $group: { _id: 1, products: { $push: '$$ROOT' } } },
-//     //   { $project: { _id: 0, products: '$products' } },
-//     //   { $merge: { into: 'categories' } },
-//     // ]);
-
-
-//     const pipeline = [];
-
-//     if (category) {
-    
-//        pipeline.push({$match: { title : 'category' } });
-       
-//    }
-
-
-//       // pipeline.push({
-//       //   $match: { title: category }
-//       // });
-
-//     if (availability) {
-//       pipeline.push({
-//         $match: { stock: availability }
-//       });
-//     }
-
-//     if (order === 'asc') {
-//       pipeline.push({
-//         $sort: { price: 1 }
-//       });
-//     } else if (order === 'desc') {
-//       pipeline.push({
-//         $sort: { price: -1 }
-//       });
-//     }
-
-
-
-//     // Ejecutar la consulta
-//     const product = await ProdModel.aggregate(pipeline);
-//     console.log(product);
-//     // ProdModel.aggregate(pipeline)
-//     //   .exec((err, productos) =>
-//     //     res.status(201).send({ status: "success", payload: productos })
-//     //   );
-//     res.status(201).send({ status: "success", payload: product });
-//   } catch (error) {
-
-//     return res.status(500).send({ error: 'Ocurrió un error en el servidor.' });
-//   }
-
-// });
-
-
-
-
-
-
 router.get("/", async (req, res) => {
-  const products = await productM.getProducts();
-  // res.send({ status: "success", payload: products });
-
   try {
-    const { page = 1 , category,availability,order} = req.query;
-    const { docs, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = await ProdModel.paginate({}, { page, lean: true });
-    const products = docs;
+    // declaro los parametros de la query
+    const limit = parseInt(req.query.limit) || 10;
+    const category = req.query.category;
+    const page = parseInt(req.query.page) || 1;
 
-    // const pipeline = [];
+    //metodo para agregar links pagina anterior y siguiente
+    const prevAntPage = (products) => {
+      if (products.hasPrevPage) {
+        products.prevLink = `/api/products/?page=${products.prevPage}`;
+      } else {
+        products.prevLink = null;
+      }
+      if (products.hasNextPage) {
+        products.nextLink = `/api/products/?page=${products.nextPage}`;
+      } else {
+        products.nextLink = null;
+      }
+    };
 
-   
+    //Filtro title, limit y page
+    //si categoria no existe devuelvo todos los productos 
+    if (!category) {
+      const products = await ProdModel.paginate(
+        {},
+        { limit, page, lean: true }
+      );
+      prevAntPage(products);
+      
+      res
+        .status(201)
+        .send({
+          status: "success",
+          payload: `Category does not exist`,
+          products,
+        });
+    } else {
+      const products = await ProdModel.paginate(
+        { title: category },
+        { limit, page, lean: true }
+      );
 
+      prevAntPage(products);
 
-    // pipeline.push({
-    //   $match: { title: category }
-    // });
+      res.status(201).send({ status: "success", payload: products });
+    }
 
-    // if (availability) {
-    //   pipeline.push({
-    //     $match: { stock: availability }
-    //   });
-    // }
-
-    // if (order === 'asc') {
-    //   pipeline.push({
-    //     $sort: { price: 1 }
-    //   });
-    // } else if (order === 'desc') {
-    //   pipeline.push({
-    //     $sort: { price: -1 }
-    //   });
-    // }
-
-
-
-    // Ejecutar la consulta
-    const product = await ProdModel.aggregate([
-      { $match: { title: category } },
-      // { $sort: { price: 1 }},
-      // { $group: { _id: 1, products: { $push: '$$ROOT' } } },
-      // { $project: { _id: 0, products: '$products' } },
-      // { $merge: { into: 'reports' } },
-   
-    ]);
-    console.log(product);
-    // const limProd = req.query.limit;
-    // if (!limProd) {
-    //   res.send(products);
-    // } else if (isNaN(limProd)) {
-    //   res.status(400).send({ error: "limit is not a number" });
-    // } else if (limProd < 0) {
-    //   res.status(400).send({ error: "limit must be a positive number" });
-    // } else {
-
-    // const reduced = products.slice(0, limProd);
-    res.status(201).send({ status: "success", payload: { products, page: rest.page, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage, product } });
-    // }
+ 
   } catch (error) {
     res
       .status(500)
@@ -193,20 +111,17 @@ router.put("/:pid", async (req, res) => {
   const { pid } = req.params;
   const updateProduct = req.body;
   const result = await productM.updateProduct(pid, updateProduct);
-  res.status(200).send({ status: "succsses", payload: `Product upgraded successfully` });
+  res
+    .status(200)
+    .send({ status: "succsses", payload: `Product upgraded successfully` });
 });
 router.delete("/:pid", async (req, res) => {
   const { pid } = req.params;
   await productM.deleteProduct(pid);
-  res.status(201).send({ status: "success", payload: "Product removed successfully" });
+  res
+    .status(201)
+    .send({ status: "success", payload: "Product removed successfully" });
 });
-
-
-
-
-
-
-
 
 /* -----------------FILE SYSTEM------------------- */
 
