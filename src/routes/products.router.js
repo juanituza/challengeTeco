@@ -48,6 +48,7 @@ router.get("/", async (req, res) => {
           products,
         });
     } else {
+      // si no filtro por el argumento category
       const products = await ProdModel.paginate(
         { title: category },
         { limit, page, lean: true }
@@ -68,8 +69,11 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
+    //obtengo todos los productos
     const products = await productM.getProducts();
+    //Obtento los datos otorgados por body
     const prod = req.body;
+    //Valido campos obligatorios
     if (
       !prod.title ||
       !prod.description ||
@@ -80,12 +84,13 @@ router.post("/", async (req, res) => {
     ) {
       return res.status(400).send({ error: `Incomplete data` });
     }
+    //Valido que no se repita el campo "code"
     if (
       typeof products.find((item) => item.code == prod.code) !== "undefined"
     ) {
       return res.status(400).send({ error: `Duplicate product code` });
     }
-
+    // Creo el producto
     const resProd = await productM.createProducts(prod);
     res.status(201).send({ status: "success", payload: resProd });
   } catch (error) {
@@ -113,7 +118,7 @@ router.put("/:pid", async (req, res) => {
   const result = await productM.updateProduct(pid, updateProduct);
   res
     .status(200)
-    .send({ status: "succsses", payload: `Product upgraded successfully` });
+    .send({ status: "succsses", payload: `Product upgraded successfully`, result });
 });
 router.delete("/:pid", async (req, res) => {
   const { pid } = req.params;
