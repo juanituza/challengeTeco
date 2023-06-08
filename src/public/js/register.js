@@ -17,7 +17,16 @@ form.addEventListener('submit',async (event)=>{
     })
 
     const responseData = await response.json()
-
-    console.log(responseData);
+    if (responseData.status === "success") {
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 5500
+        })
+        window.location.replace('/login');
+    }
+   
    
 })

@@ -40,7 +40,7 @@ app.use(
     store: new MongoStore({
       mongoUrl:
         "mongodb+srv://juanituza:123@cluster0mckenna.x71myop.mongodb.net/Ecommerce?retryWrites=true&w=majority",
-      ttl: 30,
+      ttl: 3600,
     }),
     secret: "Secr3t1nfoCr1p",
     resave: false,
