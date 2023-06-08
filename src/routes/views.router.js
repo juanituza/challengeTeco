@@ -31,7 +31,9 @@ router.get("/carts", async (req, res) => {
   res.render("carts", { allCarts: carts })
 });
 
-
+router.get("/register",(req,res)=>{
+  res.render('register');
+})
 
 
 

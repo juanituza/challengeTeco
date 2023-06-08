@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const collection="Users";
 
-const schema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     first_name:String,
     last_name:String,
     email:{
@@ -12,7 +12,7 @@ const schema = new mongoose.Schema({
     password:String
 },{timestamps:{createdAt:'created_at', updatedAt:'updated_at'}});
 
-const userModel = mongoose.model(collection,schema);
+const userModel = mongoose.model(collection,userSchema);
 
 export default userModel;
 

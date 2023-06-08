@@ -122,7 +122,7 @@ router.put('/:cid/:pid', async (req, res) => {
 router.put('/:cid/products/:pid', async (req, res) => {
   try {
     const { cid, pid } = req.params;
-    const { cantidad } = req.body;
+    const { quantity } = req.body;
     const cart = await cartsM.getCartsBy(cid);
 
     if(!cart){
@@ -135,7 +135,7 @@ router.put('/:cid/products/:pid', async (req, res) => {
       return res.status(404).send('The product does not exist in the cart');
     }
     // Actualiza la cantidad del producto
-    product.quantity = cantidad;
+    product.quantity = quantity;
 
     // Guarda los cambios en el carrito
     await cart.save();
