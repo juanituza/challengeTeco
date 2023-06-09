@@ -11,10 +11,13 @@ form.addEventListener('submit', async (event) => {
         method: 'POST',
         body: JSON.stringify(obj),
         headers: {
-            "Content-Type": "application/json"
-        }
-    })
+            'Content-Type': 'application/json',
+        },
+    });
 
-    const responseData = await response.json()
-    console.log(responseData);
+
+    const responseData = await response.json();
+    if (responseData.status === "success") {
+        window.location.replace('/products');
+    }
 })
