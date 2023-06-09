@@ -9,11 +9,13 @@ import productsModel from "../dao/Managers/Mongo/ProductManager.js";
 import cartsModel from "../dao/Managers/Mongo/cartManager.js"
 import ProdModel from '../dao/Mongo/models/products.js';
 import cModel from '../dao/Mongo/models/carts.js';
+import userManager from '../dao/Managers/Mongo/userManager.js';
 
 
 const productM = new productsModel();
 const pm = new ProductManager();
 const cm = new cartsModel();
+const um = new userManager();
 
 
 /*-----------RENDER CON MONGO---------*/
@@ -21,7 +23,8 @@ router.get("/products", async (req, res) => {
   const { page = 1 } = req.query;
   const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = await ProdModel.paginate({}, { page, limit: 10, lean: true })
   const products = docs;
-  res.render("products", { allProducts: products, page: rest.page, hasPrevPage, hasNextPage, prevPage, nextPage });
+  const userData = req.session.user;
+  res.render("products", { allProducts: products, page: rest.page, hasPrevPage, hasNextPage, prevPage, nextPage, user: userData });
 
 });
 
