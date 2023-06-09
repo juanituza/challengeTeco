@@ -11,6 +11,17 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
+
+    //defino el admin
+    if (email ==="adminCoder@coder.com" && password === "coder") {
+        req.session.user = {
+            name: `Admin`,
+            role:"admin",
+            email: "..."
+        }
+        return res.status(200).send({ status: "success" });
+    }
+
     const user = await userModel.findOne({ email, password });
     if (!user) return res.status(400).send({ status: "error", error: "Incorrect user or password" });
 

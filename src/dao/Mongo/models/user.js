@@ -9,7 +9,11 @@ const userSchema = new mongoose.Schema({
         type:String,
         unique:true
     },
-    password:String
+    password:String,
+    role:{
+        type:String,
+        default: "user"
+    }
 },{timestamps:{createdAt:'created_at', updatedAt:'updated_at'}});
 
 const userModel = mongoose.model(collection,userSchema);
