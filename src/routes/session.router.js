@@ -1,10 +1,25 @@
 import { Router } from "express";
 import userModel from "../dao/Mongo/models/user.js";
+import { createHash } from "../utils.js";
 
 const router = Router();
 
 router.post("/register", async (req, res) => {
-    const result = await userModel.create(req.body);
+    
+
+    const {first_name,last_name,email,password} = req.body;
+    const exist = await userModel.findOne({email});
+
+    if (exist) return res.status(400).send({status:"error", error: "User already exist"});
+    const hashedPassword = await createHash(password);
+    const user = {
+        first_name,
+        last_name,
+        email,
+        password : hashedPassword
+    }
+
+    const result = await userModel.create(user);
     res.send({ status: "success", payload: result });
 });
 
