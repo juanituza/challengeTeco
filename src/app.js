@@ -3,6 +3,7 @@ import handlebars from "express-handlebars";
 import session from "express-session";
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
+import passport from "passport";
 
 
 import productsRouter from "./routes/products.router.js";
@@ -16,6 +17,7 @@ import registerChathandler from "./listeners/chatHandler.js";
 import { Server } from "socket.io";
 import socketProducts from "./products.socket.js";
 import socketCarts from "./cart.socket.js";
+import initializePassportStrategies from "../config/passport.config.js";
 
 const app = express();
 
@@ -56,6 +58,9 @@ app.use((req, res, next) => {
   req.io = io;
   next();
 });
+
+app.use(passport.initialize());
+initializePassportStrategies();
 
 app.use("/api/products", productsRouter);
 app.use("/api/users", usersRouter);
