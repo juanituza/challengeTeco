@@ -32,7 +32,6 @@ router.get("/products", async (req, res) => {
 
 router.get("/carts", async (req, res) => {
   const carts = await cm.getCarts();
-  console.log(carts[0].products);
   res.render("carts", { allCarts: carts })
 });
 
