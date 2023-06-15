@@ -37,13 +37,33 @@ router.get("/loginFail", (req, res) => {
 });
 
 
+router.get('/github', passport.authenticate('github'),(req,res)=>{});
+
+router.get("/githubcallback", passport.authenticate('github'), (req, res) => {
+    const user = req.user;
+    //creo la sesion
+    req.session.user={
+        id:user.id,
+        name: user.first_name,
+        role :user.role,
+        email: user.email
+    }
+
+    res.send({estatus:"success", message:"Logueado con github"})
+});
+
+
+
+
+
+
+
+
 router.post('/restorePassword', async(req,res) =>{
    const {email, password} = req.body;
     //Verifico si existe el usuario
     // const user = await um.getUserBy({email});
-    const user = await userModel.findOne({email});
-
-   
+    const user = await userModel.findOne({email});   
 
     if(!user) return res.status(400).send({status:"error", error:"User doesn't exist"});
     //Comparo password nuevo con el antiguo
@@ -57,7 +77,9 @@ router.post('/restorePassword', async(req,res) =>{
 
     res.sendStatus(200);
 
-})
+});
+
+
 
 
 
