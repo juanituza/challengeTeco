@@ -27,24 +27,24 @@
   <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-md-9 col-lg-6 col-xl-5">
-        <img src="img/draw2.jpg"
+        <img src="img/login.jpg"
           class="img-fluid" alt="Sample image">
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <form id="loginForm">
           <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
             <p class="lead fw-normal mb-0 me-3">Sign in with</p>
-            <button type="button" class="btn btn-primary btn-floating mx-1">
+            {{!-- <button type="button" class="btn btn-primary btn-floating mx-1">
               <i class="fab fa-facebook-f"></i>
-            </button>
+            </button> --}}
 
             <button type="button" class="btn btn-primary btn-floating mx-1">
-              <i class="fab fa-twitter"></i>
+             <i class="fa-brands fa-github"></i>
             </button>
 
-            <button type="button" class="btn btn-primary btn-floating mx-1">
+            {{!-- <button type="button" class="btn btn-primary btn-floating mx-1">
               <i class="fab fa-linkedin-in"></i>
-            </button>
+            </button> --}}
           </div>
 
           <div class="divider d-flex align-items-center my-4">
@@ -60,13 +60,13 @@
 
           <!-- Password input -->
           <div class="form-outline mb-3">
-            <input type="password" name="password" class="form-control form-control-lg"
+            <input  name="password" class="form-control form-control-lg"
               placeholder="Enter password" />
             <label class="form-label" for="form3Example4">Password</label>
           </div>
 
           <div class="d-flex justify-content-between align-items-center">
-            <a href="#!" class="text-body">Forgot password?</a>
+            <a href="/restorePassword" class="text-body">Forgot password?</a>
           </div>
 
           <div class="text-center text-lg-start mt-4 pt-2">

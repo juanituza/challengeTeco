@@ -53,6 +53,9 @@ router.get("/profile", privacy('PRIVATE'),  (req, res) => {
   }
 });
 
+router.get("/restorePassword", privacy('NO_AUTHENTICATED'), (req, res) => {
+  res.render('restorePassword');
+})
 
 
 

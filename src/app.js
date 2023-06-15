@@ -9,7 +9,7 @@ import passport from "passport";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import usersRouter from "./routes/users.router.js";
-import sessionsRouter from "./routes/session.router.js"
+import sessionsRouter from "./routes/sessions.router.js"
 import viewsRouter from "./routes/views.router.js";
 import __dirname from "./utils.js";
 

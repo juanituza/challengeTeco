@@ -1,8 +1,11 @@
 <div class="container">
   {{#if user}}
     <div class="row card shadow m-5">
-      <h1>{{user.name}} </h1>
-      <p>Correo: {{user.email}} </p>
+      <div>
+        <h1>{{user.name}} </h1>
+        <p>Correo: {{user.email}} </p>
+      </div>
+      {{!-- <div><button class="btn btn-primary" href="/restorePassword">Restore password</button></div> --}}
     </div>
   {{/if}}
   <div class="row mx-3">

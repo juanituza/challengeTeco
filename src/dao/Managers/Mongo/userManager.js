@@ -4,15 +4,15 @@ export default class userManager {
     getUsers = async () => {
         return await userModel.find().lean();
     };
-    getuserBy = async (uid) => {
+    getUserBy = async (uid) => {
 
-        return await userModel.findById(uid);
+        return await userModel.findOne(uid);
     };
     createUser = async (user) => {
         return await userModel.create(user);
     };
-    updateUser = async (id, user) => {
-        return await userModel.findByIdAndUpdate(id, { $set: user });
+    updateUser = async (camp, item) => {
+        return await userModel.updateOne(camp, { $set: {item} });
     };
     deleteUser = async (user) => {
         return await userModel.findByIdAndDelete(user);
