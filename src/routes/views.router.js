@@ -1,7 +1,6 @@
 import { Router } from "express";
+import { privacy } from "../middlewares/auth.js";
 
-
-const router = Router();
 
 import ProductManager from "../dao/Managers/FileSystem/ProductManager.js";
 import CartManager from "../dao/Managers/FileSystem/CartManager.js";
@@ -9,11 +8,15 @@ import productsModel from "../dao/Managers/Mongo/ProductManager.js";
 import cartsModel from "../dao/Managers/Mongo/cartManager.js"
 import ProdModel from '../dao/Mongo/models/products.js';
 import cModel from '../dao/Mongo/models/carts.js';
+import userManager from '../dao/Managers/Mongo/userManager.js';
 
+
+const router = Router();
 
 const productM = new productsModel();
 const pm = new ProductManager();
 const cm = new cartsModel();
+const um = new userManager();
 
 
 /*-----------RENDER CON MONGO---------*/
@@ -21,18 +24,38 @@ router.get("/products", async (req, res) => {
   const { page = 1 } = req.query;
   const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = await ProdModel.paginate({}, { page, limit: 10, lean: true })
   const products = docs;
-  res.render("products", { allProducts: products, page: rest.page, hasPrevPage, hasNextPage, prevPage, nextPage });
+  const userData = req.session.user;
+  
+  res.render("products", { allProducts: products, page: rest.page, hasPrevPage, hasNextPage, prevPage, nextPage, user: userData });
 
 });
 
 router.get("/carts", async (req, res) => {
   const carts = await cm.getCarts();
-  console.log(carts[0].products);
   res.render("carts", { allCarts: carts })
 });
 
+router.get("/register", privacy('NO_AUTHENTICATED'), (req,res)=>{
+  res.render('register');
+})
+router.get("/login", privacy('NO_AUTHENTICATED'), (req,res)=>{
+  res.render('login');
+})
 
+router.get("/profile", privacy('PRIVATE'),  (req, res) => {
+  if (req.session.user) {
+    
+    res.render('profile', {
+      user: req.session.user
+    })
+  }else{
+    res.render('error',{error:req.session.error})
+  }
+});
 
+router.get("/restorePassword", privacy('NO_AUTHENTICATED'), (req, res) => {
+  res.render('restorePassword');
+})
 
 
 

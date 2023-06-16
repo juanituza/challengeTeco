@@ -20,12 +20,12 @@ router.get("/", async (req, res) => {
     //metodo para agregar links pagina anterior y siguiente
     const prevAntPage = (products) => {
       if (products.hasPrevPage) {
-        products.prevLink = `/api/products/?page=${products.prevPage}`;
+        products.prevLink = `/api/products?page=${products.prevPage}`;
       } else {
         products.prevLink = null;
       }
       if (products.hasNextPage) {
-        products.nextLink = `/api/products/?page=${products.nextPage}`;
+        products.nextLink = `/api/products?page=${products.nextPage}`;
       } else {
         products.nextLink = null;
       }

@@ -1,5 +1,13 @@
 <div class="container">
-
+  {{#if user}}
+    <div class="row card shadow m-5">
+      <div>
+        <h1>{{user.name}} </h1>
+        <p>Correo: {{user.email}} </p>
+      </div>
+      {{!-- <div><button class="btn btn-primary" href="/restorePassword">Restore password</button></div> --}}
+    </div>
+  {{/if}}
   <div class="row mx-3">
     <h1 class="col-12 text-center" id="h1">PRODUCTS</h1>
 
@@ -8,7 +16,7 @@
 
         <h2 class="text-center" style="color:red"> Product:{{this.title}}</h2>
         <ul class="list-group list-group-flush">
-          
+
           <li class="list-group-item"> description : {{this.description}}</li>
           <li class="list-group-item"> price : {{this.price}}</li>
           <li class="list-group-item"> thumbnail : {{this.thumbnail}}</li>
@@ -18,20 +26,18 @@
         </ul>
 
       </div>
-      
 
     {{/each}}
     {{#if hasPrevPage}}
-    <a href="/products/?page={{prevPage}}"><button>Anterior</button></a>
-    
-    {{/if}}
+      <a href="/products?page={{prevPage}}"><button>Anterior</button></a>
 
+    {{/if}}
 
     {{page}}
 
     {{#if hasNextPage}}
-    <a href="/products/?page={{nextPage}}"><button>Siguiente</button></a>
-    
+      <a href="/products?page={{nextPage}}"><button>Siguiente</button></a>
+
     {{/if}}
 
   </div>
