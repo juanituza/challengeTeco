@@ -46,7 +46,7 @@ app.use(
     }),
     secret: "Secr3t1nfoCr1p",
     resave: false,
-    saveUninitialized: true 
+    saveUninitialized: false 
   })
 );
 

@@ -34,39 +34,39 @@ const initializePassportStrategies = () =>{
 
     }));
 
-    passport.use('login', new LocalStrategy({usernameField:'email'},async (email,password,done)=>{
+    // passport.use('login', new LocalStrategy({usernameField:'email'},async (email,password,done)=>{
     
 
-        //defino el admin
-        if (email === "adminCoder@coder.com" && password === "coder") {
-            const user = {
-                id: 0,
-                name: `Admin`,
-                role: "admin",
-                email: "..."
-            }
-            return done(null,user);
-        }
-        let user;
-        user = await userModel.findOne({ email });
-        if (!user) return done(null, false, { message: "Incorrect credentials" });
+    //     //defino el admin
+    //     if (email === "adminCoder@coder.com" && password === "coder") {
+    //         const user = {
+    //             id: 0,
+    //             name: `Admin`,
+    //             role: "admin",
+    //             email: "..."
+    //         }
+    //         return done(null,user);
+    //     }
+    //     let user;
+    //     user = await userModel.findOne({ email });
+    //     if (!user) return done(null, false, { message: "Incorrect credentials" });
         
 
-        const isValidPassword = await validatePassword(password, user.password);
+    //     const isValidPassword = await validatePassword(password, user.password);
 
-        if (!isValidPassword) return done(null, false, { message: "Wrong password" });
+    //     if (!isValidPassword) return done(null, false, { message: "Wrong password" });
         
 
 
-        //creo la sesión
-        user = {
-            id: user._id,
-            name: `${user.first_name} ${user.last_name}`,
-            email: user.email,
-            role: user.role
-        }
-        return done(null,user);
-    }));
+    //     //creo la sesión
+    //     user = {
+    //         id: user._id,
+    //         name: `${user.first_name} ${user.last_name}`,
+    //         email: user.email,
+    //         role: user.role
+    //     }
+    //     return done(null,user);
+    // }));
 
     passport.use('github', new GithubStrategy({
         clientID:"Iv1.fd6853e95ce4c8a5",

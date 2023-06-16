@@ -56,7 +56,7 @@ router.get("/githubcallback", passport.authenticate('github'), (req, res) => {
 
 
 router.post('/jwtLogin', async (req,res) =>{
-    const {email,password}=req.body;
+    const {email,password}= req.body;
     let accessToken; 
     //defino el admin
     if (email === "adminCoder@coder.com" && password === "coder") {
@@ -68,7 +68,7 @@ router.post('/jwtLogin', async (req,res) =>{
         }
         //Genero token
         accessToken = generateToken(user);
-        res.send({ estatus: "success", accessToken:accessToken})
+        res.send({ estatus: "success", accessToken: accessToken })
     }
     let user;
     user = await userModel.findOne({ email });
@@ -88,11 +88,14 @@ router.post('/jwtLogin', async (req,res) =>{
         role: user.role
     }
     accessToken = generateToken(user) 
-    res.send({ estatus: "success", accessToken: accessToken })
+    res.send({ estatus: "success", accessToken })
 })
 router.get('/jwtProfile', (req,res) =>{
 
 })
+
+
+
 
 
 
