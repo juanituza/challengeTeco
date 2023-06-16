@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import userManager from "../dao/Managers/Mongo/userManager.js";
-import { createHash, validatePassword } from "../utils.js";
+import { createHash, generateToken, validatePassword } from "../utils.js";
 import userModel from "../dao/Mongo/models/user.js";
 
 
@@ -55,7 +55,44 @@ router.get("/githubcallback", passport.authenticate('github'), (req, res) => {
 
 
 
+router.post('/jwtLogin', async (req,res) =>{
+    const {email,password}=req.body;
+    let accessToken; 
+    //defino el admin
+    if (email === "adminCoder@coder.com" && password === "coder") {
+        const user = {
+            id: 0,
+            name: `Admin`,
+            role: "admin",
+            email: "..."
+        }
+        //Genero token
+        accessToken = generateToken(user);
+        res.send({ estatus: "success", accessToken:accessToken})
+    }
+    let user;
+    user = await userModel.findOne({ email });
+    if (!user) return res.sendStatus(400);  
 
+    const isValidPassword = await validatePassword(password, user.password);
+
+    if (!isValidPassword) return res.sendStatus(400);
+
+
+
+    //creo al usuario
+    user = {
+        id: user._id,
+        name: `${user.first_name} ${user.last_name}`,
+        email: user.email,
+        role: user.role
+    }
+    accessToken = generateToken(user) 
+    res.send({ estatus: "success", accessToken: accessToken })
+})
+router.get('/jwtProfile', (req,res) =>{
+
+})
 
 
 
