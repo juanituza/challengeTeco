@@ -8,8 +8,8 @@ import userModel from "../dao/Mongo/models/user.js";
 const router = Router();
 const um = new userManager();
 
-router.post("/register", passport.authenticate('register', { failureRedirect: '/api/sessions/registerFail', failureMessage: true }), async (req, res) => {
-    res.send({ status: "success", message:"Registered" });
+router.post("/register", passportCall('register'), async (req, res) => {
+    res.sendStatus(200);
 });
 
 router.get("/registerFail", (req,res)=>{

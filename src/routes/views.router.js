@@ -36,7 +36,7 @@ router.get("/carts", async (req, res) => {
   res.render("carts", { allCarts: carts })
 });
 
-router.get("/register", privacy('NO_AUTHENTICATED'), (req, res) => {
+router.get("/register", passportCall('jwt'), (req, res) => {
   res.render('register');
 })
 router.get("/login", (req, res) => {
