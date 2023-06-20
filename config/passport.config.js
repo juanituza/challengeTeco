@@ -2,8 +2,9 @@ import passport from "passport";
 import local from 'passport-local';
 import GithubStrategy from 'passport-github2';
 import userModel from "../src/dao/Mongo/models/user.js";
-import { createHash, validatePassword } from '../src/utils.js';
-import userManager from "../src/dao/Managers/Mongo/userManager.js";
+import { Strategy, ExtractJwt } from 'passport-jwt';
+import { cookieExtractor, createHash, validatePassword } from '../src/utils.js';
+// import userManager from "../src/dao/Managers/Mongo/userManager.js";
 
 
 
@@ -73,7 +74,7 @@ const initializePassportStrategies = () => {
         callbackURL: "http://localhost:8080/api/sessions/githubcallback"
     }, async (accessToken, refreshToken, profile, done) => {
         try {
-            console.log(profile);
+            
             //tomo los datos del profile que me sirvan.
             const { name, email } = profile._json;
             const user = await userModel.findOne({ email });
@@ -96,7 +97,13 @@ const initializePassportStrategies = () => {
     }));
 
 
-
+//passport se encarga de la verificacion del token
+    passport.use('jwt', new Strategy({
+        jwtFromRequest:ExtractJwt.fromExtractors([cookieExtractor]),
+        secretOrKey:'jwtSecret'
+    },async(payload,done) =>{
+      return done(null,payload)  
+    }))
 
 };
 

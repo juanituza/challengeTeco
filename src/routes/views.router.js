@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { privacy } from "../middlewares/auth.js";
+import { passportCall } from "../utils.js";
 
 
 import ProductManager from "../dao/Managers/FileSystem/ProductManager.js";
@@ -20,12 +21,12 @@ const um = new userManager();
 
 
 /*-----------RENDER CON MONGO---------*/
-router.get("/products", async (req, res) => {
+router.get("/products", passportCall('jwt'), async (req, res) => {
   const { page = 1 } = req.query;
   const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = await ProdModel.paginate({}, { page, limit: 10, lean: true })
   const products = docs;
-  const userData = req.session.user;
-  
+  const userData = req.user;
+
   res.render("products", { allProducts: products, page: rest.page, hasPrevPage, hasNextPage, prevPage, nextPage, user: userData });
 
 });
@@ -35,23 +36,17 @@ router.get("/carts", async (req, res) => {
   res.render("carts", { allCarts: carts })
 });
 
-router.get("/register", privacy('NO_AUTHENTICATED'), (req,res)=>{
+router.get("/register", privacy('NO_AUTHENTICATED'), (req, res) => {
   res.render('register');
 })
-router.get("/login", (req,res)=>{
+router.get("/login", (req, res) => {
   res.render('login');
 })
+router.get('/profile', passportCall('jwt'), (req, res) => {
+  console.log(req.user);
+  res.render('profile', { user: req.user })
+})
 
-router.get("/profile", privacy('PRIVATE'),  (req, res) => {
-  if (req.session.user) {
-    
-    res.render('profile', {
-      user: req.session.user
-    })
-  }else{
-    res.render('error',{error:req.session.error})
-  }
-});
 
 router.get("/restorePassword", privacy('NO_AUTHENTICATED'), (req, res) => {
   res.render('restorePassword');
