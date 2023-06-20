@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { privacy } from "../middlewares/auth.js";
+import { authRoles } from "../middlewares/auth.js";
 import { passportCall } from "../utils.js";
 
 
@@ -42,13 +42,13 @@ router.get("/register", passportCall('jwt'), (req, res) => {
 router.get("/login", (req, res) => {
   res.render('login');
 })
-router.get('/profile', passportCall('jwt'), (req, res) => {
-  console.log(req.user);
+router.get('/profile', passportCall('jwt',{redirect:"/login"}),authRoles('user'), (req, res) => {
+  
   res.render('profile', { user: req.user })
 })
 
 
-router.get("/restorePassword", privacy('NO_AUTHENTICATED'), (req, res) => {
+router.get("/restorePassword",  (req, res) => {
   res.render('restorePassword');
 })
 
