@@ -18,15 +18,22 @@ router.get("/registerFail", (req,res)=>{
 });
 
 
-router.post("/login",passport.authenticate('login',{failureRedirect:'/api/sessions/loginFail', failureMessage:true}), async (req, res) => {
+router.post("/login",passport.authenticate('login',{failureRedirect:'/api/sessions/loginFail', failureMessage:true,session:false}), async (req, res) => {
     // console.log(req.user);
-    req.session.user = {
-        name : req.user.name,
-        role:  req.user.role,
+    const user = {
         id: req.user.id,
-        email :req.user.email  
-    }
-    res.status(200).send({status:"success"});
+        name : req.user.name,
+        email :req.user.email,  
+        role:  req.user.role,
+    };
+    const accessToken = generateToken(user)
+    //envío el token por el body para que el front lo guarde
+    // res.send({ estatus: "success", accessToken })
+    res.cookie('authToken',accessToken,{
+        maxAge:1000*60*60*24,
+        httpOnly:true,
+    }).sendStatus(200);
+
 });
 
 router.get("/loginFail", (req, res) => {
@@ -56,39 +63,39 @@ router.get("/githubcallback", passport.authenticate('github'), (req, res) => {
 
 
 router.post('/jwtLogin', async (req,res) =>{
-    const {email,password}= req.body;
-    let accessToken; 
-    //defino el admin
-    if (email === "adminCoder@coder.com" && password === "coder") {
-        const user = {
-            id: 0,
-            name: `Admin`,
-            role: "admin",
-            email: "..."
-        }
-        //Genero token
-        accessToken = generateToken(user);
-        res.send({ estatus: "success", accessToken: accessToken })
-    }
-    let user;
-    user = await userModel.findOne({ email });
-    if (!user) return res.sendStatus(400);  
+    // const {email,password}= req.body;
+    // let accessToken; 
+    // //defino el admin
+    // if (email === "adminCoder@coder.com" && password === "coder") {
+    //     const user = {
+    //         id: 0,
+    //         name: `Admin`,
+    //         role: "admin",
+    //         email: "..."
+    //     }
+    //     //Genero token
+    //     accessToken = generateToken(user);
+    //     res.send({ estatus: "success", accessToken: accessToken })
+    // }
+    // let user;
+    // user = await userModel.findOne({ email });
+    // if (!user) return res.sendStatus(400);  
 
-    const isValidPassword = await validatePassword(password, user.password);
+    // const isValidPassword = await validatePassword(password, user.password);
 
-    if (!isValidPassword) return res.sendStatus(400);
+    // if (!isValidPassword) return res.sendStatus(400);
 
 
 
-    //creo al usuario
-    user = {
-        id: user._id,
-        name: `${user.first_name} ${user.last_name}`,
-        email: user.email,
-        role: user.role
-    }
-    accessToken = generateToken(user) 
-    res.send({ estatus: "success", accessToken })
+    // //creo al usuario
+    // user = {
+    //     id: user._id,
+    //     name: `${user.first_name} ${user.last_name}`,
+    //     email: user.email,
+    //     role: user.role
+    // }
+    // accessToken = generateToken(user) 
+    // res.send({ estatus: "success", accessToken })
 })
 router.get('/jwtProfile', (req,res) =>{
 

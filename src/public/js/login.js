@@ -1,13 +1,13 @@
 const form = document.getElementById("loginForm")
 
-
+console.log(document.cookie);
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const data = new FormData(form);
     const obj = {};
 
     data.forEach((value, key) => obj[key] = value);
-    const response = await fetch('/api/sessions/jwtLogin', {
+    const response = await fetch('/api/sessions/login', {
         method: 'POST',
         body: JSON.stringify(obj),
         headers: {
@@ -17,9 +17,9 @@ form.addEventListener('submit', async (event) => {
 
 
     const responseData = await response.json();
-    if (responseData.estatus === "success") {
-        // window.location.replace('/products');
-        localStorage.setItem('accessToken', responseData.accessToken);
-    }
+    // if (responseData.estatus === "success") {
+    //     // window.location.replace('/products');
+    //     localStorage.setItem('accessToken', responseData.accessToken);
+    // }
 })
 

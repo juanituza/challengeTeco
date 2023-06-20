@@ -1,9 +1,8 @@
 import express from "express";
 import handlebars from "express-handlebars";
-import session from "express-session";
 import mongoose from "mongoose";
-import MongoStore from "connect-mongo";
 import passport from "passport";
+import cookieParser from "cookie-parser";
 
 
 import productsRouter from "./routes/products.router.js";
@@ -30,25 +29,15 @@ const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
 });
-
 const io = new Server(server);
 // const cart = new Server(server);
+initializePassportStrategies();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(`${__dirname}/public`));
-app.use(
-  session({
-    store: new MongoStore({
-      mongoUrl:
-        "mongodb+srv://juanituza:123@cluster0mckenna.x71myop.mongodb.net/Ecommerce?retryWrites=true&w=majority",
-      ttl: 3600,
-    }),
-    secret: "Secr3t1nfoCr1p",
-    resave: false,
-    saveUninitialized: false 
-  })
-);
+app.use(cookieParser());
+
 
 app.engine("handlebars", handlebars.engine());
 app.set("views", `${__dirname}/views`);
@@ -59,8 +48,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(passport.initialize());
-initializePassportStrategies();
+
 
 app.use("/api/products", productsRouter);
 app.use("/api/users", usersRouter);

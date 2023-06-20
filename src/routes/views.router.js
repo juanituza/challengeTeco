@@ -38,7 +38,7 @@ router.get("/carts", async (req, res) => {
 router.get("/register", privacy('NO_AUTHENTICATED'), (req,res)=>{
   res.render('register');
 })
-router.get("/login", privacy('NO_AUTHENTICATED'), (req,res)=>{
+router.get("/login", (req,res)=>{
   res.render('login');
 })
 
