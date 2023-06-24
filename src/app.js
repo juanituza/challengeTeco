@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 import UserRouter from "./routes/users.router.js";
 import ProductRouter from "./routes/products.router.js"
 // import productsRouter from "./routes/products.router.js";
-import cartsRouter from "./routes/carts.router.js";
+import CartRouter from "./routes/carts.router.js";
 // import usersRouter from "./routes/users.router.js";
 // import sessionsRouter from "./routes/sessions.router.js"
 import SessionRouter from "./routes/sessions.router.js"
@@ -24,6 +24,7 @@ const app = express();
 
 const userRouter = new UserRouter();
 const productRouter = new ProductRouter();
+const cartRouter = new CartRouter();
 const sessionRouter = new SessionRouter();
 const viewsRouter = new ViewsRouter();
 
@@ -59,7 +60,7 @@ app.use((req, res, next) => {
 
 app.use("/api/products", productRouter.getRouter());
 app.use("/api/users", userRouter.getRouter());
-app.use("/api/carts", cartsRouter);
+app.use("/api/carts", cartRouter.getRouter());
 app.use("/api/sessions", sessionRouter.getRouter());
 
 app.use("/", viewsRouter.getRouter());
