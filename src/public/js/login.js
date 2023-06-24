@@ -18,7 +18,17 @@ form.addEventListener('submit', async (event) => {
 
     const responseData = await response.json();
     if (responseData.status === "success"){
-        window.location.replace('/products');
+        Swal.fire({
+            title: 'Successfully logged in',
+            text: 'You will be redirected to the product page',
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.replace('/products');
+            }
+        });
     }
     
 })
