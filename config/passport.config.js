@@ -7,6 +7,7 @@ import { cookieExtractor, createHash, validatePassword } from "../src/utils.js";
 // import userManager from "../src/dao/Managers/Mongo/userManager.js";
 
 const LocalStrategy = local.Strategy;
+const JWTStrategy = Strategy;
 
 const initializePassportStrategies = () => {
   passport.use(
@@ -40,17 +41,17 @@ const initializePassportStrategies = () => {
   passport.use(
     "login",
     new LocalStrategy(
-      { usernameField: "email" },
+      {  usernameField: "email" },
       async (email, password, done) => {
         //defino el admin
         if (email === "adminCoder@coder.com" && password === "coder") {
-          const user = {
+          const User = {
             id: 0,
             name: `Admin`,
             role: "admin",
             email: "...",
           };
-          return done(null, user);
+          return done(null, User);
         }
         let user;
         user = await userModel.findOne({ email });
@@ -116,7 +117,12 @@ const initializePassportStrategies = () => {
         secretOrKey: "jwtSecret",
       },
       async (payload, done) => {
-        return done(null, payload);
+        try {
+          return done(null, payload);
+          
+        } catch (error) {
+          done(error);
+        }
       }
     )
   );

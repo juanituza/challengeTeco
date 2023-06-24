@@ -11,10 +11,11 @@ export default class userManager {
     createUser = async (user) => {
         return await userModel.create(user);
     };
-    updateUser = async (camp, item) => {
-        return await userModel.updateOne(camp, { $set: {item} });
+    updateUser = async (email,password) => {
+        return await userModel.updateOne(email, { $set: password});
     };
-    deleteUser = async (user) => {
-        return await userModel.findByIdAndDelete(user);
+  
+    deleteUser = async (id) => {
+        return await userModel.findByIdAndDelete(id);
     }
 }

@@ -1,132 +1,91 @@
-import { Router } from "express";
+// import { Router } from "express";
+import BaseRouter from "./baseRouter.js";
+
 import { authRoles } from "../middlewares/auth.js";
 import { passportCall } from "../utils.js";
 
 
-import ProductManager from "../dao/Managers/FileSystem/ProductManager.js";
-import CartManager from "../dao/Managers/FileSystem/CartManager.js";
+
 import productsModel from "../dao/Managers/Mongo/ProductManager.js";
 import cartsModel from "../dao/Managers/Mongo/cartManager.js"
 import ProdModel from '../dao/Mongo/models/products.js';
-import cModel from '../dao/Mongo/models/carts.js';
+
 import userManager from '../dao/Managers/Mongo/userManager.js';
 
 
-const router = Router();
 
-const productM = new productsModel();
-const pm = new ProductManager();
+
+
 const cm = new cartsModel();
-const um = new userManager();
+
 
 
 /*-----------RENDER CON MONGO---------*/
-router.get("/products", passportCall('jwt'), async (req, res) => {
-  const { page = 1 } = req.query;
-  const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = await ProdModel.paginate({}, { page, limit: 10, lean: true })
-  const products = docs;
-  const userData = req.user;
 
-  res.render("products", { allProducts: products, page: rest.page, hasPrevPage, hasNextPage, prevPage, nextPage, user: userData });
+export default class ViewsRouter extends BaseRouter {
+  init() {
 
-});
+    this.get("/", async (req, res) => {
 
-router.get("/carts", async (req, res) => {
-  const carts = await cm.getCarts();
-  res.render("carts", { allCarts: carts })
-});
+      res.render("home")
+    });
+    this.get("/products", passportCall('jwt', { redirect: "/login" }), async (req, res) => {
+      const { page = 1 } = req.query;
+      const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = await ProdModel.paginate({}, { page, limit: 10, lean: true })
+      const products = docs;
+      const userData = req.user;
 
-router.get("/register", passportCall('jwt'), (req, res) => {
-  res.render('register');
-})
-router.get("/login", (req, res) => {
-  res.render('login');
-})
-router.get('/profile', passportCall('jwt',{redirect:"/login"}),authRoles('user'), (req, res) => {
-  
-  res.render('profile', { user: req.user })
-})
+      res.render("products", { allProducts: products, page: rest.page, hasPrevPage, hasNextPage, prevPage, nextPage, user: userData });
 
+    });
 
-router.get("/restorePassword",  (req, res) => {
-  res.render('restorePassword');
-})
+    this.get("/carts", async (req, res) => {
+      const carts = await cm.getCarts();
+      res.render("carts", { allCarts: carts })
+    });
 
+    this.get("/register", (req, res) => {
+      res.render('register');
+    })
+    this.get("/login", (req, res) => {
+      res.render('login');
+    })
+    this.get('/profile', passportCall('jwt', { redirect: "/login" }), authRoles('user'), (req, res) => {
 
-
-
-/*--------------RENDER FILE SYSTEM-----------*/
-router.get("/productsF", async (req, res) => {
-  const products = await pm.getProducts();
-  res.render("products", { allProducts: products });
-});
+      res.render('profile', { user: req.user })
+    })
 
 
-router.get("/carts", async (req, res) => {
-  const carts = await cm.getCarts();
-  res.render("carts", { allCarts: carts })
-});
-
-
-
-
-router.get("/productsF/:pid", async (req, res) => {
-  const products = await pm.getProducts();
-  res.render("products", { productLimit: products })
-});
-//   try {
-//     const pos = parseInt(req.params.pid);
-
-
-//     if (isNaN(pos)) {
-//       return res.status(400).send({ error: "ERROR! Product id is not a number " });
-//     }
-//     if (pos < 0) {
-//       return res.status(400).send({ error: "ERROR! Product id must be a positive number " });
-//     }
-//     const prod = await pm.getProducts();
-
-//     const prodSelect = prod.find((prod) => prod.id === pos);
-//     if (prodSelect === undefined) {
-//       res.status(400).send({ error: "id does not belong to a product" });
-//     } else {
-//       res.status(200).send (prodSelect);
-//       // res.render("products", { productid: prodSelect });
-//     }
-//   } catch (error) {
-//     res
-//       .status(500)
-//       .send({ error: "Internal server error, contact the administrator" });
-//   }
-// });
-
-
-router.get("/", async (req, res) => {
-
-  res.render("home");
-});
+    this.get("/restorePassword", (req, res) => {
+      res.render('restorePassword');
+    })
 
 
 
 
 
-/*---------REAL TIME--------*/
-
-
-router.get("/realtimeproducts", async (req, res) => {
-
-  res.render("realTimeProducts");
-});
 
 
 
-router.get("/realtimecart", async (req, res) => {
+    /*---------REAL TIME--------*/
 
-  res.render("realTimeCarts");
-});
 
-router.get('/chat', async (req, res) => {
-  res.render('chat');
-})
+    this.get("/realtimeproducts", async (req, res) => {
 
-export default router;
+      res.render("realTimeProducts");
+    });
+
+
+
+    this.get("/realtimecart", async (req, res) => {
+
+      res.render("realTimeCarts");
+    });
+
+    this.get('/chat', async (req, res) => {
+      res.render('chat');
+    })
+
+  }
+}
+
