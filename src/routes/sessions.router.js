@@ -20,14 +20,7 @@ export default class SessionRouter extends BaseRouter {
     });
 
     this.post("/login", passportCall("login"), async (req, res) => {
-      // console.log(req.user);
-      // const user = {
-      //   id: req.user.id,
-      //   name: req.user.name,
-      //   email: req.user.email,
-      //   role: req.user.role,
-      // };
-      const accessToken = generateToken(req.user);
+       const accessToken = generateToken(req.user);
       //envío el token por el body para que el front lo guarde
       // res.send({ estatus: "success", accessToken })
       res

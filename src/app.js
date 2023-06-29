@@ -1,18 +1,17 @@
 import express from "express";
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
-import passport from "passport";
+import config from './config.js';
 import cookieParser from "cookie-parser";
 
 import UserRouter from "./routes/users.router.js";
 import ProductRouter from "./routes/products.router.js"
-// import productsRouter from "./routes/products.router.js";
+
 import CartRouter from "./routes/carts.router.js";
-// import usersRouter from "./routes/users.router.js";
-// import sessionsRouter from "./routes/sessions.router.js"
 import SessionRouter from "./routes/sessions.router.js"
 import ViewsRouter from "./routes/views.router.js";
 import __dirname from "./utils.js";
+
 
 import registerChathandler from "./listeners/chatHandler.js";
 import { Server } from "socket.io";
@@ -21,25 +20,25 @@ import socketCarts from "./cart.socket.js";
 import initializePassportStrategies from "../config/passport.config.js";
 
 const app = express();
+const PORT = config.app.PORT;
+
+const connection = mongoose.connect(config.mongo.URL);
+
+
+//Server de escucha
+const server = app.listen(PORT,()=>console.log(`Listening on ${PORT}`));
+const io = new Server(server);
+// const cart = new Server(server);
+initializePassportStrategies();
+
 
 const userRouter = new UserRouter();
 const productRouter = new ProductRouter();
 const cartRouter = new CartRouter();
 const sessionRouter = new SessionRouter();
-const viewsRouter = new ViewsRouter();
+const viewsRouter = new ViewsRouter(); 
 
-const connection = mongoose.connect(
-  "mongodb+srv://juanituza:123@cluster0mckenna.x71myop.mongodb.net/Ecommerce?retryWrites=true&w=majority"
-);
-const PORT = process.env.PORT || 8080;
 
-//Server de escucha
-const server = app.listen(PORT, () => {
-  console.log(`Listening on ${PORT}`);
-});
-const io = new Server(server);
-// const cart = new Server(server);
-initializePassportStrategies();
 
 app.use(cookieParser());
 app.use(express.json());
