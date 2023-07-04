@@ -25,11 +25,11 @@ const cm = new cartsModel();
 export default class ViewsRouter extends BaseRouter {
   init() {
 
-    this.get("/", async (req, res) => {
+    this.get("/", ["PUBLIC"], async (req, res) => {
 
       res.render("home")
     });
-    this.get("/products", passportCall('jwt', { redirect: "/login" }), async (req, res) => {
+    this.get("/products", ["ADMIN", "USER"], passportCall('jwt', { strategyType: "jwt" },{ redirect: "/login" }), async (req, res) => {
       const { page = 1 } = req.query;
       const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = await ProdModel.paginate({}, { page, limit: 10, lean: true })
       const products = docs;
@@ -39,24 +39,24 @@ export default class ViewsRouter extends BaseRouter {
 
     });
 
-    this.get("/carts", async (req, res) => {
+    this.get("/carts", ["ADMIN", "USER"], passportCall('jwt', { strategyType: "jwt" }), async (req, res) => {
       const carts = await cm.getCarts();
       res.render("carts", { allCarts: carts })
     });
 
-    this.get("/register", (req, res) => {
+    this.get("/register", ["PUBLIC"],(req, res) => {
       res.render('register');
     })
-    this.get("/login", (req, res) => {
+    this.get("/login", ["PUBLIC"], (req, res) => {
       res.render('login');
     })
-    this.get('/profile', passportCall('jwt', { redirect: "/login" }), authRoles('user'), (req, res) => {
+    this.get('/profile', ["PUBLIC"], passportCall('jwt', { strategyType: "jwt" },{ redirect: "/login" }), authRoles('user'), (req, res) => {
 
       res.render('profile', { user: req.user })
     })
 
 
-    this.get("/restorePassword", (req, res) => {
+    this.get("/restorePassword",["PUBLIC"], (req, res) => {
       res.render('restorePassword');
     })
 

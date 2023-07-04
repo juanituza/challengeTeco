@@ -13,14 +13,19 @@ export const passportCall = (strategy, options = {}) => {
   return async (req, res, next) => {
     passport.authenticate(strategy, (error, user, info) => {
       if (error) return next(error);
+      if(!options.strategyType){
+        console.log( `Route ${req.url} doesn't have defined a strategy`);
+        return res.sendInternalError();
+      }
       if (!user) {
-        if (options.redirect) return res.redirect(options.redirect);
-        return res
-          .status(401)
-          .send({
-            status: "error",
-            error: info.message ? info.message : info.toString(),
-          });
+
+        switch (options.strategyType) {
+          case 'jwt':
+            req.error = info.message ? info.message : info.toString();
+            return next();
+            
+          case 'locals': return res.sendUnauthorized(info.message ? info.message : info.toString());
+        }
       }
       req.user = user;
       next();

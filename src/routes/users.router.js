@@ -55,8 +55,3 @@ export default class UserRouter extends BaseRouter{
   }
 }
 
-
-
-
-
-// export default router;

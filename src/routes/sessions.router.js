@@ -15,11 +15,11 @@ import UserRouter from "./users.router.js";
 
 export default class SessionRouter extends BaseRouter {
   init() {
-    this.post("/register", passportCall("register"), async (req, res) => {
+    this.post("/register", ["NO_AUTH"], passportCall("register", { strategyType: 'locals' }), async (req, res) => {
       res.sendSuccess('Register ok');
     });
 
-    this.post("/login", passportCall("login"), async (req, res) => {
+    this.post("/login", ["NO_AUTH"], passportCall("login",{ strategyType: 'locals' }), async (req, res) => {
        const accessToken = generateToken(req.user);
       //envío el token por el body para que el front lo guarde
       // res.send({ estatus: "success", accessToken })
@@ -29,10 +29,10 @@ export default class SessionRouter extends BaseRouter {
           httpOnly: true,
           sameSite: "strict",
         })
-        .sendSuccess("Login OK");
+        .sendSuccess("Login In");
     });
 
-    this.get("/github", passportCall("github"), (req, res) => { });
+    this.get("/github", ["NO_AUTH"], passportCall("github", { strategyType: 'locals' }), (req, res) => { });
 
     this.get("/githubcallback", passportCall("github"), (req, res) => {
       const user = {
@@ -53,11 +53,11 @@ export default class SessionRouter extends BaseRouter {
         .sendSuccess("Logueado con github");
     });
 
-    this.get("/profile", passportCall("profile"), async (req, res) => {
+    this.get("/profile", ["USER","ADMIN"], passportCall("profile"), async (req, res) => {
       res.sendSuccessWithPayload({ user: req.user });
     });
 
-    this.post("/restorePassword", async (req, res) => {
+    this.post("/restorePassword", ["PUBLIC"], async (req, res) => {
       const { email, password } = req.body;
       //Verifico si existe el usuario
       // const user = await um.getUserBy({email});
