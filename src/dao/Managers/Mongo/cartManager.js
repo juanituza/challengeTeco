@@ -18,9 +18,9 @@ export default class CartManager {
     //obtengo el producto para agregar
     const prod = await productService.getProductsBy(pid);
     // console.log(prod);
- 
+
     //obtengo el carrito
-     const cart = await this.getCartsBy(cid);
+    const cart = await this.getCartsBy(cid);
     // console.log(cart);
 
     // verifico si el producto es nuevo
@@ -29,27 +29,20 @@ export default class CartManager {
     );
     console.log(existingProduct);
     // si el producto es undefined lo agrego al arreglo products
-    if (existingProduct===undefined) {
+    if (existingProduct === undefined) {
       cart.products.push({ product: prod, quantity: 1 });
       // guardo el carrito
       await cartsModel.updateOne(cart);
       return cart;
-      
+
       //si el producto existe agrego cantidad
-    } else{
+    } else {
       existingProduct.quantity += 1;
-      
+
       // guardo el carrito
       await cartsModel.updateOne(cart);
       return cart;
-      
-    } 
-
-    
-    
-    // console.log(cart);
-    // await cartsModel.updateOne(products, { $set:product});
-    // const updatedCart = await cartsModel.updateOne(cart, { $set: products.product });
+    }
   };
 
   deleteCart = (cart) => {
