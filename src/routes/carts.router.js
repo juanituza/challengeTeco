@@ -1,13 +1,15 @@
 import BaseRouter from "./baseRouter.js";
 import { cartService } from "../dao/Managers/Mongo/index.js";
+import { passportCall } from "../utils.js";
 
 /*------------------MONGO--------------------------*/
 
 export default class CartRouter extends BaseRouter {
   init() {
-    this.get("/", async (req, res) => {
+    this.get("/", ["USER"],async (req, res) => {
       try {
         const carts = await cartService.getCarts();
+        console.log(carts);
         res.status(200).send({ status: "success", payload: carts });
       } catch (error) {
         res
@@ -15,12 +17,12 @@ export default class CartRouter extends BaseRouter {
           .send({ error: "Internal server error, contact the administrator" });
       }
     });
-    this.get("/:cid", async (req, res) => {
+    this.get("/:cid", ["USER"], async (req, res) => {
       try {
         const { cid } = req.params;
-        console.log(cid);
+        
         const cartsId = await cartService.getCartsBy(cid);
-        console.log(cartsId);
+        
         res.status(200).send({ status: "success", payload: cartsId });
       } catch (error) {
         res
@@ -42,15 +44,16 @@ export default class CartRouter extends BaseRouter {
       }
     });
 
-    this.post("/:cid/:pid", async (req, res) => {
-      try {
-        // const allCarts = await cartService.getCarts();
-        // console.log(allCarts);
-        const { cid, pid } = req.params;
+    this.post("/:pid", ["USER"], passportCall("jwt", { strategyType: 'jwt' }), async (req, res) => {
+      try {        
+        const cid = req.user.cart;       
+        const {pid} = req.params; 
+        // console.log(cid);
+        // console.log(pid);       
+        
+        const cartResult = await cartService.addProduct(cid,pid);       
 
-        const resultCart = await cartService.addProduct(cid, pid);
-
-        res.status(200).send({ status: "success", payload: resultCart });
+        res.status(200).send({ status: "success", payload: cartResult});
       } catch (error) {
         res
           .status(500)
@@ -160,6 +163,5 @@ export default class CartRouter extends BaseRouter {
           .send({ error: "Internal server error,contact the administrator" });
       }
     });
-
   }
 }

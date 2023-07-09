@@ -1,7 +1,8 @@
 import passport from "passport";
 import local from "passport-local";
 import GithubStrategy from "passport-github2";
-import userModel from "../src/dao/Mongo/models/user.js";
+// import userModel from "../src/dao/Mongo/models/user.js";
+import { cartService, usersService } from "../src/dao/Managers/Mongo/index.js";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import { cookieExtractor, createHash, validatePassword } from "../src/utils.js";
 // import userManager from "../src/dao/Managers/Mongo/userManager.js";
@@ -17,19 +18,22 @@ const initializePassportStrategies = () => {
       async (req, email, password, done) => {
         try {
           const { first_name, last_name } = req.body;
-
-          const exist = await userModel.findOne({ email });
+          const exist = await usersService.getUserBy({email});
+          // const exist = await userModel.findOne({ email });
 
           if (exist) return done(null, false, { message: "User exist" });
           const hashedPassword = await createHash(password);
+          const cart = await cartService.createCart();
           const user = {
             first_name,
             last_name,
             email,
+            cart : cart._id,
             password: hashedPassword,
           };
 
-          const result = await userModel.create(user);
+          // const result = await userModel.create(user);
+          const result = await usersService.createUser(user);
           done(null, result);
         } catch (error) {
           done(error);
@@ -54,7 +58,9 @@ const initializePassportStrategies = () => {
           return done(null, User);
         }
         let user;
-        user = await userModel.findOne({ email });
+        user= await usersService.getUserBy({email});
+       
+        // user = await userModel.findOne({ email });
         if (!user)
           return done(null, false, { message: "Incorrect credentials" });
 
@@ -68,7 +74,8 @@ const initializePassportStrategies = () => {
           id: user._id,
           name: `${user.first_name} ${user.last_name}`,
           email: user.email,
-          role: user.role,
+          cart: user.cart,
+          role: user.role
         };
         return done(null, user);
       }
@@ -87,7 +94,8 @@ const initializePassportStrategies = () => {
         try {
           //tomo los datos del profile que me sirvan.
           const { name, email } = profile._json;
-          const user = await userModel.findOne({ email });
+          const user = await usersService.getUserBy({ email });
+          // const user = await userModel.findOne({ email });
           //Gestiono ambas logicas
           if (!user) {
             //si no existe user lo creo
@@ -96,7 +104,8 @@ const initializePassportStrategies = () => {
               email,
               password: "",
             };
-            const result = await userModel.create(newUser);
+            const result= await usersService.createUser(newUser);
+            // const result = await userModel.create(newUser);
             done(null, result);
           }
           // si ya existe el user

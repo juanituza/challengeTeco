@@ -50,7 +50,7 @@ export default class ViewsRouter extends BaseRouter {
     this.get("/login", ["PUBLIC"], (req, res) => {
       res.render('login');
     })
-    this.get('/profile', ["PUBLIC"], passportCall('jwt', { strategyType: "jwt" },{ redirect: "/login" }), authRoles('user'), (req, res) => {
+    this.get('/profile', ["ADMIN", "USER"], passportCall('jwt', { strategyType: "jwt" }), (req, res) => {
 
       res.render('profile', { user: req.user })
     })

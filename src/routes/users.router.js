@@ -24,8 +24,10 @@ export default class UserRouter extends BaseRouter{
             first_name,
             last_name,
             email,
+            cart,
             password,
           };
+          
           const result = await usersService.createUser(user);
           res.send({ status: "success", insert: result });
         } catch (error) {
@@ -52,6 +54,7 @@ export default class UserRouter extends BaseRouter{
         const result = await usersService.deleteUser({ _id: userId });
         res.send({ status: "seccess", payload: "User removed" });
       });
+      
   }
 }
 

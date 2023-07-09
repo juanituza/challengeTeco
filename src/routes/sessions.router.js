@@ -7,19 +7,19 @@ import {
   passportCall,
   validatePassword,
 } from "../utils.js";
-import { usersService } from "../dao/Managers/Mongo/index.js";
-import userModel from "../dao/Mongo/models/user.js";
-import UserRouter from "./users.router.js";
+import { cartService, usersService } from "../dao/Managers/Mongo/index.js";
+
 
 
 
 export default class SessionRouter extends BaseRouter {
   init() {
-    this.post("/register", ["NO_AUTH"], passportCall("register", { strategyType: 'locals' }), async (req, res) => {
+    this.post("/register", ["PUBLIC"], passportCall("register", { strategyType: 'locals' }), async (req, res) => {
+      
       res.sendSuccess('Register ok');
     });
 
-    this.post("/login", ["NO_AUTH"], passportCall("login",{ strategyType: 'locals' }), async (req, res) => {
+    this.post("/login", ["PUBLIC"], passportCall("login",{ strategyType: 'locals' }), async (req, res) => {
        const accessToken = generateToken(req.user);
       //envío el token por el body para que el front lo guarde
       // res.send({ estatus: "success", accessToken })
@@ -49,11 +49,13 @@ export default class SessionRouter extends BaseRouter {
           maxAge: 1000 * 60 * 60 * 24,
           httpOnly: true,
           sameSite: "strict",
+
         })
         .sendSuccess("Logueado con github");
     });
 
-    this.get("/profile", ["USER","ADMIN"], passportCall("profile"), async (req, res) => {
+    this.get("/profile", ["USER", "ADMIN"], passportCall("jwt", { strategyType: 'locals' }), async (req, res) => {
+    
       res.sendSuccessWithPayload({ user: req.user });
     });
 

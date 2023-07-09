@@ -4,9 +4,9 @@ export default class userManager {
     getUsers = async () => {
         return await userModel.find().lean();
     };
-    getUserBy = async (uid) => {
+    getUserBy = async (params) => {
 
-        return await userModel.findOne(uid);
+        return await userModel.findOne(params).lean(); 
     };
     createUser = async (user) => {
         return await userModel.create(user);

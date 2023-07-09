@@ -19,9 +19,7 @@ const cartSchema = new mongoose.Schema({
           ref: "Products",
         },
       },
-    ],
-  
-    
+    ],  
   
 },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
