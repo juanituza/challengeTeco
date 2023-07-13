@@ -5,14 +5,13 @@ import config from './config.js';
 import cookieParser from "cookie-parser";
 
 import UserRouter from "./routes/users.router.js";
-import ProductRouter from "./routes/products.router.js"
-
+import ProductRouter from "./routes/products.router.js";
 import CartRouter from "./routes/carts.router.js";
-import SessionRouter from "./routes/sessions.router.js"
+import SessionRouter from "./routes/sessions.router.js";
 import ViewsRouter from "./routes/views.router.js";
+
+
 import __dirname from "./utils.js";
-
-
 import registerChathandler from "./listeners/chatHandler.js";
 import { Server } from "socket.io";
 import socketProducts from "./products.socket.js";

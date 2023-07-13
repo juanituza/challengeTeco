@@ -14,7 +14,7 @@ export default class ProductManager {
   updateProduct = async (id, product) => {
     return await productsModel.findByIdAndUpdate(id, { $set: product });
   };
-    deleteProduct =async  (product) =>{
-        return await productsModel.findByIdAndDelete(product);
+    deleteProduct = async  (params) =>{
+      return await productsModel.findByIdAndDelete(params);
     }
 }
