@@ -34,9 +34,7 @@ export default class ViewsRouter extends BaseRouter {
       const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = await ProdModel.paginate({}, { page, limit: 10, lean: true })
       const products = docs;
       const userData = req.user;
-
       res.render("products", { allProducts: products, page: rest.page, hasPrevPage, hasNextPage, prevPage, nextPage, user: userData });
-
     });
 
     this.get("/carts", ["ADMIN", "USER"], passportCall('jwt', { strategyType: "jwt" }), async (req, res) => {
