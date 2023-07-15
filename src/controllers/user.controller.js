@@ -1,4 +1,5 @@
-import { usersService } from "../dao/Managers/Mongo/index.js";
+// import { usersService } from "../dao/Managers/Mongo/index.js";
+import { usersService } from "../services/index.js";
 
 
 const getUsers = async (req,res) => {

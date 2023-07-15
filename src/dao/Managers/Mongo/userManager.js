@@ -1,6 +1,6 @@
 import userModel from "../../Mongo/models/user.js";
 
-export default class userManager {
+export default class UsersManager {
     getUsers = async () => {
         return await userModel.find().lean();
     };

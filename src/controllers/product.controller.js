@@ -1,5 +1,6 @@
 import ProdModel from "../dao/Mongo/models/products.js";
-import { productService } from "../dao/Managers/Mongo/index.js";
+// import { productService } from "../dao/Managers/Mongo/index.js";
+import  {productService}  from "../services/index.js";
 
 const getProducts = async (req, res) => {
     try {
@@ -45,7 +46,7 @@ const getProducts = async (req, res) => {
 
             prevAntPage(products);
 
-            res.sendSuccessWithPayload({ payload: products });
+            res.sendSuccessWithPayload(products);
         }
     } catch (error) {
         res.sendInternalError("Internal server error, contact the administrator");
@@ -57,8 +58,10 @@ const createProducts = async (req, res) => {
     try {
         //obtengo todos los productos
         const products = await productService.getProducts();
+        console.log(products);
         //Obtento los datos otorgados por body
         const prod = req.body;
+        console.log(prod);
         //Valido campos obligatorios
         if (
             !prod.title ||
@@ -78,9 +81,9 @@ const createProducts = async (req, res) => {
         }
         // Creo el producto
         const resProd = await productService.createProducts(prod);
-        res.status(201).send({ status: "success", payload: resProd });
+        res.sendSuccessWithPayload(resProd);
     } catch (error) {
-        ressendInternalError("Internal server error, contact the administrator");
+        res.sendInternalError("Internal server error, contact the administrator");
     }
 };
 

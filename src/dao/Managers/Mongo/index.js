@@ -1,7 +1,7 @@
-import userManager from "./userManager.js";
+import UsersManager from "./userManager.js";
 import ProductManager from "./ProductManager.js"
-import cartManager from "./cartManager.js"
+import CartManager from "./cartManager.js"
 
-export const usersService = new userManager();
 export const productService = new ProductManager();
-export const cartService = new cartManager();
+export const usersService = new UsersManager();
+export const cartService = new CartManager();

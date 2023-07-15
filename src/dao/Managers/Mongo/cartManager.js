@@ -1,5 +1,5 @@
 import cartsModel from "../../Mongo/models/carts.js";
-import { productService } from "./index.js";
+import {productService} from "../../../services/index.js";
 
 export default class CartManager {
   getCarts = async () => {
@@ -16,13 +16,9 @@ export default class CartManager {
   addProduct = async (cid, pid) => {
     //obtengo el producto para agregar
     const prod = await productService.getProductsBy(pid);
-    // console.log(prod);
-
     //obtengo el carrito
     const cart = await this.getCartsBy(cid);
-  
- 
-    
+
     // verifico si el producto es nuevo
     const existingProduct = cart.products.find(
       ({ product }) => product._id.toString() === pid
@@ -30,25 +26,16 @@ export default class CartManager {
     console.log(existingProduct);
     // si el producto es undefined lo agrego al arreglo products
     if (existingProduct === undefined) {
-     cart.products.push({ product: prod, quantity: 1 });
-     
-      // guardo el carrito
-      
-      
+      cart.products.push({ product: prod, quantity: 1 });
+
       //si el producto existe agrego cantidad
-    } else{
+    } else {
       existingProduct.quantity += 1;
-      
-      // guardo el carrito
-      // await cartsModel.updateOne(cart);
-      // return cart;
-    };      
-      await cartsModel.updateOne({_id: cid}, {$set : cart});
-      return cart;
+    }
+    // guardo el carrito
+    await cartsModel.updateOne({ _id: cid }, { $set: cart });
+    return cart;
   };
-
-
-
 
   deleteCart = (cart) => {
     return cartsModel.findByIdAndDelete(cart);

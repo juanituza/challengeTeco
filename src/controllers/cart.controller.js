@@ -1,4 +1,4 @@
-import { cartService } from "../dao/Managers/Mongo/index.js";
+import { cartService } from "../services/index.js";
 
 const getCarts = async (req, res) => {
   try {
@@ -39,7 +39,6 @@ const addProduct = async (req, res) => {
     const cid = req.user.cart;
     const { pid } = req.params;
     const cartResult = await cartService.addProduct(cid, pid);
-    console.log(cartResult);
 
     res.sendSuccessWithPayload(cartResult);
   } catch (error) {
