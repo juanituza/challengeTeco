@@ -1,5 +1,5 @@
 // import ProductManager from "./dao/Managers/FileSystem/ProductManager.js";
-import productsModel from "./dao/Managers/Mongo/ProductManager.js";
+import productsModel from "./dao/Mongo/Managers/ProductManager.js";
 
 
 

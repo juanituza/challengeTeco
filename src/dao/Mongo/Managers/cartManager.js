@@ -1,4 +1,4 @@
-import cartsModel from "../../Mongo/models/carts.js";
+import cartsModel from "../models/carts.js";
 import { productService } from "../../../services/index.js";
 
 export default class CartManager {

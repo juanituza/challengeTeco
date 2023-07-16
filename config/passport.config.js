@@ -2,7 +2,7 @@ import passport from "passport";
 import local from "passport-local";
 import GithubStrategy from "passport-github2";
 // import userModel from "../src/dao/Mongo/models/user.js";
-import { cartService, usersService } from "../src/dao/Managers/Mongo/index.js";
+import { cartService, usersService } from "../src/dao/Mongo/Managers/index.js";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import { cookieExtractor, createHash, validatePassword } from "../src/utils.js";
 // import userManager from "../src/dao/Managers/Mongo/userManager.js";

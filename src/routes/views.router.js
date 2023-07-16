@@ -6,11 +6,12 @@ import { passportCall } from "../utils.js";
 
 
 
-import productsModel from "../dao/Managers/Mongo/ProductManager.js";
-import cartsModel from "../dao/Managers/Mongo/cartManager.js"
+// import productsModel from "..../dao/Mongo/Manmodelsagers/ProductManager.js";
+import cartsModel from "../dao/Mongo/Managers/cartManager.js"
 import ProdModel from '../dao/Mongo/models/products.js';
 
-import userManager from '../dao/Managers/Mongo/userManager.js';
+// import userManager from '../dao/Mongo/Managers/Mongo/userManager.js';
+
 
 
 
