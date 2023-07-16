@@ -1,87 +1,93 @@
-import { Router } from "express";
-import passport from "passport";
-import userManager from "../dao/Managers/Mongo/userManager.js";
-import { createHash, validatePassword } from "../utils.js";
-import userModel from "../dao/Mongo/models/user.js";
+import BaseRouter from "./baseRouter.js";
 
 
-const router = Router();
-const um = new userManager();
-
-router.post("/register", passport.authenticate('register', { failureRedirect: '/api/sessions/registerFail', failureMessage: true }), async (req, res) => {
-    res.send({ status: "success", message:"Registered" });
-});
-
-router.get("/registerFail", (req,res)=>{
-    console.log(req.session.message);
-    res.status(400).send({status:"error",error:req.session.message});
-});
+import {
+  createHash,
+  generateToken,
+  passportCall,
+  validatePassword,
+} from "../utils.js";
+import { cartService, usersService } from "../dao/Managers/Mongo/index.js";
+// import { cartService, usersService } from "../services/index.js";
 
 
-router.post("/login",passport.authenticate('login',{failureRedirect:'/api/sessions/loginFail', failureMessage:true}), async (req, res) => {
-    // console.log(req.user);
-    req.session.user = {
-        name : req.user.name,
-        role:  req.user.role,
+
+
+
+export default class SessionRouter extends BaseRouter {
+  init() {
+    this.post("/register", ["PUBLIC"], passportCall("register", { strategyType: 'locals' }), async (req, res) => {
+      
+      res.sendSuccess('Register ok');
+    });
+
+    this.post("/login", ["PUBLIC"], passportCall("login",{ strategyType: 'locals' }), async (req, res) => {
+       const accessToken = generateToken(req.user);
+      //envío el token por el body para que el front lo guarde
+      // res.send({ estatus: "success", accessToken })
+      res
+        .cookie("authToken", accessToken, {
+          maxAge: 1000 * 60 * 60 * 24,
+          httpOnly: true,
+          sameSite: "strict",
+        })
+        .sendSuccess("Login In");
+    });
+
+    this.get("/github", ["NO_AUTH"], passportCall("github", { strategyType: 'locals' }), (req, res) => { });
+
+    this.get("/githubcallback", passportCall("github"), (req, res) => {
+      const user = {
         id: req.user.id,
-        email :req.user.email  
-    }
-    res.status(200).send({status:"success"});
-});
+        name: req.user.name,
+        email: req.user.email,
+        role: req.user.role,
+      };
+      const accessToken = generateToken(user);
+      //envío el token por el body para que el front lo guarde
+      // res.send({ estatus: "success", accessToken })
+      res
+        .cookie("authToken", accessToken, {
+          maxAge: 1000 * 60 * 60 * 24,
+          httpOnly: true,
+          sameSite: "strict",
 
-router.get("/loginFail", (req, res) => {
-    console.log(req.session.messages);
+        })
+        .sendSuccess("Logueado con github");
+    });
+
+    this.get("/profile", ["USER", "ADMIN"], passportCall("jwt", { strategyType: 'locals' }), async (req, res) => {
     
-    if (req.session.messages.length > 4) return res.status(400).send({ message: "BLOQUEA LOS INTENTOS YA!!!!!" })
-       res.status(400).send({ status: "error", error: req.session.message });
-});
+      res.sendSuccessWithPayload({ user: req.user });
+    });
 
+    this.post("/restorePassword", ["PUBLIC"], async (req, res) => {
+      const { email, password } = req.body;
+      //Verifico si existe el usuario
+      // const user = await um.getUserBy({email});
+      const user = await usersService.getUserBy({ email });
 
-router.get('/github', passport.authenticate('github'),(req,res)=>{});
-
-router.get("/githubcallback", passport.authenticate('github'), (req, res) => {
-    const user = req.user;
-    //creo la sesion
-    req.session.user={
-        id:user.id,
-        name: user.first_name,
-        role :user.role,
-        email: user.email
-    }
-
-    res.send({estatus:"success", message:"Logueado con github"})
-});
-
-
-
-
-
-
-
-
-router.post('/restorePassword', async(req,res) =>{
-   const {email, password} = req.body;
-    //Verifico si existe el usuario
-    // const user = await um.getUserBy({email});
-    const user = await userModel.findOne({email});   
-
-    if(!user) return res.status(400).send({status:"error", error:"User doesn't exist"});
-    //Comparo password nuevo con el antiguo
-    const isSamePassword = await validatePassword(password, user.password);
-    if (isSamePassword) return res.status(400).send({ status: "error", error: "Cannot replace password with current password" })
-    //Si es diferente actualizo password
-    const newHashPassword = await createHash(password);//hasheo password nuevo
-    // const result = await um.updateUser({ email }, { $set: { password:newHashPassword }});
-    const result = await userModel.updateOne({ email }, { $set: { password:newHashPassword }});
-    console.log(result);
-
-    res.sendStatus(200);
-
-});
-
-
-
-
-
-
-export default router;
+      if (!user)
+        return res
+          .status(400)
+          .send({ status: "error", error: "User doesn't exist" });
+      //Comparo password nuevo con el antiguo
+      const isSamePassword = await validatePassword(password, user.password);
+      if (isSamePassword)
+        return res.status(400).send({
+          status: "error",
+          error: "Cannot replace password with current password",
+        });
+      //Si es diferente actualizo password
+      const newHashPassword = await createHash(password); //hasheo password nuevo
+      // const result = await um.updateUser({ email }, { $set: { password:newHashPassword }});
+      // const result = await userModel.updateOne(
+      const result = await usersService.updateUser(
+        {email} , { password: newHashPassword }
+      );
+      console.log(result);
+      res.sendSuccessWithPayload({ result });
+      // res.sendStatus(200);
+    });
+  }
+}

@@ -1,20 +1,21 @@
 import userModel from "../../Mongo/models/user.js";
 
-export default class userManager {
+export default class UsersManager {
     getUsers = async () => {
         return await userModel.find().lean();
     };
-    getUserBy = async (uid) => {
+    getUserBy = async (params) => {
 
-        return await userModel.findOne(uid);
+        return await userModel.findOne(params).lean(); 
     };
     createUser = async (user) => {
         return await userModel.create(user);
     };
-    updateUser = async (camp, item) => {
-        return await userModel.updateOne(camp, { $set: {item} });
+    updateUser = async (email,password) => {
+        return await userModel.updateOne(email, { $set: password});
     };
-    deleteUser = async (user) => {
-        return await userModel.findByIdAndDelete(user);
+  
+    deleteUser = async (id) => {
+        return await userModel.findByIdAndDelete(id);
     }
 }
