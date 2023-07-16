@@ -1,9 +1,9 @@
 import express from "express";
 import handlebars from "express-handlebars";
-import mongoose from "mongoose";
-import config from './config.js';
 import cookieParser from "cookie-parser";
+import config from './config.js';
 
+import MongoSingleton from "./mongoSingleton.js"
 import UserRouter from "./routes/users.router.js";
 import ProductRouter from "./routes/products.router.js";
 import CartRouter from "./routes/carts.router.js";
@@ -21,7 +21,7 @@ import initializePassportStrategies from "../config/passport.config.js";
 const app = express();
 const PORT = config.app.PORT;
 
-const connection = mongoose.connect(config.mongo.URL);
+const connection = MongoSingleton.getInstance();
 
 
 //Server de escucha

@@ -1,5 +1,5 @@
 import cartsModel from "../../Mongo/models/carts.js";
-import {productService} from "../../../services/index.js";
+import { productService } from "../../../services/index.js";
 
 export default class CartManager {
   getCarts = async () => {
@@ -23,7 +23,6 @@ export default class CartManager {
     const existingProduct = cart.products.find(
       ({ product }) => product._id.toString() === pid
     );
-    console.log(existingProduct);
     // si el producto es undefined lo agrego al arreglo products
     if (existingProduct === undefined) {
       cart.products.push({ product: prod, quantity: 1 });
