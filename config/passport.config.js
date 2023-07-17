@@ -2,9 +2,12 @@ import passport from "passport";
 import local from "passport-local";
 import GithubStrategy from "passport-github2";
 // import userModel from "../src/dao/Mongo/models/user.js";
-import { cartService, usersService } from "../src/dao/Mongo/Managers/index.js";
+
+// import { cartService, usersService } from "../src/dao/Mongo/Managers/index.js";
+import { cartService, usersService } from "../src/services/repositories/index.js";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import { cookieExtractor, createHash, validatePassword } from "../src/utils.js";
+import UserDTO from "../src/dto/users/UserDTO.js";
 // import userManager from "../src/dao/Managers/Mongo/userManager.js";
 
 const LocalStrategy = local.Strategy;
@@ -24,7 +27,8 @@ const initializePassportStrategies = () => {
           if (exist) return done(null, false, { message: "User exist" });
           const hashedPassword = await createHash(password);
           const cart = await cartService.createCart();
-          const user = {
+          const user =
+           {
             first_name,
             last_name,
             email,
@@ -59,6 +63,7 @@ const initializePassportStrategies = () => {
         }
         let user;
         user= await usersService.getUserBy({email});
+        console.log(user);
        
         // user = await userModel.findOne({ email });
         if (!user)
@@ -70,13 +75,15 @@ const initializePassportStrategies = () => {
           return done(null, false, { message: "Wrong password" });
 
         //creo la sesión
-        user = {
-          id: user._id,
-          name: `${user.first_name} ${user.last_name}`,
-          email: user.email,
-          cart: user.cart,
-          role: user.role
-        };
+      //  user = 
+         new UserDTO(user); 
+        // {
+        //   id: user._id,
+        //   name: `${user.first_name} ${user.last_name}`,
+        //   email: user.email,
+        //   cart: user.cart,
+        //   role: user.role
+        // };
         return done(null, user);
       }
     )

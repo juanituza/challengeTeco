@@ -1,5 +1,6 @@
 // import { usersService } from "../dao/Managers/Mongo/index.js";
 import { usersService } from "../services/repositories/index.js";
+import usersDTO from "../dto/users/UserDTO.js";
 
 
 const getUsers = async (req,res) => {
@@ -14,13 +15,14 @@ const saveUsers = async (req, res) => {
                 .status(400)
                 .send({ status: "error", payload: "Incomplete value" });
 
-        const user = {
-            first_name,
-            last_name,
-            email,
-            cart,
-            password,
-        };
+        const user = new usersDTO();
+        // {
+        //     first_name,
+        //     last_name,
+        //     email,
+        //     cart,
+        //     password,
+        // };
 
         const result = await usersService.createUser(user);
         res.sendSuccessWithPayload({ result });
