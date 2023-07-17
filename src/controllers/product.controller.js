@@ -1,6 +1,6 @@
 import ProdModel from "../dao/Mongo/models/products.js";
 // import { productService } from "../dao/Managers/Mongo/index.js";
-import  {productService}  from "../services/index.js";
+import  {productService}  from "../services/repositories/index.js";
 
 const getProducts = async (req, res) => {
     try {
@@ -61,7 +61,7 @@ const createProducts = async (req, res) => {
         console.log(products);
         //Obtento los datos otorgados por body
         const prod = req.body;
-        console.log(prod);
+        
         //Valido campos obligatorios
         if (
             !prod.title ||

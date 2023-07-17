@@ -3,6 +3,7 @@ import handlebars from "express-handlebars";
 import cookieParser from "cookie-parser";
 import config from './config.js';
 
+import PersistenceFactory from "./dao/Factory.js";
 import MongoSingleton from "./mongoSingleton.js"
 import UserRouter from "./routes/users.router.js";
 import ProductRouter from "./routes/products.router.js";
@@ -22,7 +23,7 @@ const app = express();
 const PORT = config.app.PORT;
 
 const connection = MongoSingleton.getInstance();
-
+// const connection = await PersistenceFactory.getPersistence();
 
 //Server de escucha
 const server = app.listen(PORT,()=>console.log(`Listening on ${PORT}`));

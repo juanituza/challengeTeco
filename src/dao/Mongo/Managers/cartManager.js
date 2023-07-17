@@ -1,5 +1,5 @@
 import cartsModel from "../models/carts.js";
-import { productService } from "../../../services/index.js";
+import { productService } from "../../../services/repositories/index.js";
 
 export default class CartManager {
   getCarts = async () => {
@@ -18,6 +18,7 @@ export default class CartManager {
     const prod = await productService.getProductsBy(pid);
     //obtengo el carrito
     const cart = await this.getCartsBy(cid);
+    console.log(cart);
 
     // verifico si el producto es nuevo
     const existingProduct = cart.products.find(

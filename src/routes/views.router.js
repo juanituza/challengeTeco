@@ -69,7 +69,7 @@ export default class ViewsRouter extends BaseRouter {
     /*---------REAL TIME--------*/
 
 
-    this.get("/realtimeproducts", async (req, res) => {
+    this.get("/realtimeproducts", ["PUBLIC"], async (req, res) => {
 
       res.render("realTimeProducts");
     });
@@ -81,7 +81,7 @@ export default class ViewsRouter extends BaseRouter {
       res.render("realTimeCarts");
     });
 
-    this.get('/chat', async (req, res) => {
+    this.get('/chat', ["USER"], async (req, res) => {
       res.render('chat');
     })
 
