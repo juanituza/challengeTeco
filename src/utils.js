@@ -3,6 +3,7 @@ import { dirname } from "path";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import passport from "passport";
+import UserDTO from "./dto/users/UserDTO.js";
 
 export const generateToken = (user) => {
   const token = jwt.sign(user, "jwtSecret", { expiresIn: "24h" });
@@ -27,7 +28,9 @@ export const passportCall = (strategy, options = {}) => {
           case 'locals': return res.sendUnauthorized(info.message ? info.message : info.toString());
         }
       }
-      req.user = user;
+      req.user = 
+      {...new UserDTO(user)};
+      // console.log(req.user);
       next();
     })(req, res, next);
   };

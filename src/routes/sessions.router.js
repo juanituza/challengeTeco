@@ -45,7 +45,9 @@ export default class SessionRouter extends BaseRouter {
         email: req.user.email,
         role: req.user.role,
       };
-      const accessToken = generateToken(user);
+      // console.log(req.user);
+      // console.log(user);
+      const accessToken = generateToken(req.user);
       //envío el token por el body para que el front lo guarde
       // res.send({ estatus: "success", accessToken })
       res

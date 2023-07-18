@@ -10,6 +10,9 @@ import { passportCall } from "../utils.js";
 import cartsModel from "../dao/Mongo/Managers/cartManager.js"
 import ProdModel from '../dao/Mongo/models/products.js';
 
+
+import UserDTO from "../dto/users/UserDTO.js";
+
 // import userManager from '../dao/Mongo/Managers/Mongo/userManager.js';
 
 
@@ -35,6 +38,8 @@ export default class ViewsRouter extends BaseRouter {
       const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = await ProdModel.paginate({}, { page, limit: 10, lean: true })
       const products = docs;
       const userData = req.user;
+      // const userData = new UserDTO(req.user);
+      // console.log(userData);
       res.render("products", { allProducts: products, page: rest.page, hasPrevPage, hasNextPage, prevPage, nextPage, user: userData });
     });
 

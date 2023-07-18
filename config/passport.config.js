@@ -8,6 +8,7 @@ import { cartService, usersService } from "../src/services/repositories/index.js
 import { Strategy, ExtractJwt } from "passport-jwt";
 import { cookieExtractor, createHash, validatePassword } from "../src/utils.js";
 import UserDTO from "../src/dto/users/UserDTO.js";
+// import UserDTO from "../src/dto/users/UserDTO.js";
 // import userManager from "../src/dao/Managers/Mongo/userManager.js";
 
 const LocalStrategy = local.Strategy;
@@ -63,7 +64,7 @@ const initializePassportStrategies = () => {
         }
         let user;
         user= await usersService.getUserBy({email});
-        console.log(user);
+        // console.log(user);
        
         // user = await userModel.findOne({ email });
         if (!user)
@@ -75,15 +76,15 @@ const initializePassportStrategies = () => {
           return done(null, false, { message: "Wrong password" });
 
         //creo la sesión
-      //  user = 
-         new UserDTO(user); 
-        // {
-        //   id: user._id,
-        //   name: `${user.first_name} ${user.last_name}`,
-        //   email: user.email,
-        //   cart: user.cart,
-        //   role: user.role
-        // };
+      //  const NewUser = new UserDTO(user); 
+        user = 
+         {
+          id: user._id,
+          name: `${user.first_name} ${user.last_name}`,
+          email: user.email,
+          cart: user.cart,
+          role: user.role
+        };
         return done(null, user);
       }
     )
