@@ -23,11 +23,8 @@ export default class CartManager {
   addProduct = async (cid, pid) => {
     //obtengo el producto para agregar
     const prod = await productService.getProductsBy(pid);
-
     //obtengo el carrito
     const cart = await this.getCartsBy(cid);
-   
-    
     if (!cart) {
       throw new Error("Carrito no encontrado");
     }
@@ -51,85 +48,42 @@ export default class CartManager {
   };
 
   
-
+  //Método para verificar la compra
   purchaseCart = async (cid) => {
-    // const cartById = await cartsModel.findById(cid);
-   
-    // const productPassed = [];
-    // const productsWithoutStock = [];
-    // cartById.products.forEach(({ product, quantity }) => {
-    //   if (parseInt(product.stock) < quantity) {
-    //     productsWithoutStock.push(product._id);
-    //   }
-    // });
-    // if (productsWithoutStock.length > 0) {      
-    //     throw { name: "stockError", products: productsWithoutStock };      
-    // }
-    
-    
-    // return cartById;
-
-    // };
-
   const cart = await this.getCartsBy(cid);
-  // const cartCopy = await this.getCartsBy(cid);
-
-
-  // const prod = await productService.getProductsBy(pid);
-  const productsToTicket = []; // Array para almacenar los productos a comprar
-  const productsWithoutStock = []; // Array para almacenar los productos sin stock
-
   for (const item of cart.products) {
-    const product = await productService.getProductsBy(item.product._id);
-
-    if (item.quantity <= parseInt(product.stock)) {
-      product.stock -= item.quantity;
-
-      await productModel.updateOne(
-        { _id: item.product._id },
-        { $set: { stock: product.stock } }
-      );
-      } else {
-        // Si no hay suficiente stock, eliminar el producto del carrito
-      throw { name: "stockError", error: cart.products};
-      cart.products = cart.products.filter(
-      (p) => p.product._id.toString() !== item.product._id.toString()
-      );
-      // cartCopy.products = cartCopy.products.filter(
-      //   (p) => p.product._id.toString() === item.product._id.toString()
-      // );
-
-          // productsWithoutStock.push(item);
-
-        };
-
+    // Si no hay suficiente stock, en el carrito, arroja error
+    if (item.quantity > parseInt(item.product.stock)) {
+      throw { name: "stockError", error: cart.products };    
       };
+      //Si hay stock del producto le resto la cantidad
+    for (const item of cart.products) {     
+      item.product.stock -= item.quantity;
+      //edito el producto en la DB
+    await productModel.updateOne(
+      { _id: item.product._id },
+      { $set: { stock: item.product.stock } }
+    );
+    };
+    //edito el cart en la DB
       await cartsModel.updateOne({ _id: cid }, { $set: cart });
       return cart;
   }
-
-  // await ticketsModel.createTicket(cart);
-
+};
+  //Método para vaciar de productos el carrito
   emptycart = async (cid) => {
     try {
       // Obtener el carrito actual desde la base de datos
       const carrito = await this.getCartsBy(cid);
-     
-
       // Verificar si se encontró el carrito
       if (!carrito) {
         throw new Error("Carrito no encontrado");
       }
-
-      // Utilizar slice para vaciar el array de productos
+      //Vaciar el array de productos
       carrito.products = [];
-      console.log(carrito);
-
       // Guardar los cambios en la base de datos
       await cartsModel.updateOne({ _id: cid }, { $set: carrito });
-      return carrito;
-
-      
+      return carrito;      
     } catch (error) {
       // Manejar errores aquí
       console.error("Error al vaciar el carrito:", error);

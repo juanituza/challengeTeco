@@ -2,16 +2,13 @@ import mongoose from "mongoose";
 
 const collection = "Carts";
 
-const cartSchema = new mongoose.Schema({
-
-
-
-
+const cartSchema = new mongoose.Schema(
+  {
     products: [
       {
         quantity: {
-          type:Number,
-          default:0
+          type: Number,
+          default: 0,
         },
 
         product: {
@@ -19,9 +16,8 @@ const cartSchema = new mongoose.Schema({
           ref: "Products",
         },
       },
-    ],  
-  
-},
+    ],
+  },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 

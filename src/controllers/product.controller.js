@@ -1,7 +1,7 @@
 import ProdModel from "../dao/Mongo/models/products.js";
 // import { productService } from "../dao/Managers/Mongo/index.js";
 import { productService } from "../services/repositories/index.js";
-import productDTO from "../dto/product/productDTO.js";
+import productDTO from "../dto/productDTO.js";
 
 const getProducts = async (req, res) => {
   try {
@@ -81,7 +81,7 @@ const createProducts = async (req, res) => {
     }
     // Creo el producto
     const resProd = await productService.createProducts(prod);
-
+//{ ...new productDTO(resProd) }
     res.sendSuccessWithPayload({ ...new productDTO(resProd) });
   } catch (error) {
     res.sendInternalError("Internal server error, contact the administrator");
