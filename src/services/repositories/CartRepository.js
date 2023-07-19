@@ -14,6 +14,10 @@ export default class CartRepository {
   addProduct = (cid, pid) => {
     return this.dao.addProduct(cid, pid);
   };
+  purchaseCart = (cid) =>{
+    return this.dao.purchaseCart(cid);
+  }
+
   deleteCart = (cid) => {
     return this.dao.deleteCart(cid);
   };

@@ -10,6 +10,9 @@ import CartRepository from "./CartRepository.js";
 import UsersManager from "../../dao/Mongo/Managers/userManager.js";
 import UsersRepository from "./UsersRepository.js";
 
+import TicketManager from "../../dao/Mongo/Managers/ticketManager.js";
+import TicketRepository from "./TicketRepository.js";
+
 
 
 // Obtén los DAO de la fábrica de persistencia
@@ -22,5 +25,6 @@ import UsersRepository from "./UsersRepository.js";
 export const productService = new ProductRepository(new ProductManager());
 export const cartService = new CartRepository(new CartManager());
 export const usersService = new UsersRepository(new UsersManager());
+export const ticketService = new TicketRepository(new TicketManager());
 
 

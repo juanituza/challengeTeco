@@ -16,6 +16,7 @@ const ticketSchema = new mongoose.Schema({
     type: String,
     ref: "Users"
   },
+
 });
 
 
@@ -25,6 +26,9 @@ ticketSchema.virtual("purchaserEmail", {
     foreignField: "email", // campo que quiero traer de Users 
     justOne: true, // solo ese campo
 });
+
+
+
 
 const ticketsModel = mongoose.model(collection, ticketSchema);
 

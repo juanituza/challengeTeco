@@ -36,14 +36,35 @@ const createCart = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const cid = req.user.cart;
+    
     const { pid } = req.params;
     const cartResult = await cartService.addProduct(cid, pid);
 
     res.sendSuccessWithPayload(cartResult);
   } catch (error) {
+    console.log(error);
     res.sendInternalError("Internal server error,contact the administrator");
   }
 };
+
+const purchaseCart = async (req,res) => {
+  try {
+    const cid = req.user.cart;
+
+    // const cart = await cartService.clientCart(cid);
+    // console.log(cart);
+    const purchase = await cartService.purchaseCart(cid); 
+    res.sendSuccessWithPayload(purchase);
+
+  } catch (error) {
+    console.log(error);
+    if (error.name === "stockError"){
+      res.sendErrorWithPayload(products);
+    }
+    res.sendInternalError("Internal server error,contact the administrator");
+  }
+}
+
 
 const editCart = async (req, res) => {
   try {
@@ -137,6 +158,7 @@ export default {
   getCartsBy,
   createCart,
   addProduct,
+  purchaseCart,
   editCart,
   editQuantity,
   deleteProduct,

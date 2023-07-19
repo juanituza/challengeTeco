@@ -9,6 +9,7 @@ import UserRouter from "./routes/users.router.js";
 import ProductRouter from "./routes/products.router.js";
 import CartRouter from "./routes/carts.router.js";
 import SessionRouter from "./routes/sessions.router.js";
+import TicketRouter from "./routes/ticket.router.js";
 import ViewsRouter from "./routes/views.router.js";
 
 
@@ -18,6 +19,7 @@ import { Server } from "socket.io";
 import socketProducts from "./products.socket.js";
 import socketCarts from "./cart.socket.js";
 import initializePassportStrategies from "../config/passport.config.js";
+
 
 const app = express();
 const PORT = config.app.PORT;
@@ -36,6 +38,7 @@ const userRouter = new UserRouter();
 const productRouter = new ProductRouter();
 const cartRouter = new CartRouter();
 const sessionRouter = new SessionRouter();
+const ticketRouter = new TicketRouter();
 const viewsRouter = new ViewsRouter(); 
 
 
@@ -57,10 +60,12 @@ app.use((req, res, next) => {
 
 
 
+
 app.use("/api/products", productRouter.getRouter());
 app.use("/api/users", userRouter.getRouter());
 app.use("/api/carts", cartRouter.getRouter());
 app.use("/api/sessions", sessionRouter.getRouter());
+app.use("/api/tickets", ticketRouter.getRouter());
 
 app.use("/", viewsRouter.getRouter());
 

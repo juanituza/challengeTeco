@@ -6,13 +6,13 @@ export default class ProductManager {
   };
   getProductsBy = async (pid) => {
     
-    return await  productsModel.findById(pid);
+    return await  productsModel.findById(pid).lean();
   };
   createProducts = async  (product) => {
     return await productsModel.create(product);
   };
   updateProduct = async (id, product) => {
-    return await productsModel.findByIdAndUpdate(id, { $set: product });
+    return await productsModel.updateOne(id, { $set: product });
   };
     deleteProduct = async  (params) =>{
       return await productsModel.findByIdAndDelete(params);

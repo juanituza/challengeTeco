@@ -6,23 +6,19 @@ import { productService, cartService } from "../../../services/repositories/inde
 
 
 export default class TicketManager {
-    getTicket = async () =>{
-        return await ticketsModel.find();
-    };
-
-    createTicket = async (cart) =>{
-        const cartId = await cartService.getCartsBy(cart);
-        console.log(cartId);
-        const pid = cartId.products._id;
-        const prod = await productService.getProducts(pid)
-
-
+  getTicket = async () => {
+       
+            return ticketsModel.find().lean();
+        } 
     
 
-
-
-        return await ticketsModel.create(cart);
-    };
+    // Método para crear un nuevo ticket 
+    createTicket= async (ticketData) => {
+       
+           
+            return await ticketsModel.create(ticketData);
+        } 
+   
 
 
 
