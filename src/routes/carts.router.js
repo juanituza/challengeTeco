@@ -13,7 +13,8 @@ export default class CartRouter extends BaseRouter {
     this.post("/:cid/purchase", ["USER"], passportCall("jwt", { strategyType: 'jwt' }),cartController.purchaseCart);
     this.put("/:cid/:pid", ["USER"], passportCall("jwt", { strategyType: 'jwt' }), cartController.editCart );
     this.put("/:cid/products/:pid", ["USER"], passportCall("jwt", { strategyType: 'jwt' }), cartController.editQuantity);
-    this.delete("/:cid/products/:pid", ["USER"], passportCall("jwt", { strategyType: 'jwt' }), cartController.deleteProduct);
+    this.put("/vaciarCarrito", ["USER"], passportCall("jwt", { strategyType: 'jwt' }), cartController.emptycart);
+    this.delete("/products/:pid", ["USER"], passportCall("jwt", { strategyType: 'jwt' }), cartController.deleteProduct);
     this.delete("/:cid", ["ADMIN"], passportCall("jwt", { strategyType: 'jwt' }), cartController.deleteCart );
   }
 }

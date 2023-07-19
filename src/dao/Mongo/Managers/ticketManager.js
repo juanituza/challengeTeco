@@ -5,6 +5,7 @@ import { productService, cartService } from "../../../services/repositories/inde
 
 
 
+
 export default class TicketManager {
   getTicket = async () => {
        
@@ -13,11 +14,14 @@ export default class TicketManager {
     
 
     // Método para crear un nuevo ticket 
-    createTicket= async (ticketData) => {
-       
-           
-            return await ticketsModel.create(ticketData);
+    createTicket= async (ticket) => {  
+                      
+            return await ticketsModel.create(ticket);
         } 
+
+    totalAmount = async (ticket) => {
+        return await ticketsModel.updateOne(ticket , {$set : amount });
+    }
    
 
 

@@ -7,8 +7,8 @@ export default class TicketRepository {
         return this.dao.getProducts();
     };
 
-    createticket = (params) => {
-        return this.dao.createticket(params);
+    createTicket = (params) => {
+        return this.dao.createTicket(params);
     };
 
    

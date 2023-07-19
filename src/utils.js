@@ -30,7 +30,7 @@ export const passportCall = (strategy, options = {}) => {
       }
       req.user = 
       {...new UserDTO(user)};
-      // console.log(req.user);
+      // user;
       next();
     })(req, res, next);
   };

@@ -37,6 +37,7 @@ const addProduct = async (req, res) => {
   try {
     const cid = req.user.cart;
     
+    
     const { pid } = req.params;
     const cartResult = await cartService.addProduct(cid, pid);
 
@@ -57,11 +58,12 @@ const purchaseCart = async (req,res) => {
     res.sendSuccessWithPayload(purchase);
 
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.name === "stockError"){
-      res.sendErrorWithPayload(products);
+      res.sendUnauthorized(`Producto con insuficiente stock`);
+    }else{      
+      res.sendInternalError("Internal server error,contact the administrator");
     }
-    res.sendInternalError("Internal server error,contact the administrator");
   }
 }
 
@@ -127,7 +129,8 @@ const editQuantity = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   try {
-    const { cid, pid } = req.params;
+    const cid = req.user.cart;
+    const { pid } = req.params;
     const cart = await cartService.getCartsBy(cid);
     const product = cart.products.find((p) => p.product._id.toString() === pid);
     if (!product) {
@@ -142,7 +145,17 @@ const deleteProduct = async (req, res) => {
     res.sendInternalError("Internal server error,contact the administrator");
   }
 };
-
+const emptycart = async (req,res) => {
+    try {
+      const cid = req.user.cart; 
+      const cart = await cartService.getCartsBy(cid);
+      await cartService.emptycart(cart);
+      
+      res.sendSuccess("Cart empty successfully");
+    } catch (error) {
+      res.sendInternalError("Internal server error,contact the administrator");
+    }
+};
 const deleteCart = async (req, res) => {
   try {
     const { cid } = req.params;
@@ -162,5 +175,6 @@ export default {
   editCart,
   editQuantity,
   deleteProduct,
+  emptycart,
   deleteCart,
 };
