@@ -36,8 +36,7 @@ const createCart = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const cid = req.user.cart;
-    
-    
+
     const { pid } = req.params;
     const cartResult = await cartService.addProduct(cid, pid);
 
@@ -48,25 +47,23 @@ const addProduct = async (req, res) => {
   }
 };
 
-const purchaseCart = async (req,res) => {
+const purchaseCart = async (req, res) => {
   try {
     const cid = req.user.cart;
 
     // const cart = await cartService.clientCart(cid);
     // console.log(cart);
-    const purchase = await cartService.purchaseCart(cid); 
+    const purchase = await cartService.purchaseCart(cid);
     res.sendSuccessWithPayload(purchase);
-
   } catch (error) {
     // console.log(error);
-    if (error.name === "stockError"){
+    if (error.name === "stockError") {
       res.sendUnauthorized(`Producto con insuficiente stock`);
-    }else{      
+    } else {
       res.sendInternalError("Internal server error,contact the administrator");
     }
   }
-}
-
+};
 
 const editCart = async (req, res) => {
   try {
@@ -137,24 +134,22 @@ const deleteProduct = async (req, res) => {
       return res.sendNotFound("The product does not exist in the cart");
     }
     cart.products.splice(product, 1);
-
     await cart.save();
-
     res.sendSuccessWithPayload({ cart });
   } catch (error) {
     res.sendInternalError("Internal server error,contact the administrator");
   }
 };
-const emptycart = async (req,res) => {
-    try {
-      const cid = req.user.cart; 
-      const cart = await cartService.getCartsBy(cid);
-      await cartService.emptycart(cart);
-      
-      res.sendSuccess("Cart empty successfully");
-    } catch (error) {
-      res.sendInternalError("Internal server error,contact the administrator");
-    }
+const emptycart = async (req, res) => {
+  try {
+    const cid = req.user.cart;
+    const cart = await cartService.getCartsBy(cid);
+    await cartService.emptycart(cart);
+
+    res.sendSuccess("Cart empty successfully");
+  } catch (error) {
+    res.sendInternalError("Internal server error,contact the administrator");
+  }
 };
 const deleteCart = async (req, res) => {
   try {

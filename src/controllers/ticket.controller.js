@@ -1,6 +1,6 @@
 import { ticketService, cartService } from "../services/repositories/index.js";
 import { v4 as uuidv4 } from "uuid";
-import TicketDTO from "../dto/ticketDTO.js"
+import TicketDTO from "../dto/ticketDTO.js";
 const getTicket = async (req, res) => {
   try {
     const ticket = await ticketService.getTicket();
@@ -28,9 +28,9 @@ const createTickets = async (req, res) => {
       purchaser: req.user.email, // Asigna el ID del comprador
       products: cart.products,
     };
-    // creo el ticket    
+    // creo el ticket
     const ticket = await ticketService.createTicket(ticketData);
-   
+
     if (ticket) {
       await cartService.purchaseCart(cid); //si existe el ticket descuento el stock del producto y verifico si hay stock suficiente
       await cartService.emptycart(cid); // vacio el carrito
