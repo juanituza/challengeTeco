@@ -17,4 +17,5 @@ export default class ProductManager {
     deleteProduct = async  (params) =>{
       return await productsModel.findByIdAndDelete(params);
     }
+  
 }

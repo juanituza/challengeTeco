@@ -4,6 +4,9 @@
 import ProductRepository from "./ProductsRepository.js";
 import ProductManager from "../../dao/Mongo/Managers/ProductManager.js";
 
+import ProductMockRepository from "../../mocks/ProductMockRepository.js";
+import ProductMockManager from "../../mocks/ProductMocksManager.js";
+
 import CartManager from "../../dao/Mongo/Managers/cartManager.js";
 import CartRepository from "./CartRepository.js";
 
@@ -23,6 +26,7 @@ import TicketRepository from "./TicketRepository.js";
 
 // Crea las instancias de los servicios con los DAO correspondientes
 export const productService = new ProductRepository(new ProductManager());
+export const productMockService = new ProductMockRepository(new ProductMockManager());
 export const cartService = new CartRepository(new CartManager());
 export const usersService = new UsersRepository(new UsersManager());
 export const ticketService = new TicketRepository(new TicketManager());

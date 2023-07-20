@@ -68,22 +68,6 @@ export default class BaseRouter {
       .send({status: "error", error});
     next();
   };
-
-  // handlePolicies = policies => {
-  //     return (req,res,next)=>{
-  //       if (policies[0]==='PUBLIC') return next();
-  //       const authHeaders = req.headers.authorization;
-  //       if(!authHeaders) return res.status(401).send({status :"error", error:"Unauthorized"});
-  //       const token = authHeaders.split(" ")[1];
-  //       const user = jwt.verify(token, 'tokenSecret');
-  //       //Ya tengo el usuario
-  //       //Si no está incluido el rol del usuario
-  //       if (!policies.includes(user.role.toUpperCase())) return res.status(403).send({ status: "error", error:"Forbidden"});
-  //       req.user =user;
-  //       next();
-  //     }
-  // }
-
   handlePolicies = (policies) => {
     return (req, res, next) => {
       if (policies[0] === "PUBLIC") return next();

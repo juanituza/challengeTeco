@@ -11,7 +11,7 @@ import MongoSingleton from "../mongoSingleton.js";
 
 
 //defino la persistencia a utilizar:
-const persistence = "MONGO";
+const persistence = "";
 
 // a partir de la variable "persistence" defino DAO a tomar
 export default class PersistenceFactory {
