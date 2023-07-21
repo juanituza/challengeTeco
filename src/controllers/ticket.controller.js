@@ -41,7 +41,7 @@ const createTickets = async (req, res) => {
     console.log(error); 
     if (error.name === "Insufficient stock") {
       
-        res.status(error.status).send({ status: "error", error: error.name });
+        res.status(error.status).send({ status: "error", error: error.message });
       }else {
       // return res.sendNotFound("Ticket not created");
       res.sendInternalError("Internal server error,contact the administrator");

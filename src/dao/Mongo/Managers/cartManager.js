@@ -50,11 +50,10 @@ export default class CartManager {
     for (const item of cart.products) {
       // Si no hay suficiente stock, en el carrito, arroja error
       if (item.quantity > parseInt(item.product.stock)) {
-        // throw { name: "stockError", error: cart.products };
-        return ErrorService.createError({
+        ErrorService.createError({
           name: "Insufficient stock",
           cause: insufficientStock(item.product),
-          message: "product with insufficient stock",
+          message: `product ${item.product.title} ${item.product.description} with insufficient stock`,
           code: EErrors.INSUFFICIENT_STOCK,
           status: 500,
         })
