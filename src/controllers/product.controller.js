@@ -2,15 +2,11 @@ import ProdModel from "../dao/Mongo/models/products.js";
 // import { productService } from "../dao/Managers/Mongo/index.js";
 import { productService } from "../services/repositories/index.js";
 import productDTO from "../dto/productDTO.js";
-import {
-  productsErrorIncompleteData,
-  productsErrorDuplicateCode,
-  productsIdNotFound,
-} from "../constants/productsErrors.js";
 
-import ErrorService from "../services/repositories/ErrorServicer.js";
-import EErrors from "../constants/Eerrors.js";
-import ObjectId from "mongoose";
+import { productsErrorIncompleteData, productsErrorDuplicateCode, productsIdNotFound } from "../constants/productsErrors.js";
+import ErrorService from "../services/ErrorServicer.js";
+import EErrors from "../constants/EErrors.js";
+
 
 const getProducts = async (req, res) => {
   try {
@@ -64,35 +60,45 @@ const getProducts = async (req, res) => {
 };
 
 const createProducts = async (req, res) => {
+  // try {
+
   const products = await productService.getProducts();
   //Obtento los datos otorgados por body
   const prod = req.body;
   //Valido campos obligatorios
   //si no existe algun campo
-  if (!prod.title ||!prod.description ||!prod.price ||!prod.code ||!prod.status ||!prod.stock) {
+  if (!prod.title || !prod.description || !prod.price || !prod.code || !prod.price || !prod.stock) {
+   
     //arrojo el error mediante Middleware manejo de errores
     ErrorService.createError({
-      name: "Incomplete data",
+      name: "Product creation error",
       cause: productsErrorIncompleteData(prod),
       message: "Incomplete data",
       code: EErrors.INCOMPLETE_DATA,
       status: 400,
     });
+
   }
   //Valido que no se repita el campo "code"
   if (typeof products.find((item) => item.code == prod.code) !== "undefined") {
     //arrojo el error mediante Middleware manejo de errores
+
     ErrorService.createError({
       name: "Duplicate product code",
       cause: productsErrorDuplicateCode(prod),
       message: "Duplicate product code",
       code: EErrors.DUPLICATE_CODE,
-      status: 400,
+      status: 500,
     });
+
   }
   // Creo el producto
   const resProd = await productService.createProducts(prod);
-res.sendSuccessWithPayload({ ...new productDTO(resProd)/*DTO PRODUCTS*/});
+  res.sendSuccessWithPayload({ ...new productDTO(resProd)/*DTO PRODUCTS*/ });
+  // } catch (error) {
+  //   console.log(error);
+  //   res.sendInternalError("Internal server error, contact the administrator");
+  // }
 };
 
 const getProductsBy = async (req, res) => {
@@ -105,12 +111,12 @@ const getProductsBy = async (req, res) => {
   if (!productId) {
     ErrorService.createError({
       name: "Id not found",
-      cause: productsIdNotFound(pid),
+      cause: productsIdNotFound({ pid }),
       message: "Get product error",
       code: EErrors.ID_NOT_FOUND,
       status: 400
     });
-   } else {
+  } else {
     //si existe ID busco el producto y lo devuelvo
     const product = await productService.getProductsBy(pid);
     res.sendSuccessWithPayload(product);

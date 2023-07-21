@@ -20,9 +20,10 @@ import socketProducts from "./products.socket.js";
 import socketCarts from "./cart.socket.js";
 import initializePassportStrategies from "../config/passport.config.js";
 
-import errorHandler from "./middlewares/error.js"
+import errorHandler from "./middlewares/error.js"  
 
 const app = express();
+
 const PORT = config.app.PORT;
 
 const connection = MongoSingleton.getInstance();
@@ -68,15 +69,14 @@ app.use("/api/sessions", sessionRouter.getRouter());
 app.use("/api/tickets", ticketRouter.getRouter());
 
 app.use("/", viewsRouter.getRouter());
-
+app.use(errorHandler);
 io.on("connection", (socket) => {
   registerChathandler(io, socket);
 });
 // io.on('connection', async socket => {
-//     console.log('cart conexion');
-// });
-
-socketProducts(io);
-socketCarts(io);
-
-app.use(errorHandler);
+  //     console.log('cart conexion');
+  // });
+  
+  socketProducts(io);
+  socketCarts(io);
+  
