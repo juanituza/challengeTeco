@@ -68,14 +68,9 @@ const createProducts = async (req, res) => {
   //Obtento los datos otorgados por body
   const prod = req.body;
   //Valido campos obligatorios
-  if (
-    !prod.title ||
-    !prod.description ||
-    !prod.price ||
-    !prod.code ||
-    !prod.status ||
-    !prod.stock
-  ) {
+  //si no existe algun campo
+  if (!prod.title ||!prod.description ||!prod.price ||!prod.code ||!prod.status ||!prod.stock) {
+    //arrojo el error mediante Middleware manejo de errores
     ErrorService.createError({
       name: "Incomplete data",
       cause: productsErrorIncompleteData(prod),
@@ -86,6 +81,7 @@ const createProducts = async (req, res) => {
   }
   //Valido que no se repita el campo "code"
   if (typeof products.find((item) => item.code == prod.code) !== "undefined") {
+    //arrojo el error mediante Middleware manejo de errores
     ErrorService.createError({
       name: "Duplicate product code",
       cause: productsErrorDuplicateCode(prod),
@@ -96,7 +92,7 @@ const createProducts = async (req, res) => {
   }
   // Creo el producto
   const resProd = await productService.createProducts(prod);
-  res.sendSuccessWithPayload({ ...new productDTO(resProd) });
+res.sendSuccessWithPayload({ ...new productDTO(resProd)/*DTO PRODUCTS*/});
 };
 
 const getProductsBy = async (req, res) => {
