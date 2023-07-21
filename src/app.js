@@ -20,6 +20,7 @@ import socketProducts from "./products.socket.js";
 import socketCarts from "./cart.socket.js";
 import initializePassportStrategies from "../config/passport.config.js";
 
+import errorHandler from "./middlewares/error.js"
 
 const app = express();
 const PORT = config.app.PORT;
@@ -60,7 +61,6 @@ app.use((req, res, next) => {
 
 
 
-
 app.use("/api/products", productRouter.getRouter());
 app.use("/api/users", userRouter.getRouter());
 app.use("/api/carts", cartRouter.getRouter());
@@ -78,3 +78,5 @@ io.on("connection", (socket) => {
 
 socketProducts(io);
 socketCarts(io);
+
+app.use(errorHandler);
