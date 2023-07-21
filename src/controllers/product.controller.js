@@ -130,7 +130,7 @@ const updateProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   const { pid } = req.params;
-  const result = await productService.deleteProduct(pid);
+  await productService.deleteProduct(pid);
   res.sendSuccess("Product removed successfully");
 };
 
