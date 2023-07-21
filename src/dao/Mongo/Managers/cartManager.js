@@ -47,41 +47,32 @@ export default class CartManager {
   //Método para verificar la compra
   purchaseCart = async (cid) => {
     const cart = await this.getCartsBy(cid);
-
     // verifico si el carrito tiene productos
-   
-
-    cart.products.forEach(item => {
-        
-     
+    cart.products.forEach((item) => {
       // Si no hay suficiente stock, en el carrito, arroja error
-    if (item.quantity > parseInt(item.product.stock)) {
-      return ErrorService.createError({
-        name: "Insufficient stock",
-        cause: insufficientStock(item.product),
-        message: `product ${item.product.title} ${item.product.description} with insufficient stock`,
-        code: EErrors.INSUFFICIENT_STOCK,
-        status: 500,
-      })
-    }else{
-
-      //Si hay stock del producto le resto la cantidad
-      for (const item of cart.products) {
-        item.product.stock -= item.quantity;
-        //edito el producto en la DB
-         productModel.updateOne(
-          { _id: item.product._id },
-          { $set: { stock: item.product.stock } }
+      if (item.quantity > parseInt(item.product.stock)) {
+        return ErrorService.createError({
+          name: "Insufficient stock",
+          cause: insufficientStock(item.product),
+          message: `product ${item.product.title} ${item.product.description} with insufficient stock`,
+          code: EErrors.INSUFFICIENT_STOCK,
+          status: 500,
+        });
+      } else {
+        //Si hay stock del producto le resto la cantidad
+        for (const item of cart.products) {
+          item.product.stock -= item.quantity;
+          //edito el producto en la DB
+          productModel.updateOne(
+            { _id: item.product._id },
+            { $set: { stock: item.product.stock } }
           );
         }
-        //edito el cart en la DB
       }
     });
+    //edito el cart en la DB
     await cartsModel.updateOne({ _id: cid }, { $set: cart });
     return cart;
-      
-    
-  
   };
   //Método para vaciar de productos el carrito
   emptycart = async (cid) => {
