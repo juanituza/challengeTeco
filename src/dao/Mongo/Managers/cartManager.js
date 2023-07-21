@@ -2,6 +2,10 @@ import cartsModel from "../models/carts.js";
 import productModel from "../models/products.js";
 import { productService } from "../../../services/repositories/index.js";
 
+import { insufficientStock } from "../../../constants/cartError.js";
+import ErrorService from "../../../services/ErrorServicer.js";
+import EErrors from "../../../constants/EErrors.js";
+
 export default class CartManager {
   getCarts = async () => {
     return await cartsModel.find().lean();
@@ -46,7 +50,14 @@ export default class CartManager {
     for (const item of cart.products) {
       // Si no hay suficiente stock, en el carrito, arroja error
       if (item.quantity > parseInt(item.product.stock)) {
-        throw { name: "stockError", error: cart.products };
+        // throw { name: "stockError", error: cart.products };
+        return ErrorService.createError({
+          name: "Insufficient stock",
+          cause: insufficientStock(item.product),
+          message: "product with insufficient stock",
+          code: EErrors.INSUFFICIENT_STOCK,
+          status: 500,
+        })
       }
       //Si hay stock del producto le resto la cantidad
       for (const item of cart.products) {

@@ -6,6 +6,7 @@ import productDTO from "../dto/productDTO.js";
 import { productsErrorIncompleteData, productsErrorDuplicateCode, productsIdNotFound } from "../constants/productsErrors.js";
 import ErrorService from "../services/ErrorServicer.js";
 import EErrors from "../constants/EErrors.js";
+import error from "../middlewares/error.js";
 
 
 const getProducts = async (req, res) => {
@@ -60,7 +61,7 @@ const getProducts = async (req, res) => {
 };
 
 const createProducts = async (req, res) => {
-  // try {
+  try {
 
   const products = await productService.getProducts();
   //Obtento los datos otorgados por body
@@ -77,6 +78,7 @@ const createProducts = async (req, res) => {
       code: EErrors.INCOMPLETE_DATA,
       status: 400,
     });
+
 
   }
   //Valido que no se repita el campo "code"
@@ -95,10 +97,11 @@ const createProducts = async (req, res) => {
   // Creo el producto
   const resProd = await productService.createProducts(prod);
   res.sendSuccessWithPayload({ ...new productDTO(resProd)/*DTO PRODUCTS*/ });
-  // } catch (error) {
-  //   console.log(error);
-  //   res.sendInternalError("Internal server error, contact the administrator");
-  // }
+  } catch (error) {
+    console.log(error);
+    // res.sendUnauthorized("Internal server error, contact the administrator");
+    res.status(error.status).send({ status: "error", error: error.name });
+  }
 };
 
 const getProductsBy = async (req, res) => {

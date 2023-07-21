@@ -20,10 +20,10 @@ import socketProducts from "./products.socket.js";
 import socketCarts from "./cart.socket.js";
 import initializePassportStrategies from "../config/passport.config.js";
 
+
 import errorHandler from "./middlewares/error.js"  
 
 const app = express();
-
 const PORT = config.app.PORT;
 
 const connection = MongoSingleton.getInstance();
