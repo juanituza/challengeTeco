@@ -6,3 +6,11 @@ export const insufficientStock = (product) => {
         
          `
 };
+export const emptyCart = (cart) => {
+    return `Empty product cart.:
+
+        * Required data: 
+         add products to ${cart},
+        
+         `
+};

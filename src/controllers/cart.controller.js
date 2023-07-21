@@ -56,12 +56,7 @@ const purchaseCart = async (req, res) => {
     const purchase = await cartService.purchaseCart(cid);
     res.sendSuccessWithPayload(purchase);
   } catch (error) {
-    // console.log(error);
-    if (error.name === "stockError") {
-      res.sendUnauthorized(`Producto con insuficiente stock`);
-    } else {
-      res.sendInternalError("Internal server error,contact the administrator");
-    }
+    res.sendInternalError("Internal server error,contact the administrator");   
   }
 };
 
