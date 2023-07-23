@@ -1,6 +1,9 @@
 import cartsModel from "../models/carts.js";
 import productModel from "../models/products.js";
-import { productService } from "../../../services/repositories/index.js";
+import {
+  productMockService,
+  productService,
+} from "../../../services/repositories/index.js";
 
 import { insufficientStock, emptyCart } from "../../../constants/cartError.js";
 import ErrorService from "../../../services/ErrorServicer.js";
@@ -26,11 +29,11 @@ export default class CartManager {
     if (!cart) {
       throw new Error("Carrito no encontrado");
     }
-
     // verifico si el producto es nuevo
     const existingProduct = cart.products.find(
       ({ product }) => product._id.toString() === pid
     );
+
     // si el producto es undefined lo agrego al arreglo products
     if (existingProduct === undefined) {
       cart.products.push({ product: prod, quantity: 1 });
@@ -47,10 +50,11 @@ export default class CartManager {
   //Método para verificar la compra
   purchaseCart = async (cid) => {
     const cart = await this.getCartsBy(cid);
+
     // verifico si el carrito tiene productos
-    cart.products.forEach((item) => {
+    for (const item of cart.products) {
       // Si no hay suficiente stock, en el carrito, arroja error
-      if (item.quantity > parseInt(item.product.stock)) {
+      if (item.quantity > item.product.stock) {
         return ErrorService.createError({
           name: "Insufficient stock",
           cause: insufficientStock(item.product),
@@ -58,21 +62,21 @@ export default class CartManager {
           code: EErrors.INSUFFICIENT_STOCK,
           status: 500,
         });
-      } else {
-        //Si hay stock del producto le resto la cantidad
-        for (const item of cart.products) {
-          item.product.stock -= item.quantity;
-          //edito el producto en la DB
-          productModel.updateOne(
-            { _id: item.product._id },
-            { $set: { stock: item.product.stock } }
-          );
-        }
       }
-    });
-    //edito el cart en la DB
+    }
+    for (const item of cart.products) {
+      //Si hay stock del producto le resto la cantidad
+      const newStock = (item.product.stock -= item.quantity);
+      //edito el producto en la DB
+      await productModel.updateOne(
+        { _id: item.product._id },
+        { $set: { stock: newStock } }
+      );
+    }
     await cartsModel.updateOne({ _id: cid }, { $set: cart });
+
     return cart;
+    //edito el cart en la DB
   };
   //Método para vaciar de productos el carrito
   emptycart = async (cid) => {
