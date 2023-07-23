@@ -3,7 +3,7 @@ import handlebars from "express-handlebars";
 import cookieParser from "cookie-parser";
 import config from './config.js';
 
-import PersistenceFactory from "./dao/Factory.js";
+// import PersistenceFactory from "./dao/Factory.js";
 import MongoSingleton from "./mongoSingleton.js"
 import UserRouter from "./routes/users.router.js";
 import ProductRouter from "./routes/products.router.js";
@@ -21,7 +21,7 @@ import socketCarts from "./cart.socket.js";
 import initializePassportStrategies from "../config/passport.config.js";
 
 
-import errorHandler from "./middlewares/error.js"  
+
 
 const app = express();
 const PORT = config.app.PORT;
@@ -69,7 +69,6 @@ app.use("/api/sessions", sessionRouter.getRouter());
 app.use("/api/tickets", ticketRouter.getRouter());
 
 app.use("/", viewsRouter.getRouter());
-app.use(errorHandler);
 io.on("connection", (socket) => {
   registerChathandler(io, socket);
 });
