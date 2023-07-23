@@ -5,7 +5,11 @@ import {
   productService,
 } from "../../../services/repositories/index.js";
 
-import { insufficientStock, emptyCart } from "../../../constants/cartError.js";
+import {
+  insufficientStock,
+  emptyCart,
+  cartNotFound,
+} from "../../../constants/cartError.js";
 import ErrorService from "../../../services/ErrorServicer.js";
 import EErrors from "../../../constants/EErrors.js";
 
@@ -27,7 +31,13 @@ export default class CartManager {
     //obtengo el carrito
     const cart = await this.getCartsBy(cid);
     if (!cart) {
-      throw new Error("Carrito no encontrado");
+      return ErrorService.createError({
+        name: "Cart Not Found",
+        cause: cartNotFound(cid),
+        message: `Cart Not Found`,
+        code: EErrors.CART_NOT_FOUND,
+        status: 500,
+      });
     }
     // verifico si el producto es nuevo
     const existingProduct = cart.products.find(

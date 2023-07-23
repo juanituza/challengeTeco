@@ -7,10 +7,18 @@ export const insufficientStock = (product) => {
          `
 };
 export const emptyCart = (cart) => {
-    return `Empty product cart.:
+    return `Empty product cart:
 
         * Required data: 
          add products to ${cart},
+        
+         `
+};
+export const cartNotFound = (cid) => {
+    return `Cart not foun:
+
+        * Required data: 
+        cart not found with id ${cid},
         
          `
 };

@@ -36,6 +36,7 @@ const createCart = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const cid = req.user.cart;
+  
 
     const { pid } = req.params;
     const cartResult = await cartService.addProduct(cid, pid);
@@ -43,7 +44,13 @@ const addProduct = async (req, res) => {
     res.sendSuccessWithPayload(cartResult);
   } catch (error) {
     console.log(error);
-    res.sendInternalError("Internal server error,contact the administrator");
+    if (error.name === "Cart Not Found") {
+
+      res.status(error.status).send({ status: "error", error: error.message });}
+      else{
+
+        res.sendInternalError("Internal server error,contact the administrator");
+      }
   }
 };
 
