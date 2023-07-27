@@ -3,7 +3,7 @@ import { dirname } from "path";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import passport from "passport";
-import UserDTO from "./dto/users/UserDTO.js";
+import UserDTO from "./dto/UserDTO.js";
 
 export const generateToken = (user) => {
   const token = jwt.sign(user, "jwtSecret", { expiresIn: "24h" });
@@ -14,22 +14,23 @@ export const passportCall = (strategy, options = {}) => {
   return async (req, res, next) => {
     passport.authenticate(strategy, (error, user, info) => {
       if (error) return next(error);
-      if(!options.strategyType){
-        console.log( `Route ${req.url} doesn't have defined a strategy`);
+      if (!options.strategyType) {
+        console.log(`Route ${req.url} doesn't have defined a strategy`);
         return res.sendInternalError();
       }
       if (!user) {
-
         switch (options.strategyType) {
-          case 'jwt':
+          case "jwt":
             req.error = info.message ? info.message : info.toString();
             return next();
-            
-          case 'locals': return res.sendUnauthorized(info.message ? info.message : info.toString());
+
+          case "locals":
+            return res.sendUnauthorized(
+              info.message ? info.message : info.toString()
+            );
         }
       }
-      req.user = 
-      {...new UserDTO(user)};
+      req.user = { ...new UserDTO(user) };
       // user;
       next();
     })(req, res, next);

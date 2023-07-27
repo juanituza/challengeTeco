@@ -15,10 +15,18 @@ export const emptyCart = (cart) => {
          `
 };
 export const cartNotFound = (cid) => {
-    return `Cart not foun:
+    return `Cart not found:
 
         * Required data: 
         cart not found with id ${cid},
+        
+         `
+};
+export const noProductInTheCart = (product) => {
+    return `Product not found:
+
+        * Required data: 
+        product is not in the cart ${product},
         
          `
 };

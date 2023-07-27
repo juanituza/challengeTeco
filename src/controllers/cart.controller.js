@@ -81,7 +81,14 @@ const editCart = async (req, res) => {
       (p) => p.product._id.toString() === pid
     );
     if (productIndex === -1) {
-      return res.sendNotFound("There is no product in the cart");
+      return ErrorService.createError({
+        name: "no product in the cart",
+        cause: noProductInTheCart(product),
+        message: `product ${product.title} ${product.description} is not in the cart`,
+        code: EErrors.INSUFFICIENT_STOCK,
+        status: 500,
+      });
+      // return res.sendNotFound("There is no product in the cart");
     }
     //Resto la quantity
     const product = cart.products[productIndex];
@@ -95,8 +102,12 @@ const editCart = async (req, res) => {
     // const removedProductUnit = await cartService.deleteProductUnit(cid, pid);
     res.sendSuccessWithPayload(cart);
   } catch (error) {
+    console.log(error)
+    if (error.name === "no product in the cart") {
+      res.status(error.status).send({ status: "error", error: error.message });
+    }else{
     res.sendInternalError("Internal server error,contact the administrator");
-  }
+  }}
 };
 
 const editQuantity = async (req, res) => {
@@ -135,7 +146,8 @@ const deleteProduct = async (req, res) => {
     if (!product) {
       return res.sendNotFound("The product does not exist in the cart");
     }
-    cart.products.splice(product, 1);
+    const productIndex = cart.products.findIndex((p) => p.product._id.toString() === pid);
+    cart.products.splice(productIndex, 1);
     await cart.save();
     res.sendSuccessWithPayload({ cart });
   } catch (error) {

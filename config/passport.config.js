@@ -4,10 +4,13 @@ import GithubStrategy from "passport-github2";
 // import userModel from "../src/dao/Mongo/models/user.js";
 
 // import { cartService, usersService } from "../src/dao/Mongo/Managers/index.js";
-import { cartService, usersService } from "../src/services/repositories/index.js";
+import {
+  cartService,
+  usersService,
+} from "../src/services/repositories/index.js";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import { cookieExtractor, createHash, validatePassword } from "../src/utils.js";
-import UserDTO from "../src/dto/users/UserDTO.js";
+import UserDTO from "../src/dto/UserDTO.js";
 // import UserDTO from "../src/dto/users/UserDTO.js";
 // import userManager from "../src/dao/Managers/Mongo/userManager.js";
 
@@ -22,18 +25,17 @@ const initializePassportStrategies = () => {
       async (req, email, password, done) => {
         try {
           const { first_name, last_name } = req.body;
-          const exist = await usersService.getUserBy({email});
+          const exist = await usersService.getUserBy({ email });
           // const exist = await userModel.findOne({ email });
 
           if (exist) return done(null, false, { message: "User exist" });
           const hashedPassword = await createHash(password);
           const cart = await cartService.createCart();
-          const user =
-           {
+          const user = {
             first_name,
             last_name,
             email,
-            cart : cart._id,
+            cart: cart._id,
             password: hashedPassword,
           };
 
@@ -50,7 +52,7 @@ const initializePassportStrategies = () => {
   passport.use(
     "login",
     new LocalStrategy(
-      {  usernameField: "email" },
+      { usernameField: "email" },
       async (email, password, done) => {
         //defino el admin
         if (email === "adminCoder@coder.com" && password === "coder") {
@@ -63,9 +65,9 @@ const initializePassportStrategies = () => {
           return done(null, User);
         }
         let user;
-        user= await usersService.getUserBy({email});
+        user = await usersService.getUserBy({ email });
         // console.log(user);
-       
+
         // user = await userModel.findOne({ email });
         if (!user)
           return done(null, false, { message: "Incorrect credentials" });
@@ -76,14 +78,13 @@ const initializePassportStrategies = () => {
           return done(null, false, { message: "Wrong password" });
 
         //creo la sesión
-      //  const NewUser = new UserDTO(user); 
-        user = 
-         {
+        //  const NewUser = new UserDTO(user);
+        user = {
           id: user._id,
           name: `${user.first_name} ${user.last_name}`,
           email: user.email,
           cart: user.cart,
-          role: user.role
+          role: user.role,
         };
         return done(null, user);
       }
@@ -112,7 +113,7 @@ const initializePassportStrategies = () => {
               email,
               password: "",
             };
-            const result= await usersService.createUser(newUser);
+            const result = await usersService.createUser(newUser);
             // const result = await userModel.create(newUser);
             done(null, result);
           }
@@ -136,7 +137,6 @@ const initializePassportStrategies = () => {
       async (payload, done) => {
         try {
           return done(null, payload);
-          
         } catch (error) {
           done(error);
         }
