@@ -1,9 +1,11 @@
 import { cartService } from "../services/repositories/index.js";
+import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
 const getCarts = async (req, res) => {
   try {
     const carts = await cartService.getCarts();
     res.sendSuccessWithPayload(carts);
   } catch (error) {
+    
     res.sendInternalError("Internal server error, contact the administrator");
   }
 };
@@ -16,6 +18,7 @@ const getCartsBy = async (req, res) => {
 
     res.sendSuccessWithPayload(cartsId);
   } catch (error) {
+    LoggerService.error(error); 
     res.sendInternalError("Internal server error, contact the administrator");
   }
 };
@@ -29,6 +32,7 @@ const createCart = async (req, res) => {
 
     res.sendSuccessWithPayload(savedCart);
   } catch (error) {
+    
     res.sendInternalError("Internal server error");
   }
 };
@@ -43,14 +47,12 @@ const addProduct = async (req, res) => {
 
     res.sendSuccessWithPayload(cartResult);
   } catch (error) {
-    console.log(error);
+    LoggerService.error(error); 
     if (error.name === "Cart Not Found") {
-
-      res.status(error.status).send({ status: "error", error: error.message });}
-      else{
-
-        res.sendInternalError("Internal server error,contact the administrator");
-      }
+      res.status(error.status).send({ status: "error", error: error.message });
+    } else {
+      res.sendInternalError("Internal server error,contact the administrator");
+    }
   }
 };
 

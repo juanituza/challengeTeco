@@ -28,6 +28,7 @@ export default class CartManager {
   addProduct = async (cid, pid) => {
     //obtengo el producto para agregar
     const prod = await productService.getProductsBy(pid);
+    
     //obtengo el carrito
     const cart = await this.getCartsBy(cid);
     if (!cart) {

@@ -2,7 +2,7 @@ import BaseRouter from "./baseRouter.js";
 
 // import { productService } from "../dao/Managers/Mongo/index.js";
 import { passportCall} from "../utils.js";
-import  productController  from "../controllers/product.controller.js";
+import  productController  from "../controllers/productController.js";
 import productMockController from "../mocks/productMock.controller.js";
 
 

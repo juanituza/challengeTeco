@@ -1,10 +1,14 @@
+
+
+
 export const insufficientStock = (product) => {
     return `One of the selected products does not have enough stock:
 
         * Required data: 
-         The product ${product._id} /${product.title}   does not have enough stock || sctok: ${product.stock},
+         The product ${product._id} /${product.title} ${product.description} does not have enough stock || sctok: ${product.stock},
         
-         `
+         `;
+         
 };
 export const emptyCart = (cart) => {
     return `Empty product cart:
@@ -29,4 +33,12 @@ export const noProductInTheCart = (product) => {
         product is not in the cart ${product},
         
          `
+};
+export const non_existent_product = (product) => {
+    return `product id not found::
+
+        * Required data: 
+        product id not found,
+        
+         `;
 };

@@ -4,8 +4,7 @@ import TicketDTO from "../dto/ticketDTO.js";
 import { emptyCart } from "../constants/cartError.js";
 import ErrorService from "../services/ErrorServicer.js";
 import EErrors from "../constants/EErrors.js";
-
-
+import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
 
 const getTicket = async (req, res) => {
   try {
@@ -34,7 +33,7 @@ const createTickets = async (req, res) => {
       purchaser: req.user.email, // Asigna el ID del comprador
       products: cart.products,
     };
-    
+
     if (ticketData.products.length === 0) {
       return ErrorService.createError({
         name: "Empty product cart",
@@ -42,11 +41,10 @@ const createTickets = async (req, res) => {
         message: `Empty product cart`,
         code: EErrors.CART_EMPTY,
         status: 500,
-      })
-
+      });
     }
     // creo el ticket
-    
+
     if (ticketData) {
       await cartService.purchaseCart(cid); //si existe el ticket descuento el stock del producto y verifico si hay stock suficiente
       await cartService.emptycart(cid); // vacio el carrito
@@ -55,21 +53,18 @@ const createTickets = async (req, res) => {
 
     res.sendSuccess("Ticket generated");
   } catch (error) {
-    console.log(error); 
-    if (error.name === "Insufficient stock") {
-    
-    res.status(error.status).send({ status: "error", error: error.message });
-      }
-      else
-      if (error.name === "Empty product cart") {
+    // console.log(error);
+    LoggerService.error(error);
+    // req.log
+    if (
+      error.name === "Insufficient stock" ||
+      error.name === "Empty product cart"
+    ) {
       res.status(error.status).send({ status: "error", error: error.message });
-      
-    }else{
+    } else {
       return res.sendNotFound("Ticket not created");
-      // res.sendInternalError("Internal server error,contact the administrator");
     }
-  };
+  }
 };
-
 
 export default { getTicket, createTickets };
