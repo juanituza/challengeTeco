@@ -15,7 +15,7 @@ class LoggerService {
       colors: {
         fatal: "bold red redBG",
         error: "red",
-        warning: "white",
+        warning: "yellow",
         info: "magenta",
         http: "gray",
         debug: "green",
