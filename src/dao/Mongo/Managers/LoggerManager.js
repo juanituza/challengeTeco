@@ -69,14 +69,14 @@ class LoggerService {
     this.logger.error(msg, meta);
   }
 }
-export const loggerTest = winston.createLogger({
-  levels: winston.config.syslog.levels,
-  transports: [
-    new winston.transports.Console({ level: "debug" }),
-    new winston.transports.File({
-      filename: "combined.log",
-      level: "info",
-    }),
-  ],
-});
+// export const loggerTest = winston.createLogger({
+//   levels: winston.config.syslog.levels,
+//   transports: [
+//     new winston.transports.Console({ level: "debug" }),
+//     new winston.transports.File({
+//       filename: "combined.log",
+//       level: "info",
+//     }),
+//   ],
+// });
 export default new LoggerService("dev");

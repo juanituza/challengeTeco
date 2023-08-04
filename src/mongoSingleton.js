@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import config from './config.js';
+import LoggerService from "./dao/Mongo/Managers/LoggerManager.js";
 
 export default class MongoSingleton {
     static #instance;
@@ -11,12 +12,12 @@ export default class MongoSingleton {
     static getInstance() {
         // si existe una instance
         if (this.#instance) {
-            console.log("instance already exists ");
+            LoggerService.logger.info("instance already exists ");
             return this.#instance;
         }
         //Si no hay instance
         this.#instance = new MongoSingleton();
-        console.log("connected first instance");
+        LoggerService.logger.info("connected first instance");
         return this.#instance;
     }
 
