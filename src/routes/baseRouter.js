@@ -61,13 +61,14 @@ export default class BaseRouter {
     res.sendInternalError = (error) =>
       res.status(500).send({ status: "error", error });
     res.sendErrorWithPayload = (payload) =>
-      res.status(400)({ estatus: "error", payload });  
+      res.status(400).send({ estatus: "error", payload });  
     res.sendUnauthorized = (error) =>
-      res.status(400).send({ status: "error", error });
+      res.status(401).send({ status: "error", error });
     res.sendNotFound = (error) => res.status(404)
       .send({status: "error", error});
     next();
   };
+  
   handlePolicies = (policies) => {
     return (req, res, next) => {
       if (policies[0] === "PUBLIC") return next();

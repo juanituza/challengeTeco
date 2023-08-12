@@ -1,4 +1,6 @@
 import express from "express";
+import cluster from "cluster";
+import os from "os";
 import handlebars from "express-handlebars";
 import cookieParser from "cookie-parser";
 import config from "./config.js";
@@ -22,88 +24,69 @@ import socketCarts from "./cart.socket.js";
 import initializePassportStrategies from "../config/passport.config.js";
 import LoggerService from "./dao/Mongo/Managers/LoggerManager.js";
 
-const app = express();
-const PORT = config.app.PORT;
+// const cpus = os.cpus().length;
 
-const connection = MongoSingleton.getInstance();
+// if (cluster.isPrimary) {
+//   LoggerService.info("Parent process, starting workers");
+//   for(let i=0;i<cpus;i++){//por cada hilo de la pc
+//     cluster.fork();
 
-// const connection = await PersistenceFactory.getPersistence();
+//   }
+// }else{
+  //si Primary es false es un worker
+  const app = express();
+  const PORT = config.app.PORT;
 
-//Server de escucha
-const server = app.listen(PORT, () => LoggerService.logger.info(`Listening on ${PORT}`));
-const io = new Server(server);
+  const connection = MongoSingleton.getInstance();
 
-initializePassportStrategies();
+  // const connection = await PersistenceFactory.getPersistence();
+
+  //Server de escucha
+  const server = app.listen(PORT, () =>
+    LoggerService.info(`Listening on ${PORT}`)
+  );
+  const io = new Server(server);
+
+  initializePassportStrategies();
+
+  app.use(cookieParser());
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.static(`${__dirname}/public`));
+
+  app.engine("handlebars", handlebars.engine());
+  app.set("views", `${__dirname}/views`);
+  app.set("view engine", "handlebars");
+
+  app.use((req, res, next) => {
+    req.io = io;
+    next();
+  });
+  app.use(attachLogger);
+
+  const userRouter = new UserRouter();
+  const productRouter = new ProductRouter();
+  const cartRouter = new CartRouter();
+  const sessionRouter = new SessionRouter();
+  const ticketRouter = new TicketRouter();
+  const viewsRouter = new ViewsRouter();
+
+  app.use("/api/products", productRouter.getRouter());
+  app.use("/api/users", userRouter.getRouter());
+  app.use("/api/carts", cartRouter.getRouter());
+  app.use("/api/sessions", sessionRouter.getRouter());
+  app.use("/api/tickets", ticketRouter.getRouter());
+
+  app.use("/", viewsRouter.getRouter());
+  io.on("connection", (socket) => {
+    registerChathandler(io, socket);
+  });
+  // io.on('connection', async socket => {
+  //     console.log('cart conexion');
+  // });
+
+  socketProducts(io);
+  socketCarts(io);
+// }
 
 
-
-app.use(cookieParser());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(`${__dirname}/public`));
-
-app.engine("handlebars", handlebars.engine());
-app.set("views", `${__dirname}/views`);
-app.set("view engine", "handlebars");
-
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
-app.use(attachLogger);
-
-const userRouter = new UserRouter();
-const productRouter = new ProductRouter();
-const cartRouter = new CartRouter();
-const sessionRouter = new SessionRouter();
-const ticketRouter = new TicketRouter();
-const viewsRouter = new ViewsRouter();
-
-app.use("/api/products", productRouter.getRouter());
-app.use("/api/users", userRouter.getRouter());
-app.use("/api/carts", cartRouter.getRouter());
-app.use("/api/sessions", sessionRouter.getRouter());
-app.use("/api/tickets", ticketRouter.getRouter());
-
-app.use("/", viewsRouter.getRouter());
-io.on("connection", (socket) => {
-  registerChathandler(io, socket);
-});
-// io.on('connection', async socket => {
-//     console.log('cart conexion');
-// });
-
-socketProducts(io);
-socketCarts(io);
-
-// const customOptions = {
-//   levels: {
-//     fatal: 0,
-//     error: 1,
-//     warning: 2,
-//     http: 3,
-//     debug: 4,
-//   },
-//   colors: {
-//     fatal: 'italic red',
-//     error: "yellow",
-//     warning: "blue",
-//     http: "cyan",
-//     debug: "green",
-//   },
-// };
-// winston.addColors(customOptions.colors);
-
-// const logger = winston.createLogger({
-//   levels: customOptions.levels,
-//   transports: [
-//     new winston.transports.Console({
-//       level: "debug",
-//       format: winston.format.combine(
-//         winston.format.simple(),
-//         winston.format.colorize({colors:customOptions.colors})
-//       ),
-//     }),
-//     new winston.transports.File({ level: "error", filename: "./errors.log" }),
-//   ],
-// });

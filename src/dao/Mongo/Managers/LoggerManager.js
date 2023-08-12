@@ -16,7 +16,7 @@ class LoggerService {
         fatal: "bold red redBG",
         error: "red",
         warning: "yellow",
-        info: "magenta",
+        info: "blue",
         http: "gray",
         debug: "green",
       },
@@ -40,7 +40,7 @@ class LoggerService {
               format: winston.format.combine(
                 winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
                 winston.format.splat(),
-               
+
                 winston.format.printf((msg) =>
                   colorizer.colorize(
                     msg.level,
@@ -68,15 +68,12 @@ class LoggerService {
   error(msg, meta) {
     this.logger.error(msg, meta);
   }
+  info(msg, meta) {
+    this.logger.info(msg, meta);
+  }
+  debug(msg, meta) {
+    this.logger.debug(msg, meta);
+  }
 }
-// export const loggerTest = winston.createLogger({
-//   levels: winston.config.syslog.levels,
-//   transports: [
-//     new winston.transports.Console({ level: "debug" }),
-//     new winston.transports.File({
-//       filename: "combined.log",
-//       level: "info",
-//     }),
-//   ],
-// });
+
 export default new LoggerService("dev");

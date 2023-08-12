@@ -8,27 +8,34 @@ const getUsers = async (req, res) => {
 };
 const saveUsers = async (req, res) => {
   try {
-    const { first_name, last_name, email, password } = req.body;
-    if (!first_name || !last_name || !email || !password)
+    const { first_name, last_name, email, password, role } = req.body;
+    if (!first_name || !last_name || !email || !password || !role)
       return res
         .status(400)
         .send({ status: "error", payload: "Incomplete value" });
 
     const user = new usersDTO();
-    // {
-    //     first_name,
-    //     last_name,
-    //     email,
-    //     cart,
-    //     password,
-    // };
 
     const result = await usersService.createUser(user);
     res.sendSuccessWithPayload({ result });
   } catch (error) {
+    
     res.sendInternalError("Internal error");
   }
 };
+
+// const modificarRole = async (req, res) => { 
+//   try {
+
+    
+//   } catch (error) {
+    
+//   }
+
+
+
+
+// }
 
 const editUsers = async (req, res) => {
   try {

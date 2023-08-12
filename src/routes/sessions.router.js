@@ -38,27 +38,31 @@ export default class SessionRouter extends BaseRouter {
 
     this.get("/github", ["NO_AUTH"], passportCall("github", { strategyType: 'locals' }), (req, res) => { });
 
-    this.get("/githubcallback", passportCall("github"), (req, res) => {
-      const user = {
-        id: req.user.id,
-        name: req.user.name,
-        email: req.user.email,
-        role: req.user.role,
-      };
-      // console.log(req.user);
-      // console.log(user);
-      const accessToken = generateToken(req.user);
-      //envío el token por el body para que el front lo guarde
-      // res.send({ estatus: "success", accessToken })
-      res
-        .cookie("authToken", accessToken, {
-          maxAge: 1000 * 60 * 60 * 24,
-          httpOnly: true,
-          sameSite: "strict",
-
-        })
-        .sendSuccess("Logueado con github");
-    });
+    this.get(
+      "/githubcallback",
+      ["NO_AUTH"],
+      passportCall("github", { strategyType: "locals" }),
+      (req, res) => {
+        const user = {
+          id: req.user.id,
+          name: req.user.name,
+          email: req.user.email,
+          role: req.user.role,
+        };
+        // console.log(req.user);
+        // console.log(user);
+        const accessToken = generateToken(req.user);
+        //envío el token por el body para que el front lo guarde
+        // res.send({ estatus: "success", accessToken })
+        res
+          .cookie("authToken", accessToken, {
+            maxAge: 1000 * 60 * 60 * 24,
+            httpOnly: true,
+            sameSite: "strict",
+          })
+          .sendSuccess("Logueado con github");
+      }
+    );
 
     this.get("/profile", ["USER", "ADMIN"], passportCall("jwt", { strategyType: 'locals' }), async (req, res) => {
     

@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 import UserDTO from "./dto/UserDTO.js";
+import LoggerService from "./dao/Mongo/Managers/LoggerManager.js";
 
 export const generateToken = (user) => {
   const token = jwt.sign(user, "jwtSecret", { expiresIn: "24h" });
@@ -27,6 +28,7 @@ export const passportCall = (strategy, options = {}) => {
           case "locals":
             return res.sendUnauthorized(
               info.message ? info.message : info.toString()
+              // LoggerService.info("User exist")
             );
         }
       }

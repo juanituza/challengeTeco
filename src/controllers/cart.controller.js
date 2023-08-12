@@ -1,5 +1,9 @@
 import { cartService } from "../services/repositories/index.js";
 import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
+
+
+
+
 const getCarts = async (req, res) => {
   try {
     const carts = await cartService.getCarts();
@@ -28,7 +32,7 @@ const createCart = async (req, res) => {
     const { products } = req.body;
 
     const savedCart = await cartService.createCart(products);
-    console.log(savedCart);
+   
 
     res.sendSuccessWithPayload(savedCart);
   } catch (error) {
@@ -59,9 +63,6 @@ const addProduct = async (req, res) => {
 const purchaseCart = async (req, res) => {
   try {
     const cid = req.user.cart;
-
-    // const cart = await cartService.clientCart(cid);
-    // console.log(cart);
     const purchase = await cartService.purchaseCart(cid);
     res.sendSuccessWithPayload(purchase);
   } catch (error) {
@@ -104,7 +105,7 @@ const editCart = async (req, res) => {
     // const removedProductUnit = await cartService.deleteProductUnit(cid, pid);
     res.sendSuccessWithPayload(cart);
   } catch (error) {
-    console.log(error)
+    LoggerService.error(error);
     if (error.name === "no product in the cart") {
       res.status(error.status).send({ status: "error", error: error.message });
     }else{

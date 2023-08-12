@@ -12,6 +12,7 @@ const getTicket = async (req, res) => {
     const ticketParser = ticket.map((ticket) => new TicketDTO(ticket));
     res.sendSuccessWithPayload(ticketParser);
   } catch (error) {
+    LoggerService.error(error);
     res.sendInternalError("Internal server error, contact the administrator");
   }
 };
@@ -53,9 +54,7 @@ const createTickets = async (req, res) => {
 
     res.sendSuccess("Ticket generated");
   } catch (error) {
-    // console.log(error);
     LoggerService.error(error);
-    // req.log
     if (
       error.name === "Insufficient stock" ||
       error.name === "Empty product cart"

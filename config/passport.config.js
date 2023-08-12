@@ -1,18 +1,15 @@
 import passport from "passport";
+import config from "../src/config.js";
 import local from "passport-local";
 import GithubStrategy from "passport-github2";
-// import userModel from "../src/dao/Mongo/models/user.js";
-
-// import { cartService, usersService } from "../src/dao/Mongo/Managers/index.js";
 import {
   cartService,
   usersService,
 } from "../src/services/repositories/index.js";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import { cookieExtractor, createHash, validatePassword } from "../src/utils.js";
-import UserDTO from "../src/dto/UserDTO.js";
-// import UserDTO from "../src/dto/users/UserDTO.js";
-// import userManager from "../src/dao/Managers/Mongo/userManager.js";
+
+import LoggerService from "../src/dao/Mongo/Managers/LoggerManager.js";
 
 const LocalStrategy = local.Strategy;
 const JWTStrategy = Strategy;
@@ -24,11 +21,12 @@ const initializePassportStrategies = () => {
       { passReqToCallback: true, usernameField: "email" },
       async (req, email, password, done) => {
         try {
-          const { first_name, last_name } = req.body;
+          const { first_name, last_name, role } = req.body;
           const exist = await usersService.getUserBy({ email });
           // const exist = await userModel.findOne({ email });
 
-          if (exist) return done(null, false, { message: "User exist" });
+          if (exist) return done(null, false, { message: "User exist" },LoggerService.error("User exist"));
+          // done(null, false, { message: "User exist" },LoggerService.error("Role not exist"));
           const hashedPassword = await createHash(password);
           const cart = await cartService.createCart();
           const user = {
@@ -37,6 +35,7 @@ const initializePassportStrategies = () => {
             email,
             cart: cart._id,
             password: hashedPassword,
+            role,
           };
 
           // const result = await userModel.create(user);
@@ -55,11 +54,11 @@ const initializePassportStrategies = () => {
       { usernameField: "email" },
       async (email, password, done) => {
         //defino el admin
-        if (email === "adminCoder@coder.com" && password === "coder") {
+        if (email === config.admin.USER && password === config.admin.PASS) {
           const User = {
             id: 0,
-            name: `Admin`,
-            role: "admin",
+            name: `SuperAdmin`,
+            role: "SuperAdmin",
             email: "...",
           };
           return done(null, User);
@@ -78,7 +77,6 @@ const initializePassportStrategies = () => {
           return done(null, false, { message: "Wrong password" });
 
         //creo la sesión
-        //  const NewUser = new UserDTO(user);
         user = {
           id: user._id,
           name: `${user.first_name} ${user.last_name}`,

@@ -3,11 +3,14 @@ import ProdModel from "../dao/Mongo/models/products.js";
 import { productService } from "../services/repositories/index.js";
 import productDTO from "../dto/productDTO.js";
 
-import { productsErrorIncompleteData, productsErrorDuplicateCode, productsIdNotFound } from "../constants/productsErrors.js";
+import {
+  productsErrorIncompleteData,
+  productsErrorDuplicateCode,
+  productsIdNotFound,
+} from "../constants/productsErrors.js";
 import ErrorService from "../services/ErrorServicer.js";
 import EErrors from "../constants/EErrors.js";
-import error from "../middlewares/error.js";
-
+import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
 
 const getProducts = async (req, res) => {
   try {
@@ -56,87 +59,109 @@ const getProducts = async (req, res) => {
       res.sendSuccessWithPayload(products);
     }
   } catch (error) {
+    LoggerService.error(error);
     res.sendInternalError("Internal server error, contact the administrator");
   }
 };
 
 const createProducts = async (req, res) => {
   try {
+    const products = await productService.getProducts();
+    const user = req.user;
+     LoggerService.info(user);
+    //Obtento los datos otorgados por body
+    const prod = req.body;
+    //Valido campos obligatorios
+    //si no existe algun campo
+    if (
+      !prod.title ||
+      !prod.description ||
+      !prod.price ||
+      !prod.code ||
+      !prod.price ||
+      !prod.stock
+    ) {
+      //arrojo el error mediante Middleware manejo de errores
+      ErrorService.createError({
+        name: "Product creation error",
+        cause: productsErrorIncompleteData(prod),
+        message: "Incomplete data",
+        code: EErrors.INCOMPLETE_DATA,
+        status: 400,
+      });
+    }
+    //Valido que no se repita el campo "code"
+    if (
+      typeof products.find((item) => item.code == prod.code) !== "undefined"
+    ) {
+      //arrojo el error mediante Middleware manejo de errores
 
-  const products = await productService.getProducts();
-  //Obtento los datos otorgados por body
-  const prod = req.body;
-  //Valido campos obligatorios
-  //si no existe algun campo
-  if (!prod.title || !prod.description || !prod.price || !prod.code || !prod.price || !prod.stock) {
-   
-    //arrojo el error mediante Middleware manejo de errores
-    ErrorService.createError({
-      name: "Product creation error",
-      cause: productsErrorIncompleteData(prod),
-      message: "Incomplete data",
-      code: EErrors.INCOMPLETE_DATA,
-      status: 400,
-    });
-
-
-  }
-  //Valido que no se repita el campo "code"
-  if (typeof products.find((item) => item.code == prod.code) !== "undefined") {
-    //arrojo el error mediante Middleware manejo de errores
-
-    ErrorService.createError({
-      name: "Duplicate product code",
-      cause: productsErrorDuplicateCode(prod),
-      message: "Duplicate product code",
-      code: EErrors.DUPLICATE_CODE,
-      status: 500,
-    });
-
-  }
-  // Creo el producto
-  const resProd = await productService.createProducts(prod);
-  res.sendSuccessWithPayload({ ...new productDTO(resProd)/*DTO PRODUCTS*/ });
+      ErrorService.createError({
+        name: "Duplicate product code",
+        cause: productsErrorDuplicateCode(prod),
+        message: "Duplicate product code",
+        code: EErrors.DUPLICATE_CODE,
+        status: 500,
+      });
+    }
+    // Creo el producto
+    const resProd = await productService.createProducts(prod);
+    res.sendSuccessWithPayload({ ...new productDTO(resProd) /*DTO PRODUCTS*/ });
   } catch (error) {
-    console.log(error);
+    LoggerService.error(error);
     // res.sendUnauthorized("Internal server error, contact the administrator");
     res.status(error.status).send({ status: "error", error: error.name });
   }
 };
 
 const getProductsBy = async (req, res) => {
-  const { pid } = req.params;
-  //obtengo todos los productos
-  const products = await productService.getProducts();
-  //Verifico si el ID existe en los productos
-  const productId = products.find((p) => p._id.toString() === pid);
-  //Si no existe arrojo error
-  if (!productId) {
-    ErrorService.createError({
-      name: "Id not found",
-      cause: productsIdNotFound({ pid }),
-      message: "Get product error",
-      code: EErrors.ID_NOT_FOUND,
-      status: 400
-    });
-  } else {
-    //si existe ID busco el producto y lo devuelvo
-    const product = await productService.getProductsBy(pid);
-    res.sendSuccessWithPayload(product);
+  try {
+    const { pid } = req.params;
+    //obtengo todos los productos
+    const products = await productService.getProducts();
+    //Verifico si el ID existe en los productos
+    const productId = products.find((p) => p._id.toString() === pid);
+    //Si no existe arrojo error
+    if (!productId) {
+      ErrorService.createError({
+        name: "Id not found",
+        cause: productsIdNotFound({ pid }),
+        message: "Get product error",
+        code: EErrors.ID_NOT_FOUND,
+        status: 400,
+      });
+    } else {
+      //si existe ID busco el producto y lo devuelvo
+      const product = await productService.getProductsBy(pid);
+      res.sendSuccessWithPayload(product);
+    }
+  } catch (error) {
+    LoggerService.error(error);
+    res.sendErrorWithPayload(error);
   }
 };
 
 const updateProduct = async (req, res) => {
-  const { pid } = req.params;
-  const updateProduct = req.body;
-  const result = await productService.updateProduct(pid, updateProduct);
-  res.sendSuccessWithPayload(`Product upgraded successfully`, result);
+  try {
+    const { pid } = req.params;
+    const updateProduct = req.body;
+    const result = await productService.updateProduct(pid, updateProduct);
+    res.sendSuccessWithPayload(`Product upgraded successfully`, result);
+  } catch (error) {
+    LoggerService.error(error);
+    res.sendErrorWithPayload(error);
+  }
 };
 
 const deleteProduct = async (req, res) => {
-  const { pid } = req.params;
-  await productService.deleteProduct(pid);
-  res.sendSuccess("Product removed successfully");
+  try {
+    const { pid } = req.params;
+    await productService.deleteProduct(pid);
+    res.sendSuccess("Product removed successfully");
+  } catch (error) {
+    LoggerService.error(error);
+    res.sendErrorWithPayload(error);
+  }
 };
 
 export default {
