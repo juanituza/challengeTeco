@@ -6,7 +6,8 @@ import { productMockService } from "../services/repositories/index.js";
 const getProductMock = async (req, res) => {
     try {
         const productMock = await productMockService.getProductMock();
-        res.sendSuccessWithPayload(carts);
+       
+        res.sendSuccessWithPayload(productMock);
     } catch (error) {
         res.sendInternalError("Internal server error, contact the administrator");
     }

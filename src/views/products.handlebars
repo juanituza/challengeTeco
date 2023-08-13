@@ -2,23 +2,8 @@
 
 <!-- Topbar Start -->
    <div class="container-fluid">
-       <div> 
-            <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-inline-flex align-items-center">
-                </div>
-                <div class="d-inline-flex align-items-center d-block d-lg-none">
-                    <a href="" class="btn px-0 ml-2">
-                        <i class="fas fa-heart text-dark"></i>
-                        <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
-                    </a>
-                    <a href="" class="btn px-0 ml-2">
-                        <i class="fas fa-shopping-cart text-dark"></i>
-                        <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+      
+        <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex mb-3">
             <div class="col-lg-4">
                 <a href="" class="text-decoration-none">
                     <span class="h1 text-uppercase text-primary bg-dark px-2">MK</span>
@@ -26,16 +11,24 @@
                 </a>
             </div>
             <div class="col-lg-4 col-6 text-center">             
-                 {{#if user}}
+                 {{!-- {{#if user}} --}}
                      <div class="row btn btn-sm btn-light shadow m-5">
                               <h6>{{user.name}} </h6>
                               <h7>Correo: {{user.email}} </k7>
                      </div>
-   
-                {{/if}}
+                {{!-- {{else}}
+                 <div class="btn-group">
+                        <button type="button" class="h1 text-uppercase text-primary bg-dark px-2 btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="/login"><button class="dropdown-item" type="button">Sign in</button></a>
+                            <a href="/register"></a><button class="dropdown-item" type="button">Register</button> </a>
+                        </div>
+                    </div>
+                {{/if}} --}}
+
             </div>
                
-          
+        </div>
     <!-- Topbar End -->
 
 
@@ -67,14 +60,14 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="shop.html" class="nav-item nav-link active">Shop</a>
-                            <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
+                            <a href="/" class="nav-item nav-link">Home</a>
+                            <a href="/products" class="nav-item nav-link active">Shop</a>
+                            {{!-- <a href="detail.html" class="nav-item nav-link">Shop Detail</a> --}}
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
                                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                    <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                    <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                    <a href="/cartsID" class="dropdown-item">Shopping Cart</a>
+                                    <a href="/ticket" class="dropdown-item">Checkout</a>
                                 </div>
                             </div>
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
@@ -239,24 +232,26 @@
                 <div class="row pb-3">
                    
                      {{#each allProducts}}
+                     
                     <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                         <div class="product-item bg-light mb-4">
                             <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="img/product-2.jpg" alt="">
+                                <img class="img-thumbnail img-tamaño" src="{{thumbnail}}" alt="Products">
                                 <div class="product-action">
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                                  
                                 </div>
                             </div>
                              <div class="text-center py-4"></div>
                             
                          
                             <div class="text-center py-4">
-                                <a class="h6 text-decoration-none text-truncate" href="">{{this.title}}</a>
+                                <a class="h6 text-decoration-none text-truncate" href="">{{this.title}} {{this.description}}  </a>
                                 <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h5>{{this.price}}</h5>
+                                    <h5>${{this.price}}</h5>
+                                </div>
+                                <div class="text-center py-4">
+                                    <i class="fa fa-shopping-cart"></i>
+                                     <button class="btn ButtonProduct" id="{{this.id}}">Add product in Cart</button>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center mb-1">
                                     <small class="fa fa-star text-primary mr-1"></small>
@@ -301,6 +296,13 @@
 
 
     <!-- Footer Start -->
+
+
+
+
+
+
+
     <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
         <div class="row px-xl-5 pt-5">
             <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
@@ -377,6 +379,7 @@
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 <!-- JavaScript Libraries -->
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
@@ -384,4 +387,4 @@
 
       <!-- Template Javascript -->
     <script src="js/main.js"></script>
-    <script src="../public/js/products.js"></script>
+    <script src="js/addCart.js"></script>

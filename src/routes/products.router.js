@@ -44,7 +44,7 @@ export default class ProductRouter extends BaseRouter {
 
     this.get(
       "/mockingproducts",
-      ["ADMIN"],
+      ["USER"],
       passportCall("jwt", { strategyType: "locals" }),
       productMockController.getProductMock
     );

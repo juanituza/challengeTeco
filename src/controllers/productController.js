@@ -76,6 +76,7 @@ const createProducts = async (req, res) => {
     if (
       !prod.title ||
       !prod.description ||
+      !prod.thumbnail ||
       !prod.price ||
       !prod.code ||
       !prod.price ||

@@ -43,11 +43,11 @@ const createCart = async (req, res) => {
 
 const addProduct = async (req, res) => {
   try {
-    const cid = req.user.cart;
+    const cart = req.user.cart;
   
 
     const { pid } = req.params;
-    const cartResult = await cartService.addProduct(cid, pid);
+    const cartResult = await cartService.addProduct(cart, pid);
 
     res.sendSuccessWithPayload(cartResult);
   } catch (error) {
