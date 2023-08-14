@@ -7,9 +7,16 @@ export default class TicketRouter extends BaseRouter {
   init() {
     this.get(
       "/",
-      ["USER"],
+      ["USER", "ADMIN"],
       passportCall("jwt", { strategyType: "locals" }),
       ticketController.getTicket
+    );
+
+    this.get(
+      "/tid",
+      ["USER", "PREMIUM", "ADMIN"],
+      passportCall("jwt", { strategyType: "locals" }),
+      ticketController.getTicketsById
     );
     this.post(
       "/create",
@@ -17,6 +24,7 @@ export default class TicketRouter extends BaseRouter {
       passportCall("jwt", { strategyType: "locals" }),
       ticketController.createTickets
     );
+    
 
     this.get("/loggerTest",["PUBLIC"] ,async (req, res) => {
          req.log = LoggerService.logger;

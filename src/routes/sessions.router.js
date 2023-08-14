@@ -68,7 +68,18 @@ export default class SessionRouter extends BaseRouter {
     
       res.sendSuccessWithPayload({ user: req.user });
     });
-
+    this.post(
+      "/logout",
+      ["USER","PREMIUM", "ADMIN"],
+      passportCall("jwt", { strategyType: "locals" }),
+      async (req, res) => {
+        res.clearCookie("authToken"); // Eliminar la cookie "authToken"
+        res.send({
+          status: "success",
+          message: "Sesión cerrada correctamente",
+        });
+      }
+    );
     this.post("/restorePassword", ["PUBLIC"], async (req, res) => {
       const { email, password } = req.body;
       //Verifico si existe el usuario

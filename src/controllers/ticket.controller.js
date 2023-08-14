@@ -9,13 +9,35 @@ import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
 const getTicket = async (req, res) => {
   try {
     const ticket = await ticketService.getTicket();
+
     const ticketParser = ticket.map((ticket) => new TicketDTO(ticket));
+    // console.log(ticketParser);
+
     res.sendSuccessWithPayload(ticketParser);
   } catch (error) {
     LoggerService.error(error);
     res.sendInternalError("Internal server error, contact the administrator");
   }
 };
+
+const getTicketsById = async (req, res) => {
+  try {
+    const userCart = req.user.email;
+
+    const tickets = await ticketService.getTicket();
+
+    const ticketSelected = tickets.filter(
+      (ticket) => ticket.purchaser === userCart
+    );
+
+    if (!tickets)
+      res.status(404).send({ status: "error", error: "ticket not found" });
+    res.send({ status: "succes", payload: ticketSelected });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const createTickets = async (req, res) => {
   try {
     //obtengo el id del carrito
@@ -66,4 +88,4 @@ const createTickets = async (req, res) => {
   }
 };
 
-export default { getTicket, createTickets };
+export default { getTicket, getTicketsById, createTickets };

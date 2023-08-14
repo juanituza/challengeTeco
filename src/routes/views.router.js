@@ -1,12 +1,11 @@
 // import { Router } from "express";
 import BaseRouter from "./baseRouter.js";
 
-
 import { authRoles } from "../middlewares/auth.js";
 import { passportCall } from "../utils.js";
 
 // import productsModel from "..../dao/Mongo/Manmodelsagers/ProductManager.js";
-import { cartService } from "../services/repositories/index.js";
+import { cartService, ticketService } from "../services/repositories/index.js";
 import cartsModel from "../dao/Mongo/Managers/cartManager.js";
 import ProdModel from "../dao/Mongo/models/products.js";
 
@@ -21,11 +20,12 @@ const cm = new cartsModel();
 export default class ViewsRouter extends BaseRouter {
   init() {
     this.get("/", ["PUBLIC"], async (req, res) => {
-      res.render("home");
+      const userData = req.user;
+      res.render("home",{user : userData});
     });
     this.get(
       "/products",
-      ["USER", "ADMIN"],
+      ["USER","PREMIUM", "ADMIN"],
       passportCall("jwt", { strategyType: "jwt" }, { redirect: "/login" }),
       async (req, res) => {
         const { page = 1 } = req.query;
@@ -33,7 +33,6 @@ export default class ViewsRouter extends BaseRouter {
           await ProdModel.paginate({}, { page, limit: 10, lean: true });
         const products = docs;
         const userData = req.user;
-   
 
         const addProductId = cartService.addProduct;
         console.log(addProductId);
@@ -52,7 +51,7 @@ export default class ViewsRouter extends BaseRouter {
     );
     this.get(
       "/products",
-      ["USER", ["ADMIN"]],
+      ["USER", "PREMIUM", "ADMIN"],
       passportCall("jwt", { strategyType: "jwt" }, { redirect: "/login" }),
       async (req, res) => {
         const { page = 1 } = req.query;
@@ -61,8 +60,8 @@ export default class ViewsRouter extends BaseRouter {
         const products = docs;
         const userData = req.user;
 
-        const addProductId = cartService.addProduct;
-        console.log(addProductId);
+        // const addProductId = cartService.addProduct;
+
         // const userData = new UserDTO(req.user);
         // console.log(userData);
         res.render("products", {
@@ -73,7 +72,6 @@ export default class ViewsRouter extends BaseRouter {
           prevPage,
           nextPage,
           user: userData,
-          
         });
       }
     );
@@ -97,29 +95,57 @@ export default class ViewsRouter extends BaseRouter {
       }
     );
 
-   
-
     this.get(
       "/cartsID",
-      ["USER"],
+      ["USER", "PREMIUM"],
       passportCall("jwt", { strategyType: "jwt" }),
       async (req, res) => {
         const userData = req.user;
         const userCart = req.user.cart;
-        //  console.log(userCart);
+
         const carts = await cartService.getCarts();
-        // console.log(carts);
-        const cartSelected = carts.find((cart) => cart._id.toString() === userCart);
-        console.log(cartSelected);
-        res.render("cartUser", { cartSelected, css: "cart", user: userData });
+
+        const cartSelected = carts.find(
+          (cart) => cart._id.toString() === userCart
+        );
+
+        res.render("cartUser", {
+          cartSelected,
+          css: "cart",
+          user: userData,
+        });
       }
     );
-    
+    this.get(
+      "/ticketId",
+      ["USER"],
+      passportCall("jwt", { strategyType: "jwt" }),
+      async (req, res) => {
+        const userData = req.user;
+        const userCart = req.user.email;
+        // console.log(userCart);
 
-    this.get("/register", ["PUBLIC"], (req, res) => {
+        const tickets = await ticketService.getTicket();
+        // console.log(tickets);
+        const ticketSelected = tickets.filter(
+          (ticket) => ticket.purchaser === userCart
+        );
+       
+
+        res.render("ticket", {
+          ticket: ticketSelected,
+          
+
+          user: userData,
+        });
+    
+      }
+    );
+
+    this.get("/register", ["NO_AUTH"], (req, res) => {
       res.render("register");
     });
-    this.get("/login", ["PUBLIC"], (req, res) => {
+    this.get("/login", ["NO_AUTH"], (req, res) => {
       res.render("login");
     });
     this.get(

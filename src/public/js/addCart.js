@@ -23,12 +23,12 @@ Array.from(addProduct).forEach((button) => {
 
        if (response.ok) {
           Swal.fire({
-            title: "Successfully logged in",
-            text: "You will be redirected to the product page",
+            title: "Successfully",
+            text: "The product was added to your cart",
             icon: "success",
             showCancelButton: false,
             confirmButtonText: "OK",
-          })
+          });
         //   .then((result) => {
         //     if (result.isConfirmed) {
         //       window.location.replace("/cartsID");

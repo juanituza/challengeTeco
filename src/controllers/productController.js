@@ -68,7 +68,6 @@ const createProducts = async (req, res) => {
   try {
     const products = await productService.getProducts();
     const user = req.user;
-     LoggerService.info(user);
     //Obtento los datos otorgados por body
     const prod = req.body;
     //Valido campos obligatorios

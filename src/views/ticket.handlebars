@@ -1,5 +1,7 @@
 
-   
+
+
+
 
     <!-- Topbar Start -->
    <div class="container-fluid">
@@ -124,25 +126,28 @@
     <div class="container-fluid">
         <div class="row px-xl-12">
             <div class="col-lg-12 table-responsive mb-5">
-                <table class="col-lg-12 table table-light table-borderless table-hover text-center mb-0">
+            {{#each ticket}}
+                <table class="col-lg-12 table table-light table-borderless table-hover text-center mb-3">
                     <thead class="col-lg-12 thead-dark">
                         <tr>
                             <th>Products</th>
                             <th>Price</th>
-                            <th>Quantity</th>
-                            
-                            <th>Remove</th>
+                            <th colspan="2">Quantity</th>                        
+                            {{!-- <th>Date</th> --}}
                         </tr>
                     </thead>
                      
     
 
                     <tbody class="align-middle col-lg-12">
-                        {{#each cartSelected.products}}
+                            {{#each products}}
                         <tr>
-                            <td class="align-middle"><img src={{product.thumbnail}} alt="" style="width: 50px;"> {{product.title}} {{product.description}}</td>
+   
+   
+                            <td class="align-middle"> {{product.title}} {{product.description}}</td>
+                            
                             <td class="align-middle">${{product.price}}</td>
-                            <td class="align-middle">
+                            <td class="align-middle" colspan="2">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
                                         <button class="btn btn-sm btn-primary btn-minus" >
@@ -157,23 +162,39 @@
                                     </div>
                                 </div>
                             </td>
-                          
-                            <td class="align-middle"><button class="btn btn-sm btn-danger deleteProd" id="{{product._id}}"><i class="fa fa-times"></i></button></td>
+                         
+                            {{!-- <td class="align-middle"><button class="btn btn-sm btn-danger}"></button></td> --}}
                         </tr>
+                         {{/each}}
+
+
+                         <tfoot class="col-lg-12 table-warning">
+
+                         <tr>
+                            <td>Purchaser: {{purchaser}}</td>
+                            {{!-- <td class="align-middle"> </td>
+                            <td class="align-middle"> </td> --}}
+                            <td class="" >TOTAL: ${{amount}} </td>
+                            <td class="" >ID: {{_id}} </td>
+                            <td class="" >{{purchase_datetime}}</td>
+                         </tr>
+                         </tfoot>
                         {{/each}}
                         
                     </tbody>
                 </table>
-                <div class="col-lg-12  d-flex justify-content-end">
+                <div class="col-lg-12  d-flex justify-content-center">
                    
-                   
-                        <button type="button" class=" col-lg-4  btn btn-warning mt-4 purchase" id="purchase">Purchase</button>
+                   <a href="/" type="button" class=" col-lg-2  btn btn-warning mt-4 ">
+                        HOME
+                   </a>
                 </div>
             </div>
             
+
         </div>
     </div>
-    <!-- Cart End -->
+   
 
 
     
@@ -183,16 +204,18 @@
 
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    {{!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script> --}}
 
     <!-- Contact Javascript File -->
  
  
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-    <script src="js/deleteProductCart.js"></script>
-    <script src="js/ticket.js"></script>
-    <script src="js/logout.js"></script>
+     <script src="js/logout.js"></script>
+    {{!-- <script src="js/deleteProductCart.js"></script> --}}
+    {{!-- <script src="js/ticket.js"></script> --}}
+
+
