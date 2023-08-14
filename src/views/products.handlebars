@@ -12,6 +12,26 @@
         >Rock</span>
       </a>
     </div>
+    {{#unless user}}
+      <div class="col-lg-4 col-6 text-center">
+        <div class="btn-group">
+          <button
+            type="button"
+            class="h1 text-uppercase text-primary bg-dark px-2 btn btn-sm btn-light dropdown-toggle"
+            data-toggle="dropdown"
+          >My Account</button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a href="/login"><button class="dropdown-item" type="button">Sign in</button></a>
+            <a href="/register"><button
+                class="dropdown-item"
+                type="button"
+              >Register</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    {{/unless}}
+    {{#if user}}
     <!-- Profile-->
     <div class="col-lg-4 col-6 text-center">
       <div class="row shadow m-5">
@@ -20,7 +40,7 @@
         <div class="col-lg-12">
           <h8 class="col-lg-4">Role : {{user.role}} </h8>
           <button
-            class="col-lg-4 btn btn-success center my-2 mx-3 changesRol"
+            class="col-lg-4 btn btn-info center my-2 mx-3 changesRol"
           >Cambiar rol</button>
           <a href="/cartsID" class="btn col-lg-4">
             <i
@@ -31,16 +51,24 @@
           </a>
         </div>
         <div class="col-lg-12">
+          <a href="/ticketId">
+
+            <button
+              class="col-lg-12 btn btn-info center my-2 logoutContainer"
+            >Tickets History <i class="fa-regular fa-paste"></i></button>
+          </a>
+        </div>
+        <div class="col-lg-12">
           <button
             class="col-lg-12 btn btn-warning center my-2 logoutContainer"
             id="loguotButton"
-          >Logout
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          >Logout<i class="fa-solid fa-arrow-right-from-bracket"></i>
           </button>
         </div>
 
       </div>
     </div>
+    {{/if}}
     <!-- Profile End -->
   </div>
   <!-- Topbar End -->

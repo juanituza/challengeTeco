@@ -29,10 +29,12 @@ const getTicketsById = async (req, res) => {
     const ticketSelected = tickets.filter(
       (ticket) => ticket.purchaser === userCart
     );
-
+      const ticketParser = ticketSelected.map(
+        (ticket) => new TicketDTO(ticket)
+      );
     if (!tickets)
-      res.status(404).send({ status: "error", error: "ticket not found" });
-    res.send({ status: "succes", payload: ticketSelected });
+      res.sendErrorWithPayload("ticket not found");
+    res.sendSuccessWithPayload(ticketParser);
   } catch (err) {
     console.log(err);
   }

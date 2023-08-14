@@ -8,8 +8,9 @@ export default class TicketDTO {
         this.products = ticket.products.map((item) => {
             const { quantity, product } = item;
             const newProduct = {
-                quantity,
-                product: new productDTO(product),
+              quantity,
+              product: product ? new productDTO(product) : null,
+              // product: new productDTO(product),
             };
 
             return newProduct;

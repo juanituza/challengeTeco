@@ -7,7 +7,7 @@ export default class TicketRouter extends BaseRouter {
   init() {
     this.get(
       "/",
-      ["USER", "ADMIN"],
+      ["ADMIN"],
       passportCall("jwt", { strategyType: "locals" }),
       ticketController.getTicket
     );

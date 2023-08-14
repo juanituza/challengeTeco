@@ -81,7 +81,7 @@ export default class BaseRouter {
       if (!user)
         return res.status(401).send({ status: "error", error: req.error });
       if (!policies.includes(user.role.toUpperCase()))
-        return res.status(403).send({ status: "error", error: "Forbidden" });
+        return res.status(401).send({ status: "error", error: "Unauthorized" });
       next();
     };
   };
