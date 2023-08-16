@@ -1,3 +1,5 @@
+import fs from 'fs';
+import Handlebars from 'handlebars';
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import bcrypt from "bcrypt";
@@ -58,5 +60,12 @@ export const validatePassword = (password, hashedPassword) =>
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+export const generateMailTemplate= async (template,payload) => {
+  const content = await fs.promises.readFile(`${__dirname}/templates/${template}.handlebars`,'utf-8')
+  const precompiledContent = Handlebars.compile(content);
+  const compileContent = precompiledContent({...payload});
+  return compileContent;
+} 
 
 export default __dirname;

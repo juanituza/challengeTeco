@@ -7,8 +7,7 @@ import cartController from "../controllers/cart.controller.js";
 export default class CartRouter extends BaseRouter {
   init() {
     this.get("/", ["ADMIN"], passportCall("jwt", { strategyType: 'locals' }),cartController.getCarts);
-    this.get("/:cid",["ADMIN"],passportCall("jwt", { strategyType: "locals" }),cartController.getCartsBy
-    );
+    this.get("/:cid",["ADMIN"],passportCall("jwt", { strategyType: "locals" }),cartController.getCartsBy);
     this.post("/", ["USER"], passportCall("jwt", { strategyType: 'locals' }), cartController.createCart);
     this.post("/:pid", ["USER"], passportCall("jwt", { strategyType: 'jwt' }),cartController.addProduct);
     this.post("/:cid/purchase", ["USER"], passportCall("jwt", { strategyType: 'jwt' }),cartController.purchaseCart);

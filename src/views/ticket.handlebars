@@ -136,52 +136,26 @@
                             {{!-- <th>Date</th> --}}
                         </tr>
                     </thead>
-                     
-    
-
                     <tbody class="align-middle col-lg-12">
                             {{#each products}}
                         <tr>
-   
-   
                             <td class="align-middle"> {{product.title}} {{product.description}}</td>
-                            
                             <td class="align-middle">${{product.price}}</td>
-                            <td class="align-middle" colspan="2">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value={{quantity}}>
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                         
-                            {{!-- <td class="align-middle"><button class="btn btn-sm btn-danger}"></button></td> --}}
+                            <td class="align-middle" colspan="2">{{quantity}}</td>
                         </tr>
                          {{/each}}
-
-
-                         <tfoot class="col-lg-12 table-warning">
-
-                         <tr>
+                    </tbody>
+                    <tfoot class="col-lg-12 table-warning">
+                        <tr>
                             <td>Purchaser: {{purchaser}}</td>
                             {{!-- <td class="align-middle"> </td>
                             <td class="align-middle"> </td> --}}
                             <td class="" >TOTAL: ${{amount}} </td>
                             <td class="" >ID: {{_id}} </td>
                             <td class="" >{{purchase_datetime}}</td>
-                         </tr>
-                         </tfoot>
-                        {{/each}}
-                        
-                    </tbody>
+                        </tr>
+                    </tfoot>
+                    {{/each}}    
                 </table>
                 <div class="col-lg-12  d-flex justify-content-center">
                    

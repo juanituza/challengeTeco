@@ -21,4 +21,8 @@ export default {
     USER: process.env.ADMIN_EMAIL,
     PASS: process.env.ADMIN_PWD,
   },
+  mailer: {
+    USER: process.env.MAILER_USER,
+    PASS: process.env.MAILER_PASSWORD,
+  },
 };

@@ -44,32 +44,6 @@ export default class ViewsRouter extends BaseRouter {
         });
       }
     );
-    // this.get(
-    //   "/products",
-    //   ["USER", "PREMIUM", "ADMIN","PUBLIC"],
-    //   passportCall("jwt", { strategyType: "jwt" }, { redirect: "/login" }),
-    //   async (req, res) => {
-    //     const { page = 1 } = req.query;
-    //     const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } =
-    //       await ProdModel.paginate({}, { page, limit: 10, lean: true });
-    //     const products = docs;
-    //     const userData = req.user;
-
-    //     // const addProductId = cartService.addProduct;
-
-    //     // const userData = new UserDTO(req.user);
-    //     // console.log(userData);
-    //     res.render("products", {
-    //       allProducts: products,
-    //       page: rest.page,
-    //       hasPrevPage,
-    //       hasNextPage,
-    //       prevPage,
-    //       nextPage,
-    //       user: userData,
-    //     });
-    //   }
-    // );
     this.get(
       "/carts",
       ["ADMIN"],

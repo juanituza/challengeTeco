@@ -1,6 +1,7 @@
 const form = document.getElementById("loginForm")
 
-console.log(document.cookie);
+
+// console.log(document.cookie);
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const data = new FormData(form);

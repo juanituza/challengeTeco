@@ -84,6 +84,7 @@ const initializePassportStrategies = () => {
           cart: user.cart,
           role: user.role,
         };
+        
         return done(null, user);
       }
     )
