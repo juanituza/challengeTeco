@@ -1,7 +1,8 @@
 import MailingService from "../services/MailingService.js";
 import DTemplates from "../constants/DTemplates.js";
 import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
-import { generateToken } from "../utils.js";
+import { createHash, generateToken, validatePassword } from "../utils.js";
+import { usersService } from "../services/repositories/index.js";
 
 const register = async (req, res) => {
   const mailingService = new MailingService();
@@ -81,14 +82,11 @@ const restorePassword = async (req, res) => {
     );
   //Si es diferente actualizo password
   const newHashPassword = await createHash(password); //hasheo password nuevo
-  // const result = await um.updateUser({ email }, { $set: { password:newHashPassword }});
-  // const result = await userModel.updateOne(
   const result = await usersService.updateUser(
     { email },
     { password: newHashPassword }
   );
   res.sendSuccess("Password updated successfully");
-  // res.sendStatus(200);
 };
 
 export default { register, login, loginGitHub, logout, restorePassword };

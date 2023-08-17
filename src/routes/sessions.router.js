@@ -1,11 +1,5 @@
 import BaseRouter from "./baseRouter.js";
-import {
-  createHash,
-  generateToken,
-  passportCall,
-  validatePassword,
-} from "../utils.js";
-import { usersService } from "../services/repositories/index.js";
+import { passportCall } from "../utils.js";
 import sessionsController from "../controllers/sessionsController.js";
 export default class SessionRouter extends BaseRouter {
   init() {
@@ -43,8 +37,10 @@ export default class SessionRouter extends BaseRouter {
       passportCall("jwt", { strategyType: "locals" }),
       sessionsController.logout
     );
-    this.post("/restorePassword", ["PUBLIC"],
-    sessionsController.restorePassword
+    this.post(
+      "/restorePassword",
+      ["PUBLIC"],
+      sessionsController.restorePassword
     );
   }
 }
