@@ -65,9 +65,6 @@ const initializePassportStrategies = () => {
         }
         let user;
         user = await usersService.getUserBy({ email });
-        // console.log(user);
-
-        // user = await userModel.findOne({ email });
         if (!user)
           return done(null, false, { message: "Incorrect credentials" });
 
@@ -76,6 +73,7 @@ const initializePassportStrategies = () => {
         if (!isValidPassword)
           return done(null, false, { message: "Wrong password" });
 
+       
         //creo la sesión
         user = {
           id: user._id,
@@ -84,6 +82,8 @@ const initializePassportStrategies = () => {
           cart: user.cart,
           role: user.role,
         };
+        
+     
         
         return done(null, user);
       }

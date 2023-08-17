@@ -15,6 +15,7 @@ const saveUsers = async (req, res) => {
         .send({ status: "error", payload: "Incomplete value" });
 
     const user = new usersDTO();
+    
 
     const result = await usersService.createUser(user);
     res.sendSuccessWithPayload({ result });

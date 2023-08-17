@@ -15,6 +15,7 @@ import ProdModel from "../dao/Mongo/models/products.js";
 export default class ViewsRouter extends BaseRouter {
   init() {
     this.get("/", ["PUBLIC"], async (req, res) => {
+      console.log(req.user);
       const userData = req.user;
       res.render("home", { user: userData });
     });
@@ -27,6 +28,7 @@ export default class ViewsRouter extends BaseRouter {
         const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } =
           await ProdModel.paginate({}, { page, limit: 10, lean: true });
         const products = docs;
+        
         const userData = req.user;
 
         const addProductId = cartService.addProduct;
