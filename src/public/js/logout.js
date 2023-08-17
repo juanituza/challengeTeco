@@ -42,6 +42,8 @@ logoutButton.addEventListener("click", async function () {
   const responseData = await response.json();
   if (responseData.status === "success") {
     // Redirige a la página de inicio de sesión
+
+    
     Swal.fire({
       title: "You have successfully logged out",
       text: "We hope you visit us again soon",

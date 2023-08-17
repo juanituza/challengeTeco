@@ -10,9 +10,10 @@ Array.from(ticket).forEach((button) => {
       },
       body: JSON.stringify(),
     });
+const responseData = await response.json();
 
-    if (response.ok) {
-      Swal.fire({
+if (responseData.status === "success"){
+  Swal.fire({
         title: "Successfully",
         text: "Your purchase was successful",
         icon: "success",
@@ -25,7 +26,43 @@ Array.from(ticket).forEach((button) => {
           }
         });
     } else {
-      console.error("Failed to add product to cart.");
-    }
+       Swal.fire({
+         icon: "error",
+         title: "Oops...",
+         text: responseData.error,
+       });
+
+
+
+
+}
+
+
+
+
+
+
+
+
+    // if (response.ok) {
+    //   Swal.fire({
+    //     title: "Successfully",
+    //     text: "Your purchase was successful",
+    //     icon: "success",
+    //     showCancelButton: false,
+    //     confirmButtonText: "OK",
+    //   })
+    //     .then((result) => {
+    //       if (result.isConfirmed) {
+    //         window.location.replace("/ticketId");
+    //       }
+    //     });
+    // } else {
+    //    Swal.fire({
+    //      icon: "error",
+    //      title: "Oops...",
+    //      text: response.error,
+    //    });
+    // }
   });
 });
