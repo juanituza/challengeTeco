@@ -30,6 +30,12 @@ form.addEventListener('submit', async (event) => {
                 window.location.replace('/products');
             }
         });
+    }else{
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: responseData.error,
+        })
     }
     
 })

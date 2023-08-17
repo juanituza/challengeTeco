@@ -1,14 +1,15 @@
 
 
 const form2 = document.getElementById("github");
-
 console.log(form2);
-form2.addEventListener("click", async (event) => {
+
+
+form2.addEventListener("submit", async (event) => {
   event.preventDefault();
-//   const data = new FormData(form2);
-//   console.log(data);
-//   const obj = {};
-//   data.forEach((value, key) => (obj[key] = value));
+  //   const data = new FormData(form2);
+  //   console.log(data);
+  //   const obj = {};
+  //   data.forEach((value, key) => (obj[key] = value));
 
   const response = await fetch("/api/sessions/github", {
     method: "POST",
