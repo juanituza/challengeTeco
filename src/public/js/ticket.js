@@ -2,7 +2,6 @@ const ticket = document.getElementsByClassName("purchase");
 
 Array.from(ticket).forEach((button) => {
   button.addEventListener("click", async () => {
-    
     const response = await fetch("/api/tickets/create", {
       method: "POST",
       headers: {
@@ -10,59 +9,26 @@ Array.from(ticket).forEach((button) => {
       },
       body: JSON.stringify(),
     });
-const responseData = await response.json();
+    const responseData = await response.json();
 
-if (responseData.status === "success"){
-  Swal.fire({
+    if (responseData.status === "success") {
+      Swal.fire({
         title: "Successfully",
         text: "Your purchase was successful",
         icon: "success",
         showCancelButton: false,
         confirmButtonText: "OK",
-      })
-        .then((result) => {
-          if (result.isConfirmed) {
-            window.location.replace("/ticketId");
-          }
-        });
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.replace("/ticketId");
+        }
+      });
     } else {
-       Swal.fire({
-         icon: "error",
-         title: "Oops...",
-         text: responseData.error,
-       });
-
-
-
-
-}
-
-
-
-
-
-
-
-
-    // if (response.ok) {
-    //   Swal.fire({
-    //     title: "Successfully",
-    //     text: "Your purchase was successful",
-    //     icon: "success",
-    //     showCancelButton: false,
-    //     confirmButtonText: "OK",
-    //   })
-    //     .then((result) => {
-    //       if (result.isConfirmed) {
-    //         window.location.replace("/ticketId");
-    //       }
-    //     });
-    // } else {
-    //    Swal.fire({
-    //      icon: "error",
-    //      title: "Oops...",
-    //      text: response.error,
-    //    });
-    // }
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: responseData.error,
+      });
+    }
   });
 });
