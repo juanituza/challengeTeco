@@ -42,5 +42,10 @@ export default class SessionRouter extends BaseRouter {
       ["PUBLIC"],
       sessionsController.restorePassword
     );
+    this.post(
+      "/restoreRequest",
+      ["NO_AUTH"],
+      sessionsController.restoreRequest
+    );
   }
 }

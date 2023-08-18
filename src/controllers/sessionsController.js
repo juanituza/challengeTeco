@@ -3,6 +3,7 @@ import DTemplates from "../constants/DTemplates.js";
 import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
 import { createHash, generateToken, validatePassword } from "../utils.js";
 import { usersService } from "../services/repositories/index.js";
+import RestoreTokenDTO from "../dto/restoresTokenDTO.js";
 
 const register = async (req, res) => {
   const mailingService = new MailingService();
@@ -67,10 +68,31 @@ const logout = async (req, res) => {
   });
 };
 
+const restoreRequest =  async (req, res) => {
+  //capturo el mail del front por body
+  const {email} = req.body;
+  // si no existe email
+  if (!email) return res.sendNotFound("Email not sent");
+  // si existe email busco el usuario
+  const user = await usersService.getUserBy({email});
+  // si no existe usuario
+  if(!user) return res.sendNotFound(
+    "Invalid email - Not found in our databases, email is not found in our databases"
+  );
+  //si existe el usuario y verificamos que el mail está en la db
+  // creo un restoreToken
+  const restoreToken = generateToken(RestoreTokenDTO.getfrom(user));
+  const mailingService = new MailingService();
+  const result = await mailingService.sendMail(user.email,DTemplates.RESTORE,{restoreToken});
+  console.log(result);
+  res.sendSuccess("Email sent successfully");
+}
+
+
+
 const restorePassword = async (req, res) => {
   const { email, password } = req.body;
   //Verifico si existe el usuario
-  // const user = await um.getUserBy({email});
   const user = await usersService.getUserBy({ email });
 
   if (!user) return res.sendUnauthorized("User doesn't exist");
@@ -89,4 +111,6 @@ const restorePassword = async (req, res) => {
   res.sendSuccess("Password updated successfully");
 };
 
-export default { register, login, loginGitHub, logout, restorePassword };
+
+
+export default { register, login, loginGitHub, logout, restoreRequest, restorePassword };

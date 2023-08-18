@@ -1,4 +1,4 @@
-const form = document.getElementById("restoreForm")
+const form = document.getElementById("restorePaswordForm");
 
 
 form.addEventListener('submit', async (event) => {
@@ -16,9 +16,15 @@ form.addEventListener('submit', async (event) => {
     });
 
 
-    const responseData = await response.json();
-    // if (responseData.status === "success") {
-    //     window.location.replace('/products');
-    // }
-    console.log(responseData);
+     const responseData = await response.json();
+     if (responseData.status === "success") {
+       Swal.fire("Any fool can use a computer");
+       //   window.location.replace('/products');
+     } else {
+       Swal.fire({
+         icon: "error",
+         title: "Oops...",
+         text: responseData.error,
+       });
+     }
 })

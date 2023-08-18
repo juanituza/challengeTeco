@@ -10,5 +10,15 @@ export default {
                 cid: "banner"
             }
         ]
+    },
+    restore :{
+        subject: "Restore Password!",
+        attachments:[
+            {
+                filename:'banner.jpg',
+                path:`${__dirname}/public/img/banner.jpg`,
+                cid: "banner"
+            }
+        ]
     }
 }

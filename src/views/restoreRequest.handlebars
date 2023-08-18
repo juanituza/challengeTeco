@@ -1,0 +1,44 @@
+<section class="vh-100 p-5">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="img/sendMail.jpg" class="img-fluid" alt="Sample image" />
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <form id="restoreRequestForm">
+          <div
+            class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start"
+          >
+            <h1 class="border-primary-subtle border-bottom my-4 me-3">Restored
+              password</h1>
+
+          </div>
+
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <p>Enter your email to send a link to change your password</p>
+            <input
+              type="email"
+              name="email"
+              class="form-control form-control-lg"
+              placeholder="Enter a valid email address"
+            />
+            <label class="form-label">Email address</label>
+          </div>
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <button
+              type="submit"
+              class="btn btn-primary btn-lg"
+              style="padding-left: 2.5rem; padding-right: 2.5rem;"
+              id="restoredPasword"
+            >Submit</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<script src="/js/restoreRequest.js"></script>
