@@ -40,8 +40,8 @@ export default class ViewsRouter extends BaseRouter {
     this.get("/login", ["NO_AUTH"], (req, res) => {
       res.render("login");
     });
-    this.get("/restoreRequest", ["PUBLIC"], viewController.restoreRequest);
-    this.get("/restorePassword", ["PUBLIC"], viewController.restorePassword );
+    this.get("/restoreRequest", ["PUBLIC"],passportCall("jwt", { strategyType: "jwt" }), viewController.restoreRequest);
+    this.get("/restorePassword", ["PUBLIC"],passportCall("jwt", { strategyType: "jwt" }), viewController.restorePassword );
 
     /*---------REAL TIME--------*/
 

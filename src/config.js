@@ -17,6 +17,10 @@ export default {
   mongo: {
     URL: process.env.MONGO_URL || "localhost:27017",
   },
+  // jwt: {
+  //   COOKIE: process.env.JWT_COOKIE,
+  //   SECRET: process.env.JWT_SECRET,
+  // },
   admin: {
     USER: process.env.ADMIN_EMAIL,
     PASS: process.env.ADMIN_PWD,

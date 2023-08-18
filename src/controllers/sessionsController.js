@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+import config from "../config.js";
 import MailingService from "../services/MailingService.js";
 import DTemplates from "../constants/DTemplates.js";
 import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
@@ -90,27 +92,55 @@ const restoreRequest =  async (req, res) => {
 
 
 
+// const restorePassword = async (req, res) => {
+//   const { email, password } = req.body;
+//   //Verifico si existe el usuario
+//   const user = await usersService.getUserBy({ email });
+
+//   if (!user) return res.sendUnauthorized("User doesn't exist");
+//   //Comparo password nuevo con el antiguo
+//   const isSamePassword = await validatePassword(password, user.password);
+//   if (isSamePassword)
+//     return res.sendUnauthorized(
+//       "Cannot replace password with current password"
+//     );
+//   //Si es diferente actualizo password
+//   const newHashPassword = await createHash(password); //hasheo password nuevo
+//   const result = await usersService.updateUser(
+//     { email },
+//     { password: newHashPassword }
+//   );
+//   res.sendSuccess("Password updated successfully");
+// };
+
 const restorePassword = async (req, res) => {
-  const { email, password } = req.body;
-  //Verifico si existe el usuario
-  const user = await usersService.getUserBy({ email });
+ 
+  const { password, token } = req.body;
+   try {
+     const tokenUser = jwt.verify(token, "jwtSecret");
+    //  console.log(tokenUser.email);
+     const user = await usersService.getUserBy({ email: tokenUser.email });
+     console.log(user);
+     //Verificar si la contraseña es la misma
+     const isSamePassword = await validatePassword(password, user.password);
+     if (isSamePassword)
+       return res.sendUnauthorized("Cannot replace password with current password");
+    //  hasheo password nuevo
+     const newHashPassword = await createHash(password);
+  
+       const result = await usersService.updateUser(
+         { _id: user._id },
+         { password: newHashPassword }
+       );
+       res.sendSuccess("Password updated successfully");
+   } catch (error) {
+      console.log(error);
+   }
 
-  if (!user) return res.sendUnauthorized("User doesn't exist");
-  //Comparo password nuevo con el antiguo
-  const isSamePassword = await validatePassword(password, user.password);
-  if (isSamePassword)
-    return res.sendUnauthorized(
-      "Cannot replace password with current password"
-    );
-  //Si es diferente actualizo password
-  const newHashPassword = await createHash(password); //hasheo password nuevo
-  const result = await usersService.updateUser(
-    { email },
-    { password: newHashPassword }
-  );
-  res.sendSuccess("Password updated successfully");
-};
 
+
+  
+  };
 
 
 export default { register, login, loginGitHub, logout, restoreRequest, restorePassword };
