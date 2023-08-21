@@ -26,7 +26,6 @@ form.addEventListener('submit', async (event) => {
      if (responseData.status === "success") {
        Swal.fire({
          title: "Successfully Change password",
-        //  text: "You will be redirected to the product page",
          icon: "success",
          showCancelButton: false,
          confirmButtonText: "OK",

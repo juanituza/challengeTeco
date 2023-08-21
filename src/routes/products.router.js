@@ -25,7 +25,7 @@ export default class ProductRouter extends BaseRouter {
     );
     this.post(
       "/",
-      ["ADMIN"],
+      ["ADMIN", "PREMIUM"],
       passportCall("jwt", { strategyType: "locals" }),
       productController.createProducts
     );
@@ -37,7 +37,7 @@ export default class ProductRouter extends BaseRouter {
     );
     this.delete(
       "/:pid",
-      ["ADMIN"],
+      ["ADMIN", "PREMIUM"],
       passportCall("jwt", { strategyType: "locals" }),
       productController.deleteProduct
     );

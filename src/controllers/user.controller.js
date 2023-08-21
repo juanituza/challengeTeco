@@ -9,7 +9,7 @@ const getUsers = async (req, res) => {
 const saveUsers = async (req, res) => {
   try {
     const { first_name, last_name, email, password, role } = req.body;
-    if (!first_name || !last_name || !email || !password || !role)
+    if (!first_name || !last_name || !email || !password)
       return res
         .status(400)
         .send({ status: "error", payload: "Incomplete value" });
@@ -25,15 +25,26 @@ const saveUsers = async (req, res) => {
   }
 };
 
-// const modificarRole = async (req, res) => { 
-//   try {
-
-    
-//   } catch (error) {
-    
-//   }
-
-
+const modificateRole = async (req, res) => {
+  
+  const userId = req.user.id;
+  const {role} = req.body;  
+  try {
+    if (role === "admin") {
+       res.sendUnauthorized("you can't update a role admin");
+    } else if (role !== "premium") {
+      res.sendUnauthorized("you can only change the role to premium");
+    } else {
+      const userUpdate = await usersService.updateUser(
+        { _id: userId },
+        { role: role }
+      );
+      res.sendSuccessWithPayload(userUpdate);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
 // }
@@ -58,4 +69,4 @@ const deleteUsers = async (req, res) => {
   res.sendSuccess("User removed");
 };
 
-export default { getUsers, saveUsers, editUsers, deleteUsers };
+export default { getUsers, saveUsers, editUsers, deleteUsers, modificateRole };

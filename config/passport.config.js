@@ -59,7 +59,7 @@ const initializePassportStrategies = () => {
             id: 0,
             name: `ADMIN`,
             role: "ADMIN",
-            email: "...",
+            email: config.admin.USER,
           };
           return done(null, User);
         }

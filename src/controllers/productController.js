@@ -69,16 +69,38 @@ const createProducts = async (req, res) => {
     const products = await productService.getProducts();
     const user = req.user;
     //Obtento los datos otorgados por body
-    const prod = req.body;
+    // const prod = req.body;
+    const {
+      title,
+      description,
+      thumbnail = [],
+      price,
+      status,
+      code,
+      stock,
+    } = req.body;
     //Valido campos obligatorios
     //si no existe algun campo
+    // Extract the ObjectId from the userObject
+
+    const prod = {
+      title,
+      description,
+      thumbnail,
+      price,
+      status,
+      code,
+      stock,
+      owner: req.user.email,
+      // user.role == "ADMIN" ? "ADMIN" : req.user.email,
+    };
     if (
       !prod.title ||
       !prod.description ||
       !prod.thumbnail ||
       !prod.price ||
+      !prod.status ||
       !prod.code ||
-      !prod.price ||
       !prod.stock
     ) {
       //arrojo el error mediante Middleware manejo de errores
@@ -156,8 +178,20 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const { pid } = req.params;
-    await productService.deleteProduct(pid);
-    res.sendSuccess("Product removed successfully");
+    const product = await productService.getProductsBy(pid);
+    const user = req.user;
+
+    if (user.role === "premium" && product.owner === user.email) {
+      await productService.deleteProduct(pid);
+      res.sendSuccess("Product removed successfully");
+    } else if (user.role === "ADMIN") {
+      await productService.deleteProduct(pid);
+      res.sendSuccess("Product removed successfully");
+    } else {
+      res.sendUnauthorized(
+        "Unauthorized, This product was created by another user or an administrator"
+      );
+    }
   } catch (error) {
     LoggerService.error(error);
     res.sendErrorWithPayload(error);
