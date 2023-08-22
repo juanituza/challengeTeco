@@ -1,4 +1,4 @@
-import { cartService } from "../services/repositories/index.js";
+import { cartService, productService } from "../services/repositories/index.js";
 import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
 
 
@@ -44,12 +44,21 @@ const createCart = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const cart = req.user.cart;
+    console.log(req.user);
   
 
     const { pid } = req.params;
-    const cartResult = await cartService.addProduct(cart, pid);
+    const product = await productService.getProductsBy(pid);
+    // console.log(product);
+    if (req.user.email === product.owner) {
+      res.sendUnauthorized(
+        "you cannot add a product that belongs to your store"
+      );
+    }else{
+      const cartResult = await cartService.addProduct(cart, pid);
+      res.sendSuccessWithPayload(cartResult);
+    }
 
-    res.sendSuccessWithPayload(cartResult);
   } catch (error) {
     LoggerService.error(error); 
     if (error.name === "Cart Not Found") {

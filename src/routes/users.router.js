@@ -9,7 +9,7 @@ export default class UserRouter extends BaseRouter{
 
     this.get("/", ["USER", "ADMIN"], passportCall("jwt", { strategyType: 'locals' }),userController.getUsers);
     this.post("/", ["USER", "ADMIN"], passportCall("jwt", { strategyType: 'locals' }), userController.saveUsers);
-    this.put("/role", ["USER", "ADMIN"], passportCall("jwt", { strategyType: 'locals' }), userController.modificateRole );
+    this.put("/role", ["USER","PREMIUM", "ADMIN"], passportCall("jwt", { strategyType: 'locals' }), userController.modificateRole );
     this.put("/:uid", ["USER", "ADMIN"], passportCall("jwt", { strategyType: 'locals' }), userController.editUsers );
     this.delete("/:uid", ["USER", "ADMIN"], passportCall("jwt", { strategyType: 'locals' }), userController.deleteUsers);
       

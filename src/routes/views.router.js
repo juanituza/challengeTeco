@@ -29,7 +29,7 @@ export default class ViewsRouter extends BaseRouter {
     );
     this.get(
       "/ticketId",
-      ["USER"],
+      ["USER", "PREMIUM"],
       passportCall("jwt", { strategyType: "jwt" }),
       viewController.ticketViewId
     );
@@ -40,9 +40,22 @@ export default class ViewsRouter extends BaseRouter {
     this.get("/login", ["NO_AUTH"], (req, res) => {
       res.render("login");
     });
-    this.get("/restoreRequest", ["PUBLIC"],passportCall("jwt", { strategyType: "jwt" }), viewController.restoreRequest);
-    this.get("/restorePassword", ["PUBLIC"],passportCall("jwt", { strategyType: "jwt" }), viewController.restorePassword );
-
+    this.get("/changeRol", ["USER", "PREMIUM"], (req, res) => {
+      res.render("changeRol");
+    });
+    this.get(
+      "/restoreRequest",
+      ["PUBLIC"],
+      passportCall("jwt", { strategyType: "jwt" }),
+      viewController.restoreRequest
+    );
+    this.get(
+      "/restorePassword",
+      ["PUBLIC"],
+      passportCall("jwt", { strategyType: "jwt" }),
+      viewController.restorePassword
+    );
+    
     /*---------REAL TIME--------*/
 
     this.get("/realtimeproducts", ["PUBLIC"], async (req, res) => {

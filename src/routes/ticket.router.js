@@ -20,7 +20,7 @@ export default class TicketRouter extends BaseRouter {
     );
     this.post(
       "/create",
-      ["USER"],
+      ["USER", "PREMIUM"],
       passportCall("jwt", { strategyType: "locals" }),
       ticketController.createTickets
     );

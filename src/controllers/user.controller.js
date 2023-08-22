@@ -32,8 +32,9 @@ const modificateRole = async (req, res) => {
   try {
     if (role === "admin") {
        res.sendUnauthorized("you can't update a role admin");
-    } else if (role !== "premium") {
-      res.sendUnauthorized("you can only change the role to premium");
+    } 
+    else if (role !== "premium" && role !== "user") {
+      res.sendUnauthorized("You can only change the role to premium or user");
     } else {
       const userUpdate = await usersService.updateUser(
         { _id: userId },
