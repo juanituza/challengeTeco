@@ -15,9 +15,7 @@ const productsView = async (req, res) => {
   const userData = req.user;
 
   const addProductId = cartService.addProduct;
-  console.log(addProductId);
-  // const userData = new UserDTO(req.user);
-  // console.log(userData);
+  
   res.render("products", {
     allProducts: products,
     page: rest.page,
@@ -47,6 +45,7 @@ const cartsViewId = async (req, res) => {
     user: userData,
   });
 };
+
 const ticketViewId = async (req, res) => {
   const userData = req.user;
   const userCart = req.user.email;
@@ -60,14 +59,12 @@ const ticketViewId = async (req, res) => {
   });
 };
 
-
 const restoreRequest = async (req, res) => {
   res.render("restoreRequest");
 };
 
 const restorePassword = async (req, res) => {
     const userData = req.user;
-    // console.log(restoreToken);
   res.render("restorePassword", {user : userData});
 };
 

@@ -11,8 +11,6 @@ const getTicket = async (req, res) => {
     const ticket = await ticketService.getTicket();
 
     const ticketParser = ticket.map((ticket) => new TicketDTO(ticket));
-    // console.log(ticketParser);
-
     res.sendSuccessWithPayload(ticketParser);
   } catch (error) {
     LoggerService.error(error);
@@ -35,8 +33,9 @@ const getTicketsById = async (req, res) => {
     if (!tickets)
       res.sendErrorWithPayload("ticket not found");
     res.sendSuccessWithPayload(ticketParser);
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+      LoggerService.error;
+      res.sendInternalError("Internal server error, contact the administrator");
   }
 };
 

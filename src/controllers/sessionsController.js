@@ -46,8 +46,6 @@ const loginGitHub = (req, res) => {
       email: req.user.email,
       role: req.user.role,
     };
-    // console.log(req.user);
-    // console.log(user);
     const accessToken = generateToken(req.user);
     //envío el token por el body para que el front lo guarde
     // res.send({ estatus: "success", accessToken })
@@ -86,7 +84,6 @@ const restoreRequest =  async (req, res) => {
   const restoreToken = generateToken(RestoreTokenDTO.getfrom(user));
   const mailingService = new MailingService();
   const result = await mailingService.sendMail(user.email,DTemplates.RESTORE,{restoreToken});
-  console.log(result);
   res.sendSuccess("Email sent successfully");
 }
 
@@ -118,7 +115,6 @@ const restorePassword = async (req, res) => {
   const { password, token } = req.body;
    try {
      const tokenUser = jwt.verify(token, "jwtSecret");
-    //  console.log(tokenUser.email);
      const user = await usersService.getUserBy({ email: tokenUser.email });
      console.log(user);
      //Verificar si la contraseña es la misma
@@ -134,7 +130,10 @@ const restorePassword = async (req, res) => {
        );
        res.sendSuccess("Password updated successfully");
    } catch (error) {
-      console.log(error);
+       LoggerService.error;
+       res.sendInternalError(
+         "Internal server error, contact the administrator"
+       );
    }
 
 

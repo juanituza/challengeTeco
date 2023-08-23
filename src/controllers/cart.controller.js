@@ -44,12 +44,8 @@ const createCart = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const cart = req.user.cart;
-    console.log(req.user);
-  
-
     const { pid } = req.params;
     const product = await productService.getProductsBy(pid);
-    // console.log(product);
     if (req.user.email === product.owner) {
       res.sendUnauthorized(
         "you cannot add a product that belongs to your store"
