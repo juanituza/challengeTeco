@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser";
 import config from "./config.js";
 import attachLogger from "./middlewares/logger.js";
 import winston from "winston";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 
 // import PersistenceFactory from "./dao/Factory.js";
 import MongoSingleton from "./mongoSingleton.js";
@@ -33,60 +35,72 @@ import LoggerService from "./dao/Mongo/Managers/LoggerManager.js";
 
 //   }
 // }else{
-  //si Primary es false es un worker
-  const app = express();
-  const PORT = config.app.PORT;
+//si Primary es false es un worker
+const app = express();
+const PORT = config.app.PORT;
 
-  const connection = MongoSingleton.getInstance();
+const connection = MongoSingleton.getInstance();
 
-  // const connection = await PersistenceFactory.getPersistence();
+// const connection = await PersistenceFactory.getPersistence();
 
-  //Server de escucha
-  const server = app.listen(PORT, () =>
-    LoggerService.info(`Listening on ${PORT}`)
-  );
-  const io = new Server(server);
+//Server de escucha
+const server = app.listen(PORT, () =>
+  LoggerService.info(`Listening on ${PORT}`)
+);
 
-  initializePassportStrategies();
+const io = new Server(server);
 
-  app.use(cookieParser());
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.static(`${__dirname}/public`));
+initializePassportStrategies();
 
-  app.engine("handlebars", handlebars.engine());
-  app.set("views", `${__dirname}/views`);
-  app.set("view engine", "handlebars");
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Backend project",
+      description: "Documentación para API proyecto backend",
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
+};
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
-  app.use((req, res, next) => {
-    req.io = io;
-    next();
-  });
-  app.use(attachLogger);
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(`${__dirname}/public`));
 
-  const userRouter = new UserRouter();
-  const productRouter = new ProductRouter();
-  const cartRouter = new CartRouter();
-  const sessionRouter = new SessionRouter();
-  const ticketRouter = new TicketRouter();
-  const viewsRouter = new ViewsRouter();
+app.engine("handlebars", handlebars.engine());
+app.set("views", `${__dirname}/views`);
+app.set("view engine", "handlebars");
 
-  app.use("/api/products", productRouter.getRouter());
-  app.use("/api/users", userRouter.getRouter());
-  app.use("/api/carts", cartRouter.getRouter());
-  app.use("/api/sessions", sessionRouter.getRouter());
-  app.use("/api/tickets", ticketRouter.getRouter());
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+app.use(attachLogger);
 
-  app.use("/", viewsRouter.getRouter());
-  io.on("connection", (socket) => {
-    registerChathandler(io, socket);
-  });
-  // io.on('connection', async socket => {
-  //     console.log('cart conexion');
-  // });
+const userRouter = new UserRouter();
+const productRouter = new ProductRouter();
+const cartRouter = new CartRouter();
+const sessionRouter = new SessionRouter();
+const ticketRouter = new TicketRouter();
+const viewsRouter = new ViewsRouter();
 
-  socketProducts(io);
-  socketCarts(io);
+app.use("/api/products", productRouter.getRouter());
+app.use("/api/users", userRouter.getRouter());
+app.use("/api/carts", cartRouter.getRouter());
+app.use("/api/sessions", sessionRouter.getRouter());
+app.use("/api/tickets", ticketRouter.getRouter());
+
+app.use("/", viewsRouter.getRouter());
+io.on("connection", (socket) => {
+  registerChathandler(io, socket);
+});
+// io.on('connection', async socket => {
+//     console.log('cart conexion');
+// });
+
+socketProducts(io);
+socketCarts(io);
 // }
-
-

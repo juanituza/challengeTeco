@@ -1,0 +1,21 @@
+paths:
+  /api/carts:
+    get:
+      summary: Devuelve los carritos que creados hasta el momento
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Los carritos se obtienen
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/Cart'
+        "500":
+          description: Error interno, en este endpoint se deberá a un error en la base de datos o no está logueado
+    post:
+      summary: Crea un nuevo Carrito
+      tags:
+        - Carts

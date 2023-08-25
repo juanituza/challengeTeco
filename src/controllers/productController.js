@@ -56,7 +56,9 @@ const getProducts = async (req, res) => {
 
       prevAntPage(products);
 
-      res.sendSuccessWithPayload(products);
+      res.sendSuccessWithPayload({
+        ...new productDTO(products) /*DTO PRODUCTS*/,
+      });
     }
   } catch (error) {
     LoggerService.error(error);
@@ -155,7 +157,9 @@ const getProductsBy = async (req, res) => {
     } else {
       //si existe ID busco el producto y lo devuelvo
       const product = await productService.getProductsBy(pid);
-      res.sendSuccessWithPayload(product);
+      res.sendSuccessWithPayload({
+        ...new productDTO(product) /*DTO PRODUCTS*/,
+      });
     }
   } catch (error) {
     LoggerService.error(error);
