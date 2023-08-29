@@ -19,3 +19,18 @@ paths:
       summary: Crea un nuevo Carrito
       tags:
         - Carts
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        products: 
+          type: array
+          items:
+            type: object
+            properties:
+              quantity:
+                type: number
+              product:
+                $ref: '#/components/schemas/Product'
+
