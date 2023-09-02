@@ -21,7 +21,7 @@ const initializePassportStrategies = () => {
       { passReqToCallback: true, usernameField: "email" },
       async (req, email, password, done) => {
         try {
-          const { first_name, last_name, role } = req.body;
+          const { first_name, last_name,age, role } = req.body;
           const exist = await usersService.getUserBy({ email });
           // const exist = await userModel.findOne({ email });
 
@@ -32,6 +32,7 @@ const initializePassportStrategies = () => {
           const user = {
             first_name,
             last_name,
+            age,
             email,
             cart: cart._id,
             password: hashedPassword,
