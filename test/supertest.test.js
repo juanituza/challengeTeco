@@ -8,9 +8,6 @@ const requester = supertest("http://localhost:8080");
 describe("Testing integrador de Products", function () {
   
   describe("Test de products", function () {
-    // it("endpoint POST /api/seesions/login para loguear un usuario", async function (){
-      
-    // })
     it("Endpoint POST /api/products deberá crear correctamente un producto", async function () {     
       const user = {
         email: "adminCoder@coder.com",
