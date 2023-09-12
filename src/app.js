@@ -26,16 +26,7 @@ import socketCarts from "./cart.socket.js";
 import initializePassportStrategies from "../config/passport.config.js";
 import LoggerService from "./dao/Mongo/Managers/LoggerManager.js";
 
-// const cpus = os.cpus().length;
 
-// if (cluster.isPrimary) {
-//   LoggerService.info("Parent process, starting workers");
-//   for(let i=0;i<cpus;i++){//por cada hilo de la pc
-//     cluster.fork();
-
-//   }
-// }else{
-//si Primary es false es un worker
 const app = express();
 const PORT = config.app.PORT;
 

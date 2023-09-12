@@ -1,11 +1,12 @@
 import fs from 'fs';
 import Handlebars from 'handlebars';
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 import UserDTO from "./dto/UserDTO.js";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
 import LoggerService from "./dao/Mongo/Managers/LoggerManager.js";
 
 export const generateToken = (user) => {
@@ -69,3 +70,4 @@ export const generateMailTemplate= async (template,payload) => {
 } 
 
 export default __dirname;
+

@@ -1,6 +1,7 @@
 // import { usersService } from "../dao/Managers/Mongo/index.js";
 import { usersService } from "../services/repositories/index.js";
 import usersDTO from "../dto/UserDTO.js";
+import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
 
 const getUsers = async (req, res) => {
   const users = await usersService.getUsers();
@@ -65,4 +66,137 @@ const deleteUsers = async (req, res) => {
   res.sendSuccess("User removed");
 };
 
-export default { getUsers, saveUsers, editUsers, deleteUsers, modificateRole };
+
+const uploadFiles = async (req,res) => {
+  try {
+    const userId = req.params.uid;
+    const user = await usersService.getUserById(userId);   
+    console.log(user.documents); 
+    const uploadedFiles = req.files;
+    
+    
+    // Función para verificar si ha cargado algún documento
+    // function checkRequiredDocuments() {
+    //   // Verificar si el usuario ha cargado al menos un documento de cada tipo requerido
+    //   const requiredDocumentTypes = ["identification", "address", "account"];
+    
+    //   for (const documentType of requiredDocumentTypes) {
+    //     const hasDocument = user.documents.some(
+    //       (doc) => doc.name === documentType
+    //     );
+    //     if (!hasDocument) {
+    //       console.log(
+    //         "El usuario no ha cargado uno o más documentos requeridos"
+    //       );
+    //       return false; // El usuario no ha cargado uno o más documentos requeridos
+    //     }
+    //   }
+    
+    //   return true;
+    // }
+    
+  
+    
+
+    // Obteniendo la información de los archivos cargados y agregandolos al array "documents"
+    const documents = user.documents || []; // Se obtiene el array de documentos existente o se crea uno nuevo
+
+    const requiredReferences = [
+      "Identificación",
+      "Comprobante de domicilio",
+      "Comprobante de estado de cuenta",
+    ];
+    uploadedFiles.forEach((file, index) => {
+      const reference =
+        index < requiredReferences.length
+          ? requiredReferences[index]
+          : file.originalname;
+      documents.push({ name: file.originalname, reference: reference });
+    });
+
+    // Verificar si se han cargado los tres documentos requeridos
+    const uploadedReferences = documents.map((doc) => doc.reference);
+    const hasRequiredDocuments = requiredReferences.every((docRef) =>
+      uploadedReferences.includes(docRef)
+    );
+
+    // Actualizar el estado del usuario si se han cargado los tres documentos
+    if (hasRequiredDocuments) {
+      user.status = true;
+    }
+
+    // Actualizando el usuario en la base de datos con el nuevo array "documents"
+    const updatedUser = await usersService.updateUser({_id:userId}, {
+      documents,
+      status: user.status,
+    });
+    const newUser = await usersService.getUserBy(updatedUser._id);
+
+    // // Función para verificar si ha cargado algún documento
+    // function checkRequiredDocuments() {
+    //   // Verificar si el usuario ha cargado al menos un documento de cada tipo requerido
+    //   const requiredDocumentTypes = ["identification", "address", "account"];
+
+    //   for (const documentType of requiredDocumentTypes) {
+    //     const hasDocument = user.documents.some(
+    //       (doc) => doc.name === documentType
+    //     );
+    //     if (!hasDocument) {
+    //       console.log(
+    //         "El usuario no ha cargado uno o más documentos requeridos"
+    //       );
+    //       return false; // El usuario no ha cargado uno o más documentos requeridos
+    //     }
+    //   }
+
+    //   return true;
+    // }
+
+    // // Verificar si el usuario ha cargado los documentos requeridos
+    // const hasRequiredDocuments = checkRequiredDocuments();
+    // console.log(hasRequiredDocuments);
+    // //Si existen los documentos actualizo el role y el status
+    // if (hasRequiredDocuments) {
+    //   user.status = true;
+    //   // const result = await modificateRole();
+    //   // res.sendSuccessWithPayload({ result });
+    //   res.sendSuccess("User update");
+    // } else {
+    //   // Obteniendo la información de los archivos cargados y agregandolos al array "documents"
+    //   const documents = user.documents || []; // Se obtiene el array de documentos existente o se crea uno nuevo
+
+    //   const requiredReferences = ["identification", "address", "account"];
+    //   files.forEach((file, index) => {
+    //     const reference =
+    //       index < requiredReferences.length
+    //         ? requiredReferences[index]
+    //         : file.originalname;
+    //     documents.push({ name: file.originalname, reference: reference });
+    //   });
+    //   // Verificar si se han cargado los tres documentos requeridos
+    //   const uploadedReferences = documents.map((doc) => doc.reference);
+    //   const hasRequiredDocuments = requiredReferences.every((docRef) =>
+    //     uploadedReferences.includes(docRef)
+    //   );
+
+    //   // Actualizar el estado del usuario si se han cargado los tres documentos
+    //   if (hasRequiredDocuments) {
+    //     user.status = true;
+    //   }
+
+    //   // Actualizando el usuario en la base de datos con el nuevo array "documents"
+    //   const updatedUser = await usersService.updateUser(userId, {
+    //     documents,
+    //     status: user.status,
+    //   });
+    //   const newUser = await usersService.getUserBy(updatedUser._id);
+      res.sendSuccessWithPayload({ newUser });
+    }
+
+   
+  catch (error) {
+        res.sendInternalError("Internal error");
+  }
+}
+
+export default { getUsers, saveUsers, editUsers, deleteUsers, modificateRole,uploadFiles };

@@ -21,6 +21,21 @@ const userSchema = new mongoose.Schema(
       default: "user",
       enum: ["user", "premium", "admin"],
     },
+    status: {
+      type: Boolean,
+      default: false,
+    },
+    documents: [
+      {
+        name: {
+          type: String,
+        },
+        reference: {
+          type: String,
+          enum: ["identification", "address","count"],
+        },
+      },
+    ],
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
