@@ -1,14 +1,14 @@
-// import dotenv from 'dotenv';
-// import { Command } from 'commander';
+import dotenv from 'dotenv';
+import { Command } from 'commander';
 
-// const program = new Command();
-// program.option('-m, --mode <mode>', 'Modo de ejecución', 'dev');
-// program.parse();
+const program = new Command();
+program.option('-m, --mode <mode>', 'Modo de ejecución', 'dev');
+program.parse();
 
 
-// dotenv.config({
-//     path:program.opts().mode==="dev"?'./.env.dev':'./.env.prod'
-// });
+dotenv.config({
+    path:program.opts().mode==="dev"?'./.env.dev':'./.env.prod'
+});
 
 export default {
   app: {
