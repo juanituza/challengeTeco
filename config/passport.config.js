@@ -132,7 +132,7 @@ const initializePassportStrategies = () => {
     new Strategy(
       {
         jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-        secretOrKey: "jwtSecret",
+        secretOrKey: config.jwt.SECRET,
       },
       async (payload, done) => {
         try {

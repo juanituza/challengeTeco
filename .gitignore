@@ -3,4 +3,5 @@ package-lock.json
 .env.dev
 .env.prod
 Factory.js
+.vscode
 

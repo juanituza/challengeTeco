@@ -1,4 +1,5 @@
 import fs from 'fs';
+import config from './config.js';
 import Handlebars from 'handlebars';
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -10,7 +11,7 @@ import { fileURLToPath } from "url";
 import LoggerService from "./dao/Mongo/Managers/LoggerManager.js";
 
 export const generateToken = (user) => {
-  const token = jwt.sign(user, "jwtSecret", { expiresIn: "24h" });
+  const token = jwt.sign(user, config.jwt.SECRET, { expiresIn: "24h" });
   return token;
 };
 

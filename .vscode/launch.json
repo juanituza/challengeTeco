@@ -11,7 +11,19 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\src\\app.js"
+            "program": "${workspaceFolder}\\src\\app.js",
+            "restart": true,
+            "runtimeExecutable": "nodemon",
+            "env":{
+                "PORT" : "8080",
+                "MONGO_URL" :"mongodb+srv://juanituza:123@cluster0mckenna.x71myop.mongodb.net/Ecommerce?retryWrites=true&w=majority",
+                "ADMIN_EMAIL" : "adminCoder@coder.com",
+                "ADMIN_PWD" : "coder",
+                "MAILER_USER": "juanituza85@gmail.com",
+                "MAILER_PASSWORD": "qyphorcepknxseis",
+                "JWT_SECRET" : "jwtSecret",
+                "JWT_COOKIE" : "authToken",
+            }
         }
     ]
 }
