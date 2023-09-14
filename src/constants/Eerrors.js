@@ -7,7 +7,8 @@ const  EErrors = {
     CART_EMPTY:6,
     CART_NOT_FOUND:7,
     NOT_PRODUCT_IN_THE_CART:8,
-    NON_EXISTENT_PRODUCT:9
+    NON_EXISTENT_PRODUCT:9,
+    DOCUMENT_ALREADY_LOADED:10
 
 }
 export default EErrors;

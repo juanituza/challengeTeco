@@ -1,6 +1,9 @@
 // import { usersService } from "../dao/Managers/Mongo/index.js";
 import { usersService } from "../services/repositories/index.js";
 import usersDTO from "../dto/UserDTO.js";
+import { documentsExist } from "../constants/userError.js";
+import ErrorService from "../services/ErrorServicer.js";
+import EErrors from "../constants/EErrors.js";
 import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
 
 const getUsers = async (req, res) => {
@@ -66,52 +69,50 @@ const deleteUsers = async (req, res) => {
   res.sendSuccess("User removed");
 };
 
-
-const uploadFiles = async (req,res) => {
+const uploadFiles = async (req, res) => {
   try {
     const userId = req.params.uid;
-    const user = await usersService.getUserById(userId);   
-    console.log(user.documents); 
+    const user = await usersService.getUserById(userId);
+   
     const uploadedFiles = req.files;
-    
-    
-    // Función para verificar si ha cargado algún documento
-    // function checkRequiredDocuments() {
-    //   // Verificar si el usuario ha cargado al menos un documento de cada tipo requerido
-    //   const requiredDocumentTypes = ["identification", "address", "account"];
-    
-    //   for (const documentType of requiredDocumentTypes) {
-    //     const hasDocument = user.documents.some(
-    //       (doc) => doc.name === documentType
-    //     );
-    //     if (!hasDocument) {
-    //       console.log(
-    //         "El usuario no ha cargado uno o más documentos requeridos"
-    //       );
-    //       return false; // El usuario no ha cargado uno o más documentos requeridos
-    //     }
-    //   }
-    
-    //   return true;
-    // }
-    
-  
+
+    // Verificar si el usuario ya tenía documentos cargados
+    const userHadDocuments =
+      Array.isArray(user.documents) && user.documents.length > 0;
+
+    // Obteniendo la información de los archivos cargados y agregándolos al array "documents"
+    const documents = userHadDocuments ? user.documents : []; // Utiliza los documentos existentes si el usuario ya los tenía
+
     
 
     // Obteniendo la información de los archivos cargados y agregandolos al array "documents"
-    const documents = user.documents || []; // Se obtiene el array de documentos existente o se crea uno nuevo
+    // const documents = user.documents || []; // Se obtiene el array de documentos existente o se crea uno nuevo
 
-    const requiredReferences = [
-      "Identificación",
-      "Comprobante de domicilio",
-      "Comprobante de estado de cuenta",
-    ];
+    
+    
+    const requiredReferences = ["identification", "address", "count"];
     uploadedFiles.forEach((file, index) => {
       const reference =
         index < requiredReferences.length
           ? requiredReferences[index]
           : file.originalname;
-      documents.push({ name: file.originalname, reference: reference });
+
+      // Verificar si la referencia ya existe en los documentos cargados
+      const referenceExists = documents.some(
+        (doc) => doc.reference === reference
+      );
+
+      if (referenceExists) {
+        return ErrorService.createError({
+          name: "File already uploaded",
+          cause: documentsExist(reference),
+          message: `documents ${reference}  is already loaded`,
+          code: EErrors.DOCUMENT_ALREADY_LOADED,
+          status: 400,
+        });
+      } else {
+        documents.push({ name: file.originalname, reference: reference });
+      }
     });
 
     // Verificar si se han cargado los tres documentos requeridos
@@ -123,15 +124,19 @@ const uploadFiles = async (req,res) => {
     // Actualizar el estado del usuario si se han cargado los tres documentos
     if (hasRequiredDocuments) {
       user.status = true;
+      
     }
-
     // Actualizando el usuario en la base de datos con el nuevo array "documents"
-    const updatedUser = await usersService.updateUser({_id:userId}, {
-      documents,
-      status: user.status,
-    });
-    const newUser = await usersService.getUserBy(updatedUser._id);
-
+    const updatedUser = await usersService.updateUser(
+      { _id: userId },
+      {
+        documents,
+        status: user.status,
+        // role: "premium",
+      },
+      
+    );
+    const newUser = new usersDTO(await usersService.getUserBy(updatedUser._id));
     // // Función para verificar si ha cargado algún documento
     // function checkRequiredDocuments() {
     //   // Verificar si el usuario ha cargado al menos un documento de cada tipo requerido
@@ -190,13 +195,18 @@ const uploadFiles = async (req,res) => {
     //     status: user.status,
     //   });
     //   const newUser = await usersService.getUserBy(updatedUser._id);
-      res.sendSuccessWithPayload({ newUser });
-    }
-
-   
-  catch (error) {
-        res.sendInternalError("Internal error");
+    res.sendSuccessWithPayload({ newUser });
+  } catch (error) {
+    LoggerService.error(error);
+    res.status(error.status).send({ status: "error", error: error.message });
   }
-}
+};
 
-export default { getUsers, saveUsers, editUsers, deleteUsers, modificateRole,uploadFiles };
+export default {
+  getUsers,
+  saveUsers,
+  editUsers,
+  deleteUsers,
+  modificateRole,
+  uploadFiles,
+};
