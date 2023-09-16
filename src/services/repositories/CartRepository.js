@@ -11,18 +11,18 @@ export default class CartRepository {
   createCart = () => {
     return this.dao.createCart();
   };
-  addProduct = (cid, pid) => {
-    return this.dao.addProduct(cid, pid);
+  addProduct = (cid, cart) => {
+    return this.dao.addProduct(cid, cart);
   };
-  purchaseCart = (cid) =>{
-    return this.dao.purchaseCart(cid);
-  }
-  deleteProduct=(cid) => {
-    return this.dao.deleteProduct(cid)
-  }
-  emptycart =(cid) => {
-    return this.dao.emptycart(cid)
-  }
+  purchaseCart = (cid, cart) => {
+    return this.dao.purchaseCart(cid, cart);
+  };
+  deleteProduct = (cid) => {
+    return this.dao.deleteProduct(cid);
+  };
+  emptycart = (cid) => {
+    return this.dao.emptycart(cid);
+  };
 
   deleteCart = (cid) => {
     return this.dao.deleteCart(cid);

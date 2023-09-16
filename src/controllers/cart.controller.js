@@ -1,7 +1,14 @@
 import { cartService, productService } from "../services/repositories/index.js";
 import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
 
-
+import {
+  insufficientStock,
+  emptyCart,
+  cartNotFound,
+  notProductAdd,
+} from "../constants/cartError.js";
+import ErrorService from "../services/ErrorServicer.js";
+import EErrors from "../constants/EErrors.js";
 
 
 const getCarts = async (req, res) => {
@@ -43,21 +50,51 @@ const createCart = async (req, res) => {
 
 const addProduct = async (req, res) => {
   try {
-    const cart = req.user.cart;
+    const cid = req.user.cart;
     const { pid } = req.params;
-    const product = await productService.getProductsBy(pid);
-    if (req.user.email === product.owner) {
-      res.sendUnauthorized(
-        "you cannot add a product that belongs to your store"
-      );
-    }else{
-      const cartResult = await cartService.addProduct(cart, pid);
-      res.sendSuccessWithPayload(cartResult);
+    const prod = await productService.getProductsBy(pid);
+    const cart = await cartService.getCartsBy(cid);
+    
+    if (!cart) {
+      return ErrorService.createError({
+        name: "Cart Not Found",
+        cause: cartNotFound(cid),
+        message: `Cart Not Found`,
+        code: EErrors.CART_NOT_FOUND,
+        status: 500,
+      });
+    } else if (req.user.email === prod.owner) {
+      return ErrorService.createError({
+        name: "Not add product",
+        cause: notProductAdd(prod),
+        message: `Product belongs to your store`,
+        code: EErrors.NOT_ADD_PRODUCT,
+        status: 401,
+      });
     }
 
+    // verifico si el producto es nuevo
+    const existingProduct = cart.products.find(
+      ({ product }) => product._id.toString() === pid
+    );
+
+    // si el producto es undefined lo agrego al arreglo products
+    if (existingProduct === undefined) {
+      cart.products.push({ product: prod, quantity: 1 });
+
+      //si el producto existe agrego cantidad
+    } else {
+      existingProduct.quantity += 1;
+    }
+  
+    const cartResult = await cartService.addProduct(cid, cart);
+    res.sendSuccessWithPayload(cartResult);
   } catch (error) {
     LoggerService.error(error); 
     if (error.name === "Cart Not Found") {
+      res.status(error.status).send({ status: "error", error: error.message });
+    } 
+    if (error.name === "Not add product") {
       res.status(error.status).send({ status: "error", error: error.message });
     } else {
       res.sendInternalError("Internal server error,contact the administrator");

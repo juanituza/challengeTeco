@@ -26,6 +26,14 @@ export const cartNotFound = (cid) => {
         
          `
 };
+export const notProductAdd = (prod) => {
+    return `Cart not found:
+
+        * Required data: 
+        you cannot add a product that belongs to your store${prod},
+        
+         `;
+};
 export const noProductInTheCart = (product) => {
     return `Product not found:
 
