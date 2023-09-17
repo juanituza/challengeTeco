@@ -2,6 +2,8 @@ import ProdModel from "../dao/Mongo/models/products.js";
 // import { productService } from "../dao/Managers/Mongo/index.js";
 import { productService } from "../services/repositories/index.js";
 import productDTO from "../dto/productDTO.js";
+import MailingService from "../services/MailingService.js";
+import DTemplates from "../constants/DTemplates.js";
 
 import {
   productsErrorIncompleteData,
@@ -189,6 +191,12 @@ const deleteProduct = async (req, res) => {
       await productService.deleteProduct(pid);
       res.sendSuccess("Product removed successfully");
     } else if (user.role === "ADMIN") {
+      const mailingService = new MailingService();
+
+      const result = await mailingService.sendMail(
+        product.owner,
+        DTemplates.DELETE_PRODUCT
+      );
       await productService.deleteProduct(pid);
       res.sendSuccess("Product removed successfully");
     } else {
@@ -198,6 +206,7 @@ const deleteProduct = async (req, res) => {
     }
   } catch (error) {
     LoggerService.error(error);
+    console.log(error);
     res.sendErrorWithPayload(error);
   }
 };

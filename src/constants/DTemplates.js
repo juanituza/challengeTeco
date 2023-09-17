@@ -1,4 +1,5 @@
 export default {
     WELCOME:'welcome',
-    RESTORE : 'restore'
+    RESTORE : 'restore',
+    DELETE_PRODUCT: 'deleteProduct'
 }
