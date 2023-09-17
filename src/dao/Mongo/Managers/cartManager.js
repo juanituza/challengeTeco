@@ -68,7 +68,13 @@ export default class CartManager {
       const carrito = await this.getCartsBy(cid);
       // Verificar si se encontró el carrito
       if (!carrito) {
-        throw new Error("Carrito no encontrado");
+          return ErrorService.createError({
+            name: "Cart Not Found",
+            cause: cartNotFound(cid),
+            message: `Cart Not Found`,
+            code: EErrors.CART_NOT_FOUND,
+            status: 500,
+          });
       }
       //Vaciar el array de productos
       carrito.products = [];

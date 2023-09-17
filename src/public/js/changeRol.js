@@ -5,7 +5,7 @@ roleForm.addEventListener("submit", async (event) => {
 
   const roleSelect = document.getElementById("roleSelect");
   const selectedRole = roleSelect.value;
-    console.log(selectedRole);
+  
   const response = await fetch("/api/users/role", {
     method: "PUT",
     body: JSON.stringify({ role: selectedRole }),
@@ -13,9 +13,9 @@ roleForm.addEventListener("submit", async (event) => {
       "Content-Type": "application/json",
     },
   });
-  console.log(response);
+
   const responseData = await response.json();
-  console.log(responseData);
+
   if (responseData.status === "success") {
 
     Swal.fire({
@@ -34,18 +34,6 @@ roleForm.addEventListener("submit", async (event) => {
           });
       }
     });
-    // Swal.fire({
-    //   title: "Successfully logged in",
-    //   text: "You will be redirected to the product page",
-    //   icon: "success",
-    //   showCancelButton: false,
-    //   confirmButtonText: "OK",
-    // })
-    // .then((result) => {
-    //   if (result.isConfirmed) {
-    //     window.location.replace("/");
-    //   }
-    // });
   } else {
     Swal.fire({
       icon: "error",

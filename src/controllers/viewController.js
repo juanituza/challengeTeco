@@ -1,11 +1,21 @@
 
-import { cartService, ticketService } from "../services/repositories/index.js";
+import { cartService, ticketService,usersService } from "../services/repositories/index.js";
+
 import ProdModel from "../dao/Mongo/models/products.js";
 
 const homeView = async (req, res) => {
   const userData = req.user;
   res.render("home", { user: userData });
 };
+
+const adminView = async(req,res) => {
+  
+  const users = await usersService.getUsers();
+
+  res.render("admin", { Users: users });
+}
+
+
 const productsView = async (req, res) => {
   const { page = 1 } = req.query;
   const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } =
@@ -77,4 +87,5 @@ export default {
   ticketViewId,
   restoreRequest,
   restorePassword,
+  adminView,
 };

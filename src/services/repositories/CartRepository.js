@@ -14,14 +14,14 @@ export default class CartRepository {
   addProduct = (cid, cart) => {
     return this.dao.addProduct(cid, cart);
   };
-  purchaseCart = (cid, cart) => {
-    return this.dao.purchaseCart(cid, cart);
+  purchaseCart = (cid,cart) => {
+    return this.dao.purchaseCart(cid,cart);
   };
   deleteProduct = (cid) => {
     return this.dao.deleteProduct(cid);
   };
-  emptycart = (cid) => {
-    return this.dao.emptycart(cid);
+  emptycart = (cid,cart) => {
+    return this.dao.emptycart(cid,cart);
   };
 
   deleteCart = (cid) => {

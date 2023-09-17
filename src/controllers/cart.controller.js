@@ -51,9 +51,11 @@ const createCart = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const cid = req.user.cart;
+    console.log(req.user);
     const { pid } = req.params;
     const prod = await productService.getProductsBy(pid);
     const cart = await cartService.getCartsBy(cid);
+    console.log(cart);
     
     if (!cart) {
       return ErrorService.createError({

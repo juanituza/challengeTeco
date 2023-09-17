@@ -76,12 +76,15 @@ const initializePassportStrategies = () => {
 
        
         //creo la sesión
+        
         user = {
-          id: user._id,
-          name: `${user.first_name} ${user.last_name}`,
+          _id: user._id,
+          first_name: user.first_name,
+          last_name: user.last_name,
           email: user.email,
           cart: user.cart,
           role: user.role,
+          status: user.status,
         };
         
      

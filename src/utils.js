@@ -36,8 +36,9 @@ export const passportCall = (strategy, options = {}) => {
             );
         }
       }
-      req.user = { ...new UserDTO(user) };
-      // user;
+      req.user = 
+      // { ...new UserDTO(user) };
+      user;
       next();
     })(req, res, next);
   };
