@@ -5,7 +5,10 @@ import ProdModel from "../dao/Mongo/models/products.js";
 
 const homeView = async (req, res) => {
   const userData = req.user;
-  res.render("home", { user: userData });
+  const userRole = {
+    role: "premium", // Debes obtener el rol del usuario desde tus datos
+  };
+  res.render("home", { user: userData, userRole });
 };
 
 const adminView = async(req,res) => {
@@ -15,12 +18,26 @@ const adminView = async(req,res) => {
   res.render("admin", { Users: users });
 }
 
+const createProducts = async (req,res) => {
+  const userData = req.user;
+  const userRole = {
+    role: "premium", // Debes obtener el rol del usuario desde tus datos
+  };
+
+res.render("createProducts", {
+ 
+  user: userData, userRole
+});
+}
 
 const productsView = async (req, res) => {
   const { page = 1 } = req.query;
   const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } =
     await ProdModel.paginate({}, { page, limit: 10, lean: true });
   const products = docs;
+  const userRole = {
+    role: "premium", // Debes obtener el rol del usuario desde tus datos
+  };
 
   const userData = req.user;
 
@@ -34,6 +51,7 @@ const productsView = async (req, res) => {
     prevPage,
     nextPage,
     user: userData,
+    userRole,
   });
 };
 
@@ -47,12 +65,16 @@ const cartsViewId = async (req, res) => {
   const userCart = req.user.cart;
 
   const carts = await cartService.getCarts();
+   const userRole = {
+     role: "premium", // Debes obtener el rol del usuario desde tus datos
+   };
 
   const cartSelected = carts.find((cart) => cart._id.toString() === userCart);
   res.render("cartUser", {
     cartSelected,
     css: "cart",
     user: userData,
+    userRole,
   });
 };
 
@@ -63,9 +85,13 @@ const ticketViewId = async (req, res) => {
   const ticketSelected = tickets.filter(
     (ticket) => ticket.purchaser === userCart
   );
+  const userRole = {
+    role: "premium", // Debes obtener el rol del usuario desde tus datos
+  };
   res.render("ticket", {
     ticket: ticketSelected,
     user: userData,
+    userRole,
   });
 };
 
@@ -88,4 +114,5 @@ export default {
   restoreRequest,
   restorePassword,
   adminView,
+  createProducts,
 };

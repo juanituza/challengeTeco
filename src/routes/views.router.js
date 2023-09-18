@@ -15,6 +15,12 @@ export default class ViewsRouter extends BaseRouter {
       viewController.productsView
     );
     this.get(
+      "/createProducts",
+      ["PREMIUM", "ADMIN"],
+      passportCall("jwt", { strategyType: "jwt" }),
+      viewController.createProducts
+    );
+    this.get(
       "/admin",
       ["ADMIN"],
       passportCall("jwt", { strategyType: "jwt" }, { redirect: "/login" }),

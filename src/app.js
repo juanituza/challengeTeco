@@ -1,13 +1,14 @@
 import express from "express";
 import cluster from "cluster";
 import os from "os";
-import handlebars from "express-handlebars";
+import handlebars  from "express-handlebars";
 import cookieParser from "cookie-parser";
 import config from "./config.js";
 import attachLogger from "./middlewares/logger.js";
 import winston from "winston";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUiExpress from "swagger-ui-express";
+import exphbs from "express-handlebars";
 
 // import PersistenceFactory from "./dao/Factory.js";
 import MongoSingleton from "./mongoSingleton.js";
@@ -53,8 +54,25 @@ const swaggerOptions = {
   },
   apis: [`${__dirname}/docs/**/*.yaml`],
 };
+
+
 const specs = swaggerJSDoc(swaggerOptions);
 app.use("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
+
+
+// Registrar un ayudante personalizado para comparar roles
+const hbs = exphbs.create({
+  helpers: {
+    // Define un ayudante llamado 'ifRoleIsPremium'
+    ifRoleIsPremium: function(userRole, options) {
+      if (userRole === "premium") {
+        return options.fn(this);
+      } else {
+        return options.inverse(this);
+      }
+    }
+  }
+});
 
 app.use(cookieParser());
 app.use(express.json());
@@ -62,6 +80,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(`${__dirname}/public`));
 
 app.engine("handlebars", handlebars.engine());
+app.engine("handlebars", hbs.engine);
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
 
