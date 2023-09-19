@@ -60,7 +60,7 @@ const specs = swaggerJSDoc(swaggerOptions);
 app.use("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 
-// Registrar un ayudante personalizado para comparar roles
+// Ayudante personalizado para comparar roles
 const hbs = exphbs.create({
   helpers: {
     // Define un ayudante llamado 'ifRoleIsPremium'
