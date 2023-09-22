@@ -4,6 +4,8 @@ import BaseRouter from "./baseRouter.js";
 import { passportCall } from "../utils.js";
 import productController from "../controllers/productController.js";
 import productMockController from "../mocks/productMock.controller.js";
+import uploadImage from "../middlewares/uploaderImage.js";
+
 
 // const router = Router();
 
@@ -24,9 +26,10 @@ export default class ProductRouter extends BaseRouter {
       productController.getProductsBy
     );
     this.post(
-      "/",
+      "/createProducts",
       ["ADMIN", "PREMIUM"],
       passportCall("jwt", { strategyType: "locals" }),
+      uploadImage.array("thumbnail",3),
       productController.createProducts
     );
     this.put(

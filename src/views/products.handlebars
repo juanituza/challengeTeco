@@ -52,12 +52,13 @@
             </a>
           </div>
           <div class="col-lg-6">
-            {{#ifRoleIsPremium user.role}}
+            {{#ifRoleIsPremiumOrAdmin user.role}}
             <a href="/createProducts" class="btn">
               <i class="fa-brands fa-product-hunt text-primary fa-2x" style="font-size:30px"></i>
               <p class="small fw-bold mt-2 pt-1 mb-0">create product</p>
             </a>
-            {{/ifRoleIsPremium}}
+            {{/ifRoleIsPremiumOrAdmin}}
+            
           </div>
           <div class="col-lg-12">
             <a href="/ticketId">
@@ -177,11 +178,13 @@
         <div class="row pb-3">
 
           {{#each allProducts}}
+        
 
             <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
               <div class="product-item bg-light mb-4">
                 <div class="product-img position-relative overflow-hidden">
-                  <img class="img-fluid" src="{{thumbnail}}" alt="Products" />
+                 
+                  <img class="img-fluid" src="{{this.thumbnail}}" alt="Products" />
                   <div class="product-action">
 
                   </div>

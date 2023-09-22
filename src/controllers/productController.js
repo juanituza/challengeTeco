@@ -1,4 +1,5 @@
 import ProdModel from "../dao/Mongo/models/products.js";
+import __dirname from "../utils.js";
 // import { productService } from "../dao/Managers/Mongo/index.js";
 import { productService } from "../services/repositories/index.js";
 import productDTO from "../dto/productDTO.js";
@@ -13,6 +14,8 @@ import {
 import ErrorService from "../services/ErrorServicer.js";
 import EErrors from "../constants/EErrors.js";
 import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
+
+
 
 const getProducts = async (req, res) => {
   try {
@@ -72,31 +75,22 @@ const createProducts = async (req, res) => {
   try {
     const products = await productService.getProducts();
     const user = req.user;
-    //Obtento los datos otorgados por body
-    // const prod = req.body;
-    const {
-      title,
-      description,
-      thumbnail = [],
-      price,
-      status,
-      code,
-      stock,
-    } = req.body;
-    //Valido campos obligatorios
-    //si no existe algun campo
-    // Extract the ObjectId from the userObject
+    
+    // Get the paths of the uploaded files
+    const thumbnailPaths = req.files.map((file) => `/uploads/products/${file.filename}`);
 
+    const { title, description, thumbnail, price, status, code, stock } =
+      req.body;
+ 
     const prod = {
       title,
       description,
-      thumbnail,
+      thumbnail: [thumbnailPaths],
       price,
       status,
       code,
       stock,
       owner: req.user.email,
-      // user.role == "ADMIN" ? "ADMIN" : req.user.email,
     };
     if (
       !prod.title ||
@@ -132,7 +126,10 @@ const createProducts = async (req, res) => {
     }
     // Creo el producto
     const resProd = await productService.createProducts(prod);
-    res.sendSuccessWithPayload({ ...new productDTO(resProd) /*DTO PRODUCTS*/ });
+    
+    res.sendSuccessWithPayload({
+      ...new productDTO(resProd) /*DTO PRODUCTS*/,
+    });
   } catch (error) {
     LoggerService.error(error);
     // res.sendUnauthorized("Internal server error, contact the administrator");

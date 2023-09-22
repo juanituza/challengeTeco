@@ -60,12 +60,11 @@ const specs = swaggerJSDoc(swaggerOptions);
 app.use("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 
-// Ayudante personalizado para comparar roles
 const hbs = exphbs.create({
   helpers: {
-    // Define un ayudante llamado 'ifRoleIsPremium'
-    ifRoleIsPremium: function(userRole, options) {
-      if (userRole === "premium") {
+    // Define un ayudante llamado 'ifRoleIsPremiumOrAdmin'
+    ifRoleIsPremiumOrAdmin: function(userRole, options) {
+      if (userRole === "premium" || userRole === "ADMIN") {
         return options.fn(this);
       } else {
         return options.inverse(this);
@@ -78,6 +77,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(`${__dirname}/public`));
+
+
 
 app.engine("handlebars", handlebars.engine());
 app.engine("handlebars", hbs.engine);

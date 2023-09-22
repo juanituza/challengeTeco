@@ -78,6 +78,7 @@ const uploadFiles = async (req, res) => {
     const user = await usersService.getUserById(userId);
    
     const uploadedFiles = req.files;
+   
 
     // Verificar si el usuario ya tenía documentos cargados
     const userHadDocuments =
@@ -104,7 +105,7 @@ const uploadFiles = async (req, res) => {
       const referenceExists = documents.some(
         (doc) => doc.reference === reference
       );
-
+ 
       if (referenceExists) {
         return ErrorService.createError({
           name: "File already uploaded",
