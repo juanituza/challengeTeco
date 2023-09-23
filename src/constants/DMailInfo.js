@@ -7,7 +7,7 @@ export default {
       {
         filename: "banner.jpg",
         path: `${__dirname}/public/img/banner.jpg`,
-        cid: "banner",
+        cid: "user",
       },
     ],
   },
@@ -23,6 +23,16 @@ export default {
   },
   deleteProduct: {
     subject: "Product removed",
+    attachments: [
+      {
+        filename: "banner.jpg",
+        path: `${__dirname}/public/img/banner.jpg`,
+        cid: "banner",
+      },
+    ],
+  },
+  sendTicket: {
+    subject: "Completed Purchase",
     attachments: [
       {
         filename: "banner.jpg",

@@ -5,6 +5,8 @@ import { emptyCart } from "../constants/cartError.js";
 import ErrorService from "../services/ErrorServicer.js";
 import EErrors from "../constants/EErrors.js";
 import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
+import MailingService from "../services/MailingService.js";
+import DTemplates from "../constants/DTemplates.js";
 
 const getTicket = async (req, res) => {
   try {
@@ -68,13 +70,20 @@ const createTickets = async (req, res) => {
       });
     }
     // creo el ticket
-
     if (ticketData) {
       await cartService.purchaseCart(cid); //si existe el ticket descuento el stock del producto y verifico si hay stock suficiente
       await cartService.emptycart(cid); // vacio el carrito
-      await ticketService.createTicket(ticketData);
-    }
+      const ticket = await ticketService.createTicket(ticketData);
+      
+      const mailingService = new MailingService();
 
+     await mailingService.sendMail(req.user.email, DTemplates.SEND_TICKET, {
+       purchaser: ticket.purchaser,
+       code: ticket.code,
+       amount: ticket.amount,
+       datetime: ticket.purchase_datetime,
+     });
+    }
     res.sendSuccess("Ticket generated");
   } catch (error) {
     LoggerService.error(error);

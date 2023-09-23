@@ -8,12 +8,14 @@ import { usersService } from "../services/repositories/index.js";
 import RestoreTokenDTO from "../dto/restoresTokenDTO.js";
 
 const register = async (req, res) => {
+
   const mailingService = new MailingService();
   try {
+    
     const result = await mailingService.sendMail(
       req.user.email,
       DTemplates.WELCOME,
-      { user: req.user }
+       {user: `${req.user.first_name} ${req.user.last_name}`}
     );
     res.sendSuccess("Registered");
   } catch (error) {

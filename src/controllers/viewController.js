@@ -70,11 +70,13 @@ const cartsViewId = async (req, res) => {
    };
 
   const cartSelected = carts.find((cart) => cart._id.toString() === userCart);
-  res.render("cartUser", {
+  
+    res.render("cartUser", {
     cartSelected,
     css: "cart",
     user: userData,
     userRole,
+    
   });
 };
 

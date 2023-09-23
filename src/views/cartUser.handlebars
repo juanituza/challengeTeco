@@ -141,6 +141,7 @@
                 <table class="col-lg-12 table table-light table-borderless table-hover text-center mb-0">
                     <thead class="col-lg-12 thead-dark">
                         <tr>
+                            <th>Imagen</th>
                             <th>Products</th>
                             <th>Price</th>
                             <th>Quantity</th>
@@ -154,7 +155,14 @@
                     <tbody class="align-middle col-lg-12">
                         {{#each cartSelected.products}}
                         <tr>
-                            <td class="align-middle"><img src={{product.thumbnail}} alt="" style="width: 50px;"> {{product.title}} {{product.description}}</td>
+                            
+                            <td class="align-middle">
+                                {{#each product.thumbnail}}
+                                <img src="{{this}}" alt="{{../this.product.description}}" style="width: 50px;">
+                                {{/each}} 
+            
+                            </td>
+                            <td>{{product.title}} {{product.description}}</td>   
                             <td class="align-middle">${{product.price}}</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
