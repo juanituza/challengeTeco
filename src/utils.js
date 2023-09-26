@@ -21,9 +21,8 @@ export const passportCall = (strategy, options = {}) => {
       if (error) return next(error);
       if (!options.strategyType) {
         console.log(`Route ${req.url} doesn't have defined a strategy`);
-        return res.sendInternalError();
-      }
-      if (!user) {
+        req.error = "No strategy defined";
+      } else if (!user) {
         switch (options.strategyType) {
           case "jwt":
             req.error = info.message ? info.message : info.toString();
@@ -34,15 +33,21 @@ export const passportCall = (strategy, options = {}) => {
               info.message ? info.message : info.toString()
               // LoggerService.info("User exist")
             );
+          case "github":
+            req.error = info
+              ? info.message
+                ? info.message
+                : info.toString()
+              : "Authentication failed";
+            break;
         }
       }
-      req.user = 
-      // { ...new UserDTO(user) };
-      user;
+      req.user = user;
       next();
     })(req, res, next);
   };
 };
+
 
 export const cookieExtractor = (req) => {
   let token = null;

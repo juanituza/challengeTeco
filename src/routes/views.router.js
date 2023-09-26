@@ -26,12 +26,6 @@ export default class ViewsRouter extends BaseRouter {
       passportCall("jwt", { strategyType: "jwt" }, { redirect: "/login" }),
       viewController.adminView
     );
-    this.get(
-      "/carts",
-      ["ADMIN"],
-      passportCall("jwt", { strategyType: "jwt" }),
-      viewController.cartsView
-    );
 
     this.get(
       "/cartsID",
@@ -41,7 +35,7 @@ export default class ViewsRouter extends BaseRouter {
     );
     this.get(
       "/ticketId",
-      ["USER", "PREMIUM"],
+      ["USER", "PREMIUM","ADMIN"],
       passportCall("jwt", { strategyType: "jwt" }),
       viewController.ticketViewId
     );
@@ -52,7 +46,7 @@ export default class ViewsRouter extends BaseRouter {
     this.get("/login", ["NO_AUTH"], (req, res) => {
       res.render("login");
     });
-    this.get("/changeRol", ["USER", "PREMIUM","ADMIN"], (req, res) => {
+    this.get("/changeRol", ["USER", "PREMIUM"], (req, res) => {
       res.render("changeRol");
     });
     this.get(

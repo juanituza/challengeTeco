@@ -9,6 +9,11 @@ import winston from "winston";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUiExpress from "swagger-ui-express";
 import exphbs from "express-handlebars";
+import {
+  ifRoleIsPremiumOrAdmin,
+  ifRoleAdmin,
+  ifRoleIsPremiumOrUser,
+} from "./middlewares/handlebars-helpers.mjs";
 
 // import PersistenceFactory from "./dao/Factory.js";
 import MongoSingleton from "./mongoSingleton.js";
@@ -29,6 +34,7 @@ import LoggerService from "./dao/Mongo/Managers/LoggerManager.js";
 
 
 const app = express();
+
 const PORT = config.app.PORT;
 
 const connection = MongoSingleton.getInstance();
@@ -59,19 +65,14 @@ const swaggerOptions = {
 const specs = swaggerJSDoc(swaggerOptions);
 app.use("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
-
 const hbs = exphbs.create({
   helpers: {
-    // Define un ayudante llamado 'ifRoleIsPremiumOrAdmin'
-    ifRoleIsPremiumOrAdmin: function(userRole, options) {
-      if (userRole === "premium" || userRole === "ADMIN") {
-        return options.fn(this);
-      } else {
-        return options.inverse(this);
-      }
-    }
-  }
+    ifRoleIsPremiumOrAdmin,
+    ifRoleAdmin,
+    ifRoleIsPremiumOrUser,
+  },
 });
+
 
 app.use(cookieParser());
 app.use(express.json());

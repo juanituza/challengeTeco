@@ -107,17 +107,17 @@ const initializePassportStrategies = () => {
           //tomo los datos del profile que me sirvan.
           const { name, email } = profile._json;
           const user = await usersService.getUserBy({ email });
-          // const user = await userModel.findOne({ email });
+          const cart = await cartService.createCart();
           //Gestiono ambas logicas
           if (!user) {
             //si no existe user lo creo
             const newUser = {
               first_name: name,
               email,
+              cart: cart._id,
               password: "",
             };
             const result = await usersService.createUser(newUser);
-            // const result = await userModel.create(newUser);
             done(null, result);
           }
           // si ya existe el user

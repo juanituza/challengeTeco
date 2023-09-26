@@ -6,6 +6,8 @@ import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
 import { createHash, generateToken, validatePassword } from "../utils.js";
 import { usersService } from "../services/repositories/index.js";
 import RestoreTokenDTO from "../dto/restoresTokenDTO.js";
+import usersDTO from "../dto/UserDTO.js";
+
 
 const register = async (req, res) => {
 
@@ -39,27 +41,29 @@ const login = async (req, res) => {
     res.sendInternalError("Internal server error, contact the administrator");
   }
 };
-
+const registerGitHub = async(req,res) => {  
+   try {
+     // Realiza la solicitud a GitHub aquí
+     
+     // Pasa la respuesta de GitHub de vuelta al cliente
+     res.json(githubResponse.data);
+   } catch (error) {
+     console.error(error);
+     res.status(500).json({ error: "Hubo un error al autenticar con GitHub" });
+   }
+}
 const loginGitHub = (req, res) => {
   try {
-    const user = {
-      id: req.user.id,
-      name: req.user.name,
-      email: req.user.email,
-      role: req.user.role,
-    };
     const accessToken = generateToken(req.user);
-    //envío el token por el body para que el front lo guarde
-    // res.send({ estatus: "success", accessToken })
     res
       .cookie("authToken", accessToken, {
         maxAge: 1000 * 60 * 60 * 24,
         httpOnly: true,
         sameSite: "strict",
-      })
-      .sendSuccess("Logueado con github");
+      })   
+      .redirect("/products")
   } catch (error) {
-    res.sendInternalError("Internal server error, contact the administrator");
+      res.sendInternalError("Internal server error, contact the administrator");
   }
 };
 const logout = async (req, res) => {
@@ -118,7 +122,6 @@ const restorePassword = async (req, res) => {
    try {
      const tokenUser = jwt.verify(token, "jwtSecret");
      const user = await usersService.getUserBy({ email: tokenUser.email });
-     console.log(user);
      //Verificar si la contraseña es la misma
      const isSamePassword = await validatePassword(password, user.password);
      if (isSamePassword)
@@ -144,4 +147,4 @@ const restorePassword = async (req, res) => {
   };
 
 
-export default { register, login, loginGitHub, logout, restoreRequest, restorePassword };
+export default { register, login,registerGitHub, loginGitHub, logout, restoreRequest, restorePassword };

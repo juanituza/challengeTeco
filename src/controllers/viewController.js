@@ -84,6 +84,7 @@ const ticketViewId = async (req, res) => {
   const userData = req.user;
   const userCart = req.user.email;
   const tickets = await ticketService.getTicket();
+  
   const ticketSelected = tickets.filter(
     (ticket) => ticket.purchaser === userCart
   );
@@ -94,6 +95,7 @@ const ticketViewId = async (req, res) => {
     ticket: ticketSelected,
     user: userData,
     userRole,
+    allTickets: tickets,
   });
 };
 

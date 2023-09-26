@@ -17,17 +17,18 @@ export default class SessionRouter extends BaseRouter {
       sessionsController.login
     );
 
+    
     this.get(
       "/github",
-      ["NO_AUTH"],
-      passportCall("github", { strategyType: "locals" }),
-      (req, res) => {}
+      ["PUBLIC"],
+      passportCall("github", { strategyType: "github" }),
+      sessionsController.loginGitHub
     );
 
     this.get(
       "/githubcallback",
       ["NO_AUTH"],
-      passportCall("github", { strategyType: "locals" }),
+      passportCall("github", { strategyType: "github" }),
       sessionsController.loginGitHub
     );
 
