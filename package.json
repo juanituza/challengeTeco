@@ -7,12 +7,12 @@
   },
   "scripts": {
     "test": "mocha test/supertest.test.js",
-    "start": "node src/app.js",
+    "start": "NODE_OPTIONS='--experimental-specifier-resolution=node' src/app.js",
     "dev": "nodemon src/app.js"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
-  "type": "module",
   "license": "ISC",
   "description": "",
   "dependencies": {
