@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import TicketDTO from "../dto/ticketDTO.js";
 import { emptyCart } from "../constants/cartError.js";
 import ErrorService from "../services/ErrorServicer.js";
-// import EErrors from "../constants/EErrors.js";
+import EErrors from "../constants/EErrors.js";
 import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
 import MailingService from "../services/MailingService.js";
 import DTemplates from "../constants/DTemplates.js";
