@@ -6,9 +6,9 @@
     "node":">=14 <17"
   },
   "scripts": {
-    "test": "mocha test/supertest.test.js",
     "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "test": "mocha test/supertest.test.js"
   },
   "type": "module",
   "keywords": [],
