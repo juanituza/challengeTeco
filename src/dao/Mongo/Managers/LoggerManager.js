@@ -76,4 +76,4 @@ class LoggerService {
   }
 }
 
-export default new LoggerService("prod");
+export default new LoggerService("dev");
