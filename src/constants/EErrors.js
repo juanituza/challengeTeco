@@ -9,6 +9,6 @@ const EErrors = {
   NOT_PRODUCT_IN_THE_CART: 8,
   NON_EXISTENT_PRODUCT: 9,
   DOCUMENT_ALREADY_LOADED: 10,
-  NOT_ADD_PRODUCT:11,
+  NOT_ADD_PRODUCT: 11,
 };
 export default EErrors;
