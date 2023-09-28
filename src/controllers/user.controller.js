@@ -3,7 +3,7 @@ import { usersService } from "../services/repositories/index.js";
 import usersDTO from "../dto/UserDTO.js";
 import { documentsExist } from "../constants/userError.js";
 import ErrorService from "../services/ErrorServicer.js";
-// import EErrors from "../constants/EErrors.js";
+import EErrors from "../constants/EErrors.js";
 import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
 
 const getUsers = async (req, res) => {
