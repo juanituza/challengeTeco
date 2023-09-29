@@ -1,15 +1,16 @@
 <!-- Topbar Start -->
-<div class="container-fluid">
+<div class="container-fluid mb-30 m-3">
 
-  <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex mb-3">
+  <div class="row align-items-center bg-light py-3">
     <div class="col-lg-4">
       <a href="/" class="text-decoration-none">
         <span class="h1 text-uppercase text-primary bg-dark px-2">MK</span>
         <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Rock</span>
       </a>
     </div>
+
     {{#unless user}}
-    <div class="col-lg-4 col-6 text-center">
+    <div class="col-lg-4 me-5 mt-3">
       <div class="btn-group">
         <button type="button" class="h1 text-uppercase text-primary bg-dark px-2 btn btn-sm btn-light dropdown-toggle"
           data-toggle="dropdown">My Account</button>
@@ -21,8 +22,9 @@
       </div>
     </div>
     {{/unless}}
+    <!-- Profile-->
     {{#if user}}
-    <div class="col-lg-4 col-6 text-center">
+    <div class="col-lg-4 col-md-12  text-center py-3 py-lg-0 px-0 ">
       <div class="row shadow m-5">
         <h6>{{user.name}}</h6>
 
@@ -32,7 +34,7 @@
           <h8 class="col-lg-12 col-12">Role : {{user.role}} </h8>
           <a href="/changeRol">
 
-            <button class="col-lg-4 btn btn-info center my-2 mx-3 changesRol">Cambiar role</button>
+            <button class="col-lg-4 btn btn-info center my-2 changesRol">Cambiar role</button>
           </a>
         </div>
         <div class="col-lg-6">
@@ -51,7 +53,7 @@
 
         </div>
         {{/ifRoleIsPremiumOrAdmin}}
-        
+
         <div class="col-lg-12">
           <a href="/ticketId">
 
@@ -65,7 +67,7 @@
               class="fa-solid fa-arrow-right-from-bracket">Logout</i>
           </button>
         </div>
-     
+
         {{#ifRoleAdmin user.role}}
         <div class="col-lg-12">
           <a href="/admin">
@@ -76,13 +78,15 @@
           </a>
 
         </div>
-          {{/ifRoleAdmin}}
+        {{/ifRoleAdmin}}
       </div>
     </div>
 
     {{/if}}
-    <!-- Profile End -->
   </div>
+</div>
+    <!-- Profile End -->
+  
   <!-- Topbar End -->
 
   <!-- Navbar Start -->
@@ -106,10 +110,7 @@
       </div>
       <div class="col-lg-9">
         <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
-          <a href="" class="text-decoration-none d-block d-lg-none">
-            <span class="h1 text-uppercase text-dark bg-light px-2">Multi</span>
-            <span class="h1 text-uppercase text-light bg-primary px-2 ml-n1">Shop</span>
-          </a>
+          
           <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
           </button>

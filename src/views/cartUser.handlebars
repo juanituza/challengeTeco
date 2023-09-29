@@ -2,90 +2,94 @@
    
 
     <!-- Topbar Start -->
-   <div class="container-fluid mb-30 m-3">
+<div class="container-fluid mb-30 mt-3 ">
 
-  <div class="row align-items-center bg-light py-3 ">
-    <div class="col-lg-4">
-      <a href="/" class="text-decoration-none">
-        <span class="h1 text-uppercase text-primary bg-dark px-2">MK</span>
-        <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Rock</span>
-      </a>
-    </div>
+  <div class="container-fluid mb-30 ">
 
-    {{#unless user}}
-    <div class="col-lg-4 me-5 mt-3" >
-      <div class="btn-group">
-        <button type="button" class="h1 text-uppercase text-primary bg-dark px-2 btn btn-sm btn-light dropdown-toggle"
-          data-toggle="dropdown">My Account</button>
-        <div class="dropdown-menu dropdown-menu-right">
-          <a href="/login"><button class="dropdown-item" type="button">Sign in</button></a>
-          <a href="/register"><button class="dropdown-item" type="button">Register</button>
-          </a>
+    <div class="row align-items-center bg-light pt-2">
+      <div class="col-lg-4">
+        <a href="/" class="text-decoration-none">
+          <span class="h1 text-uppercase text-primary bg-dark px-2">MK</span>
+          <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Rock</span>
+        </a>
+      </div>
+  
+      {{#unless user}}
+      <div class="col-lg-4 me-5 mt-3">
+        <div class="btn-group">
+          <button type="button" class="h1 text-uppercase text-primary bg-dark px-2 btn btn-sm btn-light dropdown-toggle"
+            data-toggle="dropdown">My Account</button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a href="/login"><button class="dropdown-item" type="button">Sign in</button></a>
+            <a href="/register"><button class="dropdown-item" type="button">Register</button>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-    {{/unless}}
-    <!-- Profile-->
-    {{#if user}}
-    <div class="col-lg-6 col-md-12 text-center py-3 py-lg-0 px-0 ">
-      <div class="row shadow m-5">
-        <h6>{{user.name}}</h6>
-
-        <h7>Correo: {{user.email}} </h7>
-        {{#ifRoleIsPremiumOrUser user.role }}
-        <div class="col-lg-12">
-          <h8 class="col-lg-12 col-12">Role : {{user.role}} </h8>
-          <a href="/changeRol">
-
-            <button class="col-lg-12 btn btn-info center my-2 changesRol">Cambiar role</button>
-          </a>
+      {{/unless}}
+      <!-- Profile-->
+      {{#if user}}
+      <div class="col-lg-4 col-md-12  text-center py-3 py-lg-0 px-0 ">
+        <div class="row shadow m-5">
+          <h6>{{user.name}}</h6>
+  
+          <h7>Correo: {{user.email}} </h7>
+          {{#ifRoleIsPremiumOrUser user.role }}
+          <div class="col-lg-12">
+            <h8 class="col-lg-12 col-12">Role : {{user.role}} </h8>
+            <a href="/changeRol">
+  
+              <button class="col-lg-4 btn btn-info center my-2 changesRol">Cambiar role</button>
+            </a>
+          </div>
+          <div class="col-lg-6">
+            <a href="/cartsID" class="btn col-lg-4">
+              <i class="fas fa-shopping-cart text-primary fa-2x" style="font-size:30px"></i>
+              <p class="small fw-bold mt-2 pt-1 mb-0">Your cart</p>
+            </a>
+          </div>
+          {{/ifRoleIsPremiumOrUser}}
+          {{#ifRoleIsPremiumOrAdmin user.role}}
+          <div class="col-lg-6">
+            <a href="/createProducts" class="btn">
+              <i class="fa-brands fa-product-hunt text-primary fa-2x" style="font-size:30px"></i>
+              <p class="small fw-bold mt-2 pt-1 mb-0">create product</p>
+            </a>
+  
+          </div>
+          {{/ifRoleIsPremiumOrAdmin}}
+  
+          <div class="col-lg-12">
+            <a href="/ticketId">
+  
+              <button class="col-lg-12 btn btn-info center my-2 logoutContainer"><i
+                  class="fa-regular fa-paste"></i>Tickets
+                History</button>
+            </a>
+          </div>
+          <div class="col-lg-12">
+            <button class="col-lg-12 btn btn-warning center my-2 logoutContainer" id="loguotButton"><i
+                class="fa-solid fa-arrow-right-from-bracket">Logout</i>
+            </button>
+          </div>
+  
+          {{#ifRoleAdmin user.role}}
+          <div class="col-lg-12">
+            <a href="/admin">
+  
+              <button class="col-lg-12 btn btn-success center my-2 logoutContainer"><i
+                  class="fa-regular fa-paste"></i>Admin
+                panel</button>
+            </a>
+  
+          </div>
+          {{/ifRoleAdmin}}
         </div>
-        <div class="col-lg-6">
-          <a href="/cartsID" class="btn col-lg-4">
-            <i class="fas fa-shopping-cart text-primary fa-2x" style="font-size:30px"></i>
-            <p class="small fw-bold mt-2 pt-1 mb-0">Your cart</p>
-          </a>
-        </div>
-        {{/ifRoleIsPremiumOrUser}}
-        {{#ifRoleIsPremiumOrAdmin user.role}}
-        <div class="col-lg-6">
-          <a href="/createProducts" class="btn">
-            <i class="fa-brands fa-product-hunt text-primary fa-2x" style="font-size:30px"></i>
-            <p class="small fw-bold mt-2 pt-1 mb-0">create product</p>
-          </a>
-
-        </div>
-        {{/ifRoleIsPremiumOrAdmin}}
-
-        <div class="col-lg-12">
-          <a href="/ticketId">
-
-            <button class="col-lg-12 btn btn-info center my-2 logoutContainer"><i
-                class="fa-regular fa-paste"></i>Tickets
-              History</button>
-          </a>
-        </div>
-        <div class="col-lg-12">
-          <button class="col-lg-12 btn btn-warning center my-2 logoutContainer" id="loguotButton"><i
-              class="fa-solid fa-arrow-right-from-bracket">Logout</i>
-          </button>
-        </div>
-
-        {{#ifRoleAdmin user.role}}
-        <div class="col-lg-12">
-          <a href="/admin">
-
-            <button class="col-lg-12 btn btn-success center my-2 logoutContainer"><i
-                class="fa-regular fa-paste"></i>Admin
-              panel</button>
-          </a>
-
-        </div>
-        {{/ifRoleAdmin}}
       </div>
+  
+      {{/if}}
     </div>
-
-    {{/if}}
+  </div>
     <!-- Profile End -->   
 
 
@@ -141,9 +145,9 @@
 
 
     <!-- Cart Start -->
-    <div class="container-fluid  ">
-        <div class="row  col-lg-12">
-            <div class="col-lg-12 table-responsive mb-5">
+    <div class="container-fluid ">
+        <div class="row  align-items-center bg-light py-3">
+            <div class="col-lg-12 table-responsive-sm mb-5">
                 <table class="col-lg-12 table table-light table-borderless table-hover text-center mb-0 " >
                     <thead class="thead-dark">
                         <tr>
