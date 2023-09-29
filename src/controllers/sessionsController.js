@@ -66,6 +66,7 @@ const loginGitHub = (req, res) => {
       res.sendInternalError("Internal server error, contact the administrator");
   }
 };
+
 const logout = async (req, res) => {
   res.clearCookie("authToken"); // Eliminar la cookie "authToken"
   res.send({
