@@ -18,7 +18,7 @@ export default class SessionRouter extends BaseRouter {
     );
 
     
-    this.get(
+    this.post(
       "/github",
       ["PUBLIC"],
       passportCall("github", { strategyType: "github" }),
