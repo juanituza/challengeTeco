@@ -14,6 +14,7 @@ export function ifRoleIsPremiumOrUser(userRole, options) {
 }
 
 export function ifRoleAdmin(userRole, options) {
+  
   if (userRole === "ADMIN") {
     return options.fn(this);
   } else {

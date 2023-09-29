@@ -100,7 +100,7 @@ const initializePassportStrategies = () => {
       {
         clientID: "Iv1.fd6853e95ce4c8a5",
         clientSecret: "aff259b7114a590e0c5c51ffb71f7ac4f868bbb2",
-        callbackURL: "http://localhost:8080/api/sessions/githubcallback",
+        callbackURL:"https://backend-project-q2nk.onrender.com/api/sessions/githubcallback",
       },
       async (accessToken, refreshToken, profile, done) => {
         try {

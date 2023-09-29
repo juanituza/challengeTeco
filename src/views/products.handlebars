@@ -62,11 +62,6 @@
               History</button>
           </a>
         </div>
-        <div class="col-lg-12">
-          <button class="col-lg-12 btn btn-warning center my-2 logoutContainer" id="loguotButton"><i
-              class="fa-solid fa-arrow-right-from-bracket">Logout</i>
-          </button>
-        </div>
 
         {{#ifRoleAdmin user.role}}
         <div class="col-lg-12">
@@ -79,156 +74,210 @@
 
         </div>
         {{/ifRoleAdmin}}
+        <div class="col-lg-12">
+          <button class="col-lg-12 btn btn-warning center my-2 logoutContainer" id="loguotButton"><i
+              class="fa-solid fa-arrow-right-from-bracket">Logout</i>
+          </button>
+        </div>
       </div>
     </div>
 
     {{/if}}
   </div>
 </div>
-    <!-- Profile End -->
-  
-  <!-- Topbar End -->
+<!-- Profile End -->
 
-  <!-- Navbar Start -->
-  <div class="container-fluid bg-dark mb-30">
-    <div class="row px-xl-5">
-      <div class="col-lg-3 d-none d-lg-block">
-        <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse"
-          href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
-          <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Categories</h6>
-          <i class="fa fa-angle-down text-dark"></i>
-        </a>
-        <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
-          id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
-          <div class="navbar-nav w-100">
+<!-- Topbar End -->
 
-            <a href="" class="nav-item nav-link">Shirts</a>
-            <a href="" class="nav-item nav-link">Jeans</a>
+<!-- Navbar Start -->
+<div class="container-fluid bg-dark mb-30">
+  <div class="row px-xl-5">
+    <div class="col-lg-3 d-none d-lg-block">
+      <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse"
+        href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
+        <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Categories</h6>
+        <i class="fa fa-angle-down text-dark"></i>
+      </a>
+      <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
+        id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
+        <div class="navbar-nav w-100">
 
-          </div>
-        </nav>
-      </div>
-      <div class="col-lg-9">
-        <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
-          
-          <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-            <div class="navbar-nav mr-auto py-0">
-              <a href="/" class="nav-item nav-link">Home</a>
-              <a href="/products" class="nav-item nav-link active">Shop</a>
-              {{! <a href="detail.html" class="nav-item nav-link">Shop Detail</a> }}
-              <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i
-                    class="fa fa-angle-down mt-1"></i></a>
-                <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                  <a href="/cartsID" class="dropdown-item">Shopping Cart</a>
-                  <a href="/ticket" class="dropdown-item">Checkout</a>
-                </div>
-              </div>
-              <a href="contact.html" class="nav-item nav-link">Contact</a>
-            </div>
+          <a href="" class="nav-item nav-link">Shirts</a>
+          <a href="" class="nav-item nav-link">Jeans</a>
 
-          </div>
-        </nav>
-      </div>
+        </div>
+      </nav>
     </div>
-  </div>
-  <!-- Navbar End -->
+    <div class="col-lg-9">
+      <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
 
-  <!-- Breadcrumb Start -->
-  <div class="container-fluid">
-    <div class="row px-xl-5">
-      <div class="col-12">
-        <nav class="breadcrumb bg-light mb-30">
-          <a class="breadcrumb-item text-dark" href="#">Home</a>
-          <a class="breadcrumb-item text-dark" href="#">Shop</a>
-          <span class="breadcrumb-item active">Shop List</span>
-        </nav>
-      </div>
-    </div>
-  </div>
-  <!-- Breadcrumb End -->
-
-  <!-- Shop Start -->
-  <div class="container-fluid">
-    <div class="row px-xl-5">
-
-      <!-- Shop Product Start -->
-      <div class="col-lg-9 col-md-8">
-        <div class="row pb-3">
-
-          {{#each allProducts}}
-
-
-          <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
-            <div class="product-item bg-light mb-4">
-              <div class="product-img position-relative overflow-hidden">
-
-                <img class="img-fluid" src="{{this.thumbnail}}" alt="Products" />
-                <div class="product-action">
-
-                </div>
-              </div>
-              <div class="text-center py-4"></div>
-
-              <div class="text-center py-4">
-                <h4>{{this.title}} {{this.description}} </h4>
-                <div class="d-flex align-items-center justify-content-center mt-2">
-                  <h6>${{this.price}}</h6>
-                </div>
-                <div class="d-flex align-items-center justify-content-center mt-2">
-                  <h7>Stock: {{this.stock}}</h7>
-                </div>
-                <div class="d-flex align-items-center justify-content-center mt-2">
-                  <h7>Tienda: {{this.owner}}</h7>
-                </div>
-                <div class="text-center py-4">
-                  <i class="fa fa-shopping-cart"></i>
-                  <button class="btn ButtonProduct" id="{{this.id}}">
-                    Add product in Cart
-                  </button>
-                </div>
-                <div class="d-flex align-items-center justify-content-center mb-1">
-                  <small class="fa fa-star text-primary mr-1"></small>
-                  <small class="fa fa-star text-primary mr-1"></small>
-                  <small class="fa fa-star text-primary mr-1"></small>
-                  <small class="fa fa-star text-primary mr-1"></small>
-                  <small class="fa fa-star-half-alt text-primary mr-1"></small>
-                  <small>(99)</small>
-                </div>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+          <div class="navbar-nav mr-auto py-0">
+            <a href="/" class="nav-item nav-link">Home</a>
+            <a href="/products" class="nav-item nav-link active">Shop</a>
+            {{! <a href="detail.html" class="nav-item nav-link">Shop Detail</a> }}
+            <div class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i
+                  class="fa fa-angle-down mt-1"></i></a>
+              <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
+                <a href="/cartsID" class="dropdown-item">Shopping Cart</a>
+                <a href="/ticket" class="dropdown-item">Checkout</a>
               </div>
             </div>
-          </div>
-          {{/each}}
-
-          <div>
-            <ul class="pagination justify-content-center">
-              {{#if hasPrevPage}}
-              <li class="page-item active"><a class="page-link" href="/products?page={{prevPage}}">Previous</a></li>
-              {{else}}
-              <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-              {{/if}}
-              <li class="page-item">
-                <p class="page-link"> {{page}}</p>
-              </li>
-              {{#if hasNextPage}}
-              <li class="page-item active">
-                <a class="page-link" href="/products?page={{nextPage}}">Next</a>
-              </li>
-              {{else}}
-              <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-              {{/if}}
-
-            </ul>
+            <a href="contact.html" class="nav-item nav-link">Contact</a>
           </div>
 
         </div>
+      </nav>
+    </div>
+  </div>
+</div>
+<!-- Navbar End -->
+
+
+
+<!-- Shop Start -->
+<div class="container-fluid">
+  <div class="row px-xl-5">
+
+    <!-- Shop Product Start -->
+    <div class="col-lg-9 col-md-8">
+      <div class="row pb-3">
+
+        {{#ifRoleAdmin user.role}}
+        {{#each allProducts }}
+
+
+        <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+          <div class="product-item bg-light mb-4">
+            <div class="product-img position-relative overflow-hidden">
+
+              <img class="img-fluid" src="{{this.thumbnail}}" alt="Products" />
+              <div class="product-action">
+
+              </div>
+            </div>
+            <div class="text-center py-4"></div>
+
+            <div class="text-center py-4">
+              <h4>{{this.title}} {{this.description}} </h4>
+              <div class="d-flex align-items-center justify-content-center mt-2">
+                <h6>${{this.price}}</h6>
+              </div>
+              <div class="d-flex align-items-center justify-content-center mt-2">
+                <h7>Stock: {{this.stock}}</h7>
+              </div>
+              <div class="d-flex align-items-center justify-content-center mt-2">
+                <h7>Tienda: {{this.owner}}</h7>
+              </div>
+              <div class="text-center m-3">
+                <button class="btn btn-warning" id="{{this.id}}">
+                  <i class="fa fa-shopping-cart"></i>
+                  Add product in Cart
+                </button>
+              </div>
+
+              <div class="text-richt m-3">
+                <button class="btn btn-danger deleteProd" id="{{this.id}}">
+                  <i class="fa fa-trash"></i> Delete
+                </button>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-center mb-1">
+                <small class="fa fa-star text-primary mr-1"></small>
+                <small class="fa fa-star text-primary mr-1"></small>
+                <small class="fa fa-star text-primary mr-1"></small>
+                <small class="fa fa-star text-primary mr-1"></small>
+                <small class="fa fa-star-half-alt text-primary mr-1"></small>
+                <small>(99)</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {{/each}}
+        {{/ifRoleAdmin}}
+        {{#ifRoleIsPremiumOrUser user.role }}
+        {{#each allProducts }}
+
+
+        <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+          <div class="product-item bg-light mb-4">
+            <div class="product-img position-relative overflow-hidden">
+
+              <img class="img-fluid" src="{{this.thumbnail}}" alt="Products" />
+              <div class="product-action">
+
+              </div>
+            </div>
+            <div class="text-center py-4"></div>
+
+            <div class="text-center py-4">
+              <h4>{{this.title}} {{this.description}} </h4>
+              <div class="d-flex align-items-center justify-content-center mt-2">
+                <h6>${{this.price}}</h6>
+              </div>
+              <div class="d-flex align-items-center justify-content-center mt-2">
+                <h7>Stock: {{this.stock}}</h7>
+              </div>
+              <div class="d-flex align-items-center justify-content-center mt-2">
+                <h7>Tienda: {{this.owner}}</h7>
+              </div>
+              <div class="text-center m-3">
+                <button class="btn btn-warning" id="{{this.id}}">
+                  <i class="fa fa-shopping-cart"></i>
+                  Add product in Cart
+                </button>
+
+              </div>
+
+
+              <div class="d-flex align-items-center justify-content-center mb-1">
+                <small class="fa fa-star text-primary mr-1"></small>
+                <small class="fa fa-star text-primary mr-1"></small>
+                <small class="fa fa-star text-primary mr-1"></small>
+                <small class="fa fa-star text-primary mr-1"></small>
+                <small class="fa fa-star-half-alt text-primary mr-1"></small>
+                <small>(99)</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {{/each}}
+        {{/ifRoleIsPremiumOrUser}}
+
+
+
+        <div>
+          <ul class="pagination justify-content-center">
+            {{#if hasPrevPage}}
+            <li class="page-item active"><a class="page-link" href="/products?page={{prevPage}}">Previous</a></li>
+            {{else}}
+            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+            {{/if}}
+            <li class="page-item">
+              <p class="page-link"> {{page}}</p>
+            </li>
+            {{#if hasNextPage}}
+            <li class="page-item active">
+              <a class="page-link" href="/products?page={{nextPage}}">Next</a>
+            </li>
+            {{else}}
+            <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+            {{/if}}
+
+          </ul>
+        </div>
+
       </div>
     </div>
-    <!-- Shop Product End -->
   </div>
+  <!-- Shop Product End -->
+</div>
 </div>
 <!-- Shop End -->
 
@@ -324,3 +373,4 @@
 <script src="js/main.js"></script>
 <script src="js/addCart.js"></script>
 <script src="js/logout.js"></script>
+<script src="js/deleteProduct.js"></script>
