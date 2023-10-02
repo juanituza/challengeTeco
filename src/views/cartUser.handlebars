@@ -2,9 +2,9 @@
    
 
     <!-- Topbar Start -->
-<div class="container-fluid mb-30 mt-3 ">
+<div class="container-fluid  my-3">
 
-  <div class="container-fluid mb-30 ">
+  <div class="container-fluid my-3 ">
 
     <div class="row align-items-center bg-light pt-2">
       <div class="col-lg-4">
@@ -67,11 +67,6 @@
                 History</button>
             </a>
           </div>
-          <div class="col-lg-12">
-            <button class="col-lg-12 btn btn-warning center my-2 logoutContainer" id="loguotButton"><i
-                class="fa-solid fa-arrow-right-from-bracket">Logout</i>
-            </button>
-          </div>
   
           {{#ifRoleAdmin user.role}}
           <div class="col-lg-12">
@@ -84,6 +79,11 @@
   
           </div>
           {{/ifRoleAdmin}}
+          <div class="col-lg-12">
+            <button class="col-lg-12 btn btn-warning center my-2 logoutContainer" id="loguotButton"><i
+                class="fa-solid fa-arrow-right-from-bracket">Logout</i>
+            </button>
+          </div>
         </div>
       </div>
   
@@ -95,7 +95,7 @@
 
 
     <!-- Navbar Start -->
-    <div class="container-fluid bg-dark mb-30">
+    <div class="container-fluid bg-dark ">
         <div class="row px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
@@ -125,10 +125,10 @@
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
                                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
                                     <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                    <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                    
                                 </div>
                             </div>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                          
                         </div>
                         
                     </div>
@@ -163,7 +163,8 @@
     
 
                     <tbody class="align-middle">
-                        {{#each cartSelected.products}}
+                      {{#with cartSelected as |cart|}}
+                        {{#each cart.products}}
                         <tr>
                             
                             <td class="align-middle">
@@ -172,28 +173,40 @@
                                 {{/each}} 
             
                             </td>
-                            <td>{{product.title}} {{product.description}}</td>   
+                            <td class="align-middle">{{product.title}} {{product.description}}</td>   
                             <td class="align-middle">${{product.price}}</td>
                             <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                       
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value={{quantity}}>
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
+                              <form class="quantity-form">
+
+                                <div class="input-group quantity mx-auto" style="max-width: 200px;">
+                                  <div class="input-group-prepend">
+                                  <button type="button" class="btn btn-sm btn-primary btn-minus m-1">
+                                    <i class="fa fa-minus"></i>
+                                  </button>
+                                  </div>
+                                  <input id="quantityInput_{{product._id}}" name="quantityInput_{{product._id}}" type="text"
+                                    class="form-control form-control-sm bg-secondary border-0 text-center m-1" value="{{quantity}}"  data-quantity="{{quantity}}" readonly />
+                                  <div class="input-group-append">
+                                    <button type="button" class="btn btn-sm btn-primary btn-plus m-1">
+                                      <i class="fa fa-plus"></i>
+                                    </button>
+                                  </div>
+                                  <div>
+                                    <button type="button" class="btn btn-sm btn-success btn-accept productId m-1" data-cid="{{cart._id}}"
+                                      data-pid="{{product._id}}">
+                                      Guardar
+                                    </button>
+                                  </div>
                                 </div>
+                              </form>
+
+
                             </td>
                           
-                            <td class="align-middle"><button class="btn btn-sm btn-danger deleteProd" id="{{product._id}}"><i class="fa fa-times"></i></button></td>
+                            <td class="align-middle"><button class="btn btn-sm btn-danger deleteProd"  id="{{product._id}}"><i class="fa fa-times"></i></button></td>
                         </tr>
                         {{/each}}
+                        {{/with}}
                         
                     </tbody>
                 </table>
@@ -206,8 +219,8 @@
             
         </div>
     </div>
+</div>
     <!-- Cart End -->
-
 
     
 
@@ -227,3 +240,6 @@
     <script src="js/deleteProductCart.js"></script>
     <script src="js/ticket.js"></script>
     <script src="js/logout.js"></script>
+    <script src="js/editQuantity.js"></script>
+
+   

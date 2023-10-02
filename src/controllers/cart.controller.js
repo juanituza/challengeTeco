@@ -157,7 +157,8 @@ const editCart = async (req, res) => {
 
 const editQuantity = async (req, res) => {
   try {
-    const { cid, pid } = req.params;
+    const { pid } = req.params;
+    const cid = req.user.cart;
     const { quantity } = req.body;
     const cart = await cartService.getCartsBy(cid);
 

@@ -27,7 +27,12 @@ export default class CartRouter extends BaseRouter {
       passportCall("jwt", { strategyType: "jwt" }),
       cartController.editCart
     );
-    this.put("/:cid/products/:pid", ["USER"], passportCall("jwt", { strategyType: 'jwt' }), cartController.editQuantity);
+    this.put(
+      "/:cid/products/:pid",
+      ["USER", "PREMIUM"],
+      passportCall("jwt", { strategyType: "jwt" }),
+      cartController.editQuantity
+    );
     this.put("/vaciarCarrito", ["USER","PREMIUM"], passportCall("jwt", { strategyType: 'jwt' }), cartController.emptycart);
     this.delete(
       "/products/:pid",
