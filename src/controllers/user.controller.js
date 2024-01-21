@@ -58,7 +58,7 @@ const editUsers = async (req, res) => {
       { _id: userId },
       { role: userUpdate }
     );
-
+  
     // res.sendSuccessWithPayload({ result });
     res.sendSuccess("User update");
   } catch (error) {

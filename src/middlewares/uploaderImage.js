@@ -6,6 +6,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // Define la carpeta donde se guardarán los archivos (ajusta la ruta según tus necesidades)
     cb(null, `${__dirname}/public/uploads/products`);
+    
   },
   filename: (req, file, cb) => {
     // Define el nombre de los archivos cargados (puedes personalizarlo según tus necesidades)
