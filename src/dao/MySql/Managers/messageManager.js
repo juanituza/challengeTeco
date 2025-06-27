@@ -1,4 +1,4 @@
-import messageModel from "../../Mongo/models/message.js";
+import messageModel from "../../MySql/models/message.js";
 
 
 

@@ -8,12 +8,12 @@ import viewController from "../controllers/viewController.js";
 export default class ViewsRouter extends BaseRouter {
   init() {
     this.get("/", ["PUBLIC"], viewController.homeView);
-    this.get(
-      "/products",
-      ["PUBLIC"],
-      passportCall("jwt", { strategyType: "jwt" }, { redirect: "/login" }),
-      viewController.productsView
-    );
+    // this.get(
+    //   "/products",
+    //   ["PUBLIC"],
+    //   passportCall("jwt", { strategyType: "jwt" }, { redirect: "/login" }),
+    //   viewController.productsView
+    // );
     this.get(
       "/createProducts",
       ["PREMIUM", "ADMIN"],

@@ -1,5 +1,5 @@
 import { Logger } from "winston";
-import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
+import LoggerService from "../dao/MySql/Managers/LoggerManager.js";
 
 
 

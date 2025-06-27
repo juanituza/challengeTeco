@@ -4,7 +4,7 @@ import usersDTO from "../dto/UserDTO.js";
 import { documentsExist } from "../constants/userError.js";
 import ErrorService from "../services/ErrorServicer.js";
 import EErrors from "../constants/EErrors.js";
-import LoggerService from "../dao/Mongo/Managers/LoggerManager.js";
+import LoggerService from "../dao/MySql/Managers/LoggerManager.js";
 
 const getUsers = async (req, res) => {
   const users = await usersService.getUsers();
