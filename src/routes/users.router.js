@@ -1,19 +1,15 @@
 import BaseRouter from "./baseRouter.js";
 
-import userController from "../controllers/user.controller.js";
-import {passportCall} from "../utils.js";
-import upload from "../middlewares/uploader.js";
+import userController from "../controllers/usuarios.controlador.js";
+import {llamarPasaporte} from "../utils.js";
 // const router = Router();
 
 export default class UserRouter extends BaseRouter{
   init(){
-    this.get("/admin", ["ADMIN"], passportCall("jwt", { strategyType: 'locals' }),userController.getUsers);
-    this.post("/", ["USER", "ADMIN"], passportCall("jwt", { strategyType: 'locals' }), userController.saveUsers);
-    // this.put("/role", ["USER","PREMIUM", "ADMIN"], passportCall("jwt", { strategyType: 'locals' }), userController.modificateRole );
-    // this.put("/premium/:uid", ["USER", "PREMIUM", "ADMIN"],passportCall("jwt", { strategyType: "locals" }),userController.modificateRole);
-    this.put("/:uid", ["USER", "ADMIN"], passportCall("jwt", { strategyType: 'locals' }), userController.editUsers );
-    this.delete("/:uid", ["USER", "ADMIN"], passportCall("jwt", { strategyType: 'locals' }), userController.deleteUsers);
-    // this.post("/:uid/documents",["USER"],passportCall("jwt", { strategyType: "locals" }),upload.any(),userController.uploadFiles);
+    this.get("/admin", ["ADMIN"], llamarPasaporte("jwt", { strategyType: 'locals' }),userController.obtenerUsaruios);
+    this.post("/", ["ADMIN"], llamarPasaporte("jwt", { strategyType: 'locals' }), userController.guardarUsuarios);
+    this.put("/:uid", ["ADMIN"], llamarPasaporte("jwt", { strategyType: 'locals' }), userController.editarUsuario );
+    this.delete("/:uid", ["ADMIN"], llamarPasaporte("jwt", { strategyType: 'locals' }), userController.eliminarUsuario);
   }
 }
 

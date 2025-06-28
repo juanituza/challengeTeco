@@ -1,6 +1,6 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
-import { passportCall } from "../utils.js";
+import { llamarPasaporte } from "../utils.js";
 
 export default class BaseRouter {
   constructor() {
@@ -17,7 +17,8 @@ export default class BaseRouter {
   get(path, policies, ...callbacks) {
     this.router.get(
       path,
-      passportCall("jwt", { strategyType: "jwt" }),
+      
+      llamarPasaporte("jwt", { strategyType: "jwt" }),
       this.handlePolicies(policies),
       this.generateCustomResponses,
       this.applyCallbacks(callbacks)
@@ -27,7 +28,7 @@ export default class BaseRouter {
   post(path, policies, ...callbacks) {
     this.router.post(
       path,
-      passportCall("jwt", { strategyType: "jwt" }),
+      llamarPasaporte("jwt", { strategyType: "jwt" }),
       this.handlePolicies(policies),
       this.generateCustomResponses,
       this.applyCallbacks(callbacks)
@@ -37,7 +38,7 @@ export default class BaseRouter {
   put(path, policies, ...callbacks) {
     this.router.put(
       path,
-      passportCall("jwt", { strategyType: "jwt" }),
+      llamarPasaporte("jwt", { strategyType: "jwt" }),
       this.handlePolicies(policies),
       this.generateCustomResponses,
       this.applyCallbacks(callbacks)
@@ -47,7 +48,7 @@ export default class BaseRouter {
   delete(path, policies, ...callbacks) {
     this.router.delete(
       path,
-      passportCall("jwt", { strategyType: "jwt" }),
+      llamarPasaporte("jwt", { strategyType: "jwt" }),
       this.handlePolicies(policies),
       this.generateCustomResponses,
       this.applyCallbacks(callbacks)

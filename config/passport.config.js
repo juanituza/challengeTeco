@@ -2,8 +2,8 @@ import passport from "passport";
 import config from "../src/config.js";
 import local from "passport-local";
 import {
-  usersService,
-} from "../src/services/repositories/index.js";
+  servicioUsuarios
+} from "../src/services/repositorios/index.js";
 // import { Strategy, ExtractJwt } from "passport-jwt";
 import { jwtExtractor, createHash, validatePassword } from "../src/utils.js";
 
@@ -24,7 +24,7 @@ const initializePassportStrategies = () => {
       async (req, email, password, done) => {
         try {
           const { nombre, role } = req.body;
-          const exist = await usersService.getUserBy({ email });
+          const exist = await servicioUsuarios.obtenerUsuarioPor({ email });
           // const exist = await userModel.findOne({ email });
 
           if (exist) return done(null, false, { message: "User exist" }, LoggerService.error("User exist"));
@@ -38,7 +38,7 @@ const initializePassportStrategies = () => {
           };
 
           // const result = await userModel.create(user);
-          const result = await usersService.createUser(user);
+          const result = await servicioUsuarios.crearUsuario(user);
           done(null, result);
         } catch (error) {
           done(error);
@@ -63,7 +63,7 @@ const initializePassportStrategies = () => {
           return done(null, User);
         }
         let user;
-        user = await usersService.getUserBy({ email });
+        user = await servicioUsuarios.obtenerUsuarioPor({ email });
         if (!user)
           return done(null, false, { message: "Incorrect credentials" });
 

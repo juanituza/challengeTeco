@@ -1,6 +1,7 @@
 import mysql from 'mysql2/promise';
 import config from '../../config.js';
 
+//Creo la conexión a la base de datos MySQL utilizando el pool de conexiones
 const pool = mysql.createPool({
   host: config.connection.HOST,
   user: config.connection.USER,

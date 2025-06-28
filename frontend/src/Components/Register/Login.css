@@ -1,0 +1,71 @@
+.cardLogin {
+  border-radius: 30px;
+  box-shadow: 0 2px 10px rgba(13, 109, 253, 0.589);
+  /* background: #4400A3; */
+background: linear-gradient(90deg,rgba(132, 179, 250, 1) 0%, rgba(201, 212, 240, 1) 50%, rgba(235, 235, 235, 1) 100%);
+}
+
+.titleChallenge {
+    border-radius: 20px 0 0 20px;
+    box-shadow: 0 2px 10px  rgba(13, 109, 253, 0.589);
+    background-color: #dfe0e2;
+}
+.titleTeco {
+    border-radius: 0px 20px 20px 0px;
+    box-shadow: 0 2px 10px  rgba(13, 109, 253, 0.589);
+    background-color: #4400A3;
+    color: #dfe0e2 !important;
+}
+
+.contenedorLogin {
+    
+    background: #4400A3;
+    background: linear-gradient(90deg,rgba(132, 179, 250, 1) 0%, rgba(201, 212, 240, 1) 50%, rgba(235, 235, 235, 1) 100%);
+}
+.boton {
+    background-color: #4400A3 !important;
+    color: #dfe0e2 !important;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(13, 109, 253, 0.589);
+    border: none !important;
+}
+
+.boton:hover {
+    background-color: #3688da !important;
+    color: #dfe0e2 !important;
+    box-shadow: 0 2px 10px rgba(13, 109, 253, 0.589);
+}
+
+
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-underline {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 0.75rem;
+  border: none;
+  border-bottom: 2px solid #424242;
+  background-color: transparent;
+  outline: none;
+  font-size: 1rem;
+  color: #4400A3;
+  transition: border-color 0.3s ease;
+  border-radius: 0;
+}
+
+.input-underline:focus {
+  border-bottom: 2px solid #3688da;
+}
+
+
+
+.label-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+

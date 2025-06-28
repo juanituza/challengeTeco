@@ -3,18 +3,14 @@ import path from 'path';
 
 import cookieParser from "cookie-parser";
 import config from "./config.js";
-import attachLogger from "./middlewares/logger.js";
+import cors from 'cors';
 
-
-// import PersistenceFactory from "./dao/Factory.js";
 import MySQLSingleton  from "./MySQLSingleton.js";
-import UserRouter from "./routes/users.router.js";
 
-import SessionRouter from "./routes/sessions.router.js";
-import ViewsRouter from "./routes/views.router.js";
+import UserRouter from "./routes/users.router.js";
+import SesionesRutas from "./routes/sesiones.router.js";
 
 import __dirname from "./utils.js";
-// import { Server } from "socket.io";
 
 import initializePassportStrategies from "../config/passport.config.js";
 import LoggerService from "./dao/MySql/Managers/LoggerManager.js";
@@ -30,13 +26,19 @@ const PORT = config.app.PORT;
 MySQLSingleton.getInstance();
 
 
+// Configurar CORS para permitir solicitudes desde localhost:5173
+app.use(cors({
+  origin: 'http://localhost:5173', //URL y puerto del frontend
+  credentials: true, // si usás cookies o autenticación que requiere credenciales
+}));
+
 
 //Server de escucha
 const server = app.listen(PORT, () =>
   LoggerService.info(`Listening on ${PORT}`)
 );
 
-
+//Initializar las estrategias de Passport
 initializePassportStrategies();
 
 
@@ -46,20 +48,19 @@ initializePassportStrategies();
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(express.static(`${__dirname}/public`));
 
-
-// const __dirname = path.resolve(); // si usás módulos ES
-
+// Configurar el directorio estático para servir archivos del frontend
 app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
 
 
-
+//Configurar las rutas de la API
 const userRouter = new UserRouter();
-const sessionRouter = new SessionRouter();
-const viewsRouter = new ViewsRouter();
+const sesionesRutas = new SesionesRutas();
+
 
 app.use("/api/users", userRouter.getRouter());
-app.use("/api/sessions", sessionRouter.getRouter());
+app.use("/api/sesiones", sesionesRutas.getRouter());
 
-app.use("/", viewsRouter.getRouter());
+
+
+
