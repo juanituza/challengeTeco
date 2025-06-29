@@ -22,14 +22,14 @@ export default class administradorUsuarios {
   }
 
   async crearUsuario(user) {
-    const { nombre, email, password, rol = 'viewer' } = user;
-    console.log(user);
+   // Insertar usuario
+  await pool.query("INSERT INTO usuarios SET ?", user);
+
+  // Obtener usuario completo con valores por defecto (como rol)
+  const [rows] = await pool.query("SELECT * FROM usuarios WHERE email = ?", [user.email]);
+   
     
-    const [result] = await pool.query(
-      "INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, ?)",
-      [nombre, email, password, rol]
-    );
-    return { id: result.insertId, ...user };
+  return rows[0];
   }
 
   async editarUsuario(id, updatedFields) {

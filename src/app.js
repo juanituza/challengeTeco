@@ -12,7 +12,7 @@ import SesionesRutas from "./routes/sesiones.router.js";
 
 import __dirname from "./utils.js";
 
-import initializePassportStrategies from "../config/passport.config.js";
+import initializePassportStrategies from "./config/passport.config.js";
 import LoggerService from "./dao/MySql/Managers/LoggerManager.js";
 
 

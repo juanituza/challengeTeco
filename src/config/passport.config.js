@@ -1,13 +1,13 @@
 import passport from "passport";
-import config from "../src/config.js";
+import config from "../config.js";
 import local from "passport-local";
 import {
   servicioUsuarios
-} from "../src/services/repositorios/index.js";
+} from "../services/repositorios/index.js";
 // import { Strategy, ExtractJwt } from "passport-jwt";
-import { jwtExtractor, createHash, validatePassword } from "../src/utils.js";
+import { jwtExtractor, createHash, validatePassword } from "../utils.js";
 
-import LoggerService from "../src/dao/MySql/Managers/LoggerManager.js";
+import LoggerService from "../dao/MySql/Managers/LoggerManager.js";
 
 import { Strategy as JWTStrategy } from "passport-jwt";
 
@@ -23,8 +23,8 @@ const initializePassportStrategies = () => {
       { passReqToCallback: true, usernameField: "email" },
       async (req, email, password, done) => {
         try {
-          const { nombre, role } = req.body;
-          const exist = await servicioUsuarios.obtenerUsuarioPor({ email });
+          const { nombre , rol } = req.body;
+          const exist = await servicioUsuarios.obtenerUsuarioPor({ email  });
           // const exist = await userModel.findOne({ email });
 
           if (exist) return done(null, false, { message: "User exist" }, LoggerService.error("User exist"));
@@ -34,7 +34,7 @@ const initializePassportStrategies = () => {
             nombre,
             email,
             password: hashedPassword,
-            role,
+            rol: rol || 'VIEWER', // Default role if not provided   
           };
 
           // const result = await userModel.create(user);
@@ -57,7 +57,7 @@ const initializePassportStrategies = () => {
           const User = {
             id: 0,
             name: `ADMIN`,
-            role: "ADMIN",
+            rol: "ADMIN",
             email: config.admin.USER,
           }; 
           return done(null, User);
@@ -65,22 +65,22 @@ const initializePassportStrategies = () => {
         let user;
         user = await servicioUsuarios.obtenerUsuarioPor({ email });
         if (!user)
-          return done(null, false, { message: "Incorrect credentials" });
+          return done(null, false, { message: "Credenciales incorrectas" });
 
         const isValidPassword = await validatePassword(password, user.password);
 
         if (!isValidPassword)
-          return done(null, false, { message: "Wrong password" });
+          return done(null, false, { message: "Password incorrecto" });
 
 
         //creo la sesión
 
         user = {
-          _id: user._id,
+          id: user.id,
           nombre: user.nombre,
           email: user.email,
-          role: user.role,
-          status: user.status,
+          rol: user.rol  ,
+         
         };
 
 

@@ -17,7 +17,7 @@ export const llamarPasaporte = (strategy, options = {}) => {
       if (error) return next(error);
 
       if (!options.strategyType) {
-        req.error = "No strategy defined";
+        req.error = "Estrategia no definida";
       } else if (!user) {
         switch (options.strategyType) {
           case "jwt":
@@ -25,7 +25,7 @@ export const llamarPasaporte = (strategy, options = {}) => {
             return next();
 
           case "locals":
-            return res.sendUnauthorized(info?.message || info?.toString());
+            return res.enviarNoAutorizado(info?.message || info?.toString());
         }
       }
 

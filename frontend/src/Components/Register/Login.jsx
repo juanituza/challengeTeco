@@ -16,7 +16,7 @@ function Login() {
     const { setIsAuthenticated } = useAuth();
 
 
-   
+
 
 
     const handleSubmit = async (e) => {
@@ -35,18 +35,20 @@ function Login() {
             const responseData = await response.json();
 
             if (responseData.status === "success") {
-                
+
                 Swal.fire({
                     title: 'Successfully logged in',
-                    text: 'You will be redirected to the home page',
+                    text: 'Redirecting to home...',
                     icon: 'success',
-                    confirmButtonText: 'OK',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        setIsAuthenticated(true);
-                        navigate("/home");
-                    }
+                    timer: 2000,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                }).then(() => {
+                    setIsAuthenticated(true);
+                    navigate("/home");
                 });
+
+
             } else {
                 Swal.fire({
                     icon: "error",

@@ -6,10 +6,11 @@ import {  generarToken } from "../utils.js";
 const registro = async (req, res) => {
   try {    
     LoggerService.logger.info(`Usuario registrado: ${req.user.email}`);
-    res.sendSuccess("Usuario registrado exitosamente");
+
+    res.enviarExito("Usuario registrado exitosamente");
   } catch (error) {
     LoggerService.logger.error("Error en registro:", error);
-    res.sendInternalError("Error interno, contactá al administrador");
+    res.enviarErrorInterno("Error interno, contactá al administrador");
   }
 };
 //Funcion para manejar el inicio de sesión de usuarios
@@ -17,6 +18,8 @@ const iniciarSesion = async (req, res) => {
   try {
     //Generar el token de acceso
     const accessToken = generarToken(req.user);
+    console.log(req.user);
+    
     //envío el token por el body para que el front lo guardo
     res
       .cookie("authToken", accessToken, {
@@ -24,9 +27,9 @@ const iniciarSesion = async (req, res) => {
         httpOnly: true,
         sameSite: "strict",
       })
-      .sendSuccess("Usuario logueado exitosamente");
+      .enviarExito("Usuario logueado exitosamente");
   } catch (error) {
-    res.sendInternalError("Error interno, contactá al administrador");
+    res.enviarErrorInterno("Error interno, contactá al administrador");
   }
 };
 

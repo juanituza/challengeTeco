@@ -1,0 +1,17 @@
+.back-home{
+    cursor: pointer;
+    color: blue;
+    text-Decoration : underline;
+    display: inline-block;
+    margin-bottom: 1rem;
+
+    
+}
+.character-container{
+    width: 160px;
+    box-shadow: 0 2px 5px rgba(13, 109, 253, 0.589);
+}
+.imagen-pokemon{
+    width: 120px;
+    margin: 0 auto;
+}

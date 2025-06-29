@@ -7,6 +7,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -17,12 +18,17 @@ export function AuthProvider({ children }) {
 
         const data = await res.json();
         
-        setIsAuthenticated(
-  data.status === "success" ||
-  (data.status === "error" && data.message.includes("Ya estás autenticado"))
-);
+        if (data.status === "success") {
+          setIsAuthenticated(true);
+          
+          setUser(data.payload); // 👈 muy importante
+        } else {
+          setIsAuthenticated(false);
+          setUser(null);
+        }
       } catch (err) {
         setIsAuthenticated(false);
+        setUser(null);
       }
     };
 
@@ -30,7 +36,10 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+    <AuthContext.Provider value={{  isAuthenticated,
+      setIsAuthenticated,  // 👈 esto faltaba
+      user,
+      setUser   }}>
       {children}
     </AuthContext.Provider>
   );

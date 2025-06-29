@@ -1,0 +1,12 @@
+.pokeapi {
+  max-width: 200px;
+  height: auto;
+}
+
+
+.title {
+  color: #4400A3;
+  font-size: 40px;
+  font-family: cursive, sans-serif;
+  margin-bottom: 0;
+}

@@ -9,11 +9,11 @@ import LoggerService from "../dao/MySql/Managers/LoggerManager.js";
 // Obtener los usuarios
 const obtenerUsaruios = async (req, res) => {
   //Obtener los usuarios desde el servicio
-  const usuarios = await servicioUsuarios.getUsers();
+  const usuarios = await servicioUsuarios.obtenerUsuarios();
   //
   const analizadorUsuarios = usuarios.map((usuario) => new usersDTO(usuario));
   
-  res.sendSuccessWithPayload(analizadorUsuarios);
+  res.enviarExitoConCarga(analizadorUsuarios);
 };
 
 // Guardar un nuevo usuario
@@ -27,10 +27,11 @@ const guardarUsuarios = async (req, res) => {
         .status(400)
         .send({ status: "error", payload: "Datos Incompletos" });
     //Crear un usuario con los datos capturados
-    const resultado = await servicioUsuarios.createUser(usuario);
-    res.sendSuccessWithPayload({ resultado });
+    const resultado = await servicioUsuarios.crearUsuario(usuario);
+    console.log("✅ Usuario registrado:", resultado);
+    res.enviarExitoConCarga({ resultado });
   } catch (error) {
-    res.sendInternalError("Internal error");
+    res.enviarErrorInterno("Internal error");
   }
 };
 
@@ -42,15 +43,15 @@ const editarUsuario = async (req, res) => {
     //Capturar los datos del usuario desde el cuerpo de la solicitud
     const usuarioEditado = req.body.role;
     //Editar el usuario
-    await servicioUsuarios.updateUser(
+    await servicioUsuarios.editarUsuario(
       { _id: usuarioId },
       { role: usuarioEditado }
     );
   
     // res.sendSuccessWithPayload({ result });
-    res.sendSuccess("Usuario actualizado correctamente");
+    res.enviarExito("Usuario actualizado correctamente");
   } catch (error) {
-    res.sendInternalError("Error interno, contactá al administrador");
+    res.enviarErrorInterno("Error interno, contactá al administrador");
   }
 };
 // Eliminar usuario
@@ -58,8 +59,8 @@ const eliminarUsuario = async (req, res) => {
   //Capturar el ID del usuario desde los parámetros de la solicitud
   const usuarioId = req.params.uid;
   //Eliminar el usuario
-  await servicioUsuarios.deleteUser({ _id: usuarioId });
-  res.sendSuccess("usuario eliminado correctamente");
+  await servicioUsuarios.eliminarUsuario({ _id: usuarioId });
+  res.enviarExito("usuario eliminado correctamente");
 };
 
 

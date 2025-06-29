@@ -1,28 +1,24 @@
 import React from "react";
-// import "./NavBar.css";
-
-// import useFetch from "../../hooks/useFetch.jsx";
-import { Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-// import BounceLoader from "react-spinners/BounceLoader";
+import { useNavigate } from "react-router-dom";
+import "./Home.css";
 
 const Home = () => {
-   
+  const navegar = useNavigate();
 
-    return (
+  const LinkPokedex = () => {
+    navegar("/pokedex");
+  };
 
-        <div className="row">
-            
-                  <h1>HOLA!</h1>
-            
-
-
-
-
-
-
-        </div>
-    );
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+      <h1 className="title">Pokédex</h1>
+      <img src="/pokeapi.png" alt="Pokeapi" className="pokeapi mb-3" />
+      <button onClick={LinkPokedex} className="btn btn-primary">
+        Buscar Pokémon
+      </button>
+    </div>
+  );
 };
 
 export default Home;
+

@@ -18,7 +18,7 @@ function Register() {
         data.forEach((value, key) => (obj[key] = value));
 
         try {
-            const response = await fetch("http://localhost:8080/api/sessions/register", {
+            const response = await fetch("http://localhost:8080/api/sesiones/register", {
                 method: "POST",
                 body: JSON.stringify(obj),
                 headers: {

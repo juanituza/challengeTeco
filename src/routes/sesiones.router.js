@@ -1,6 +1,9 @@
 import BaseRouter from "./baseRouter.js";
 import { llamarPasaporte } from "../utils.js";
 import controladorSesiones from "../controllers/sesiones.controlador.js";
+import { ROLES } from "../../shared/roles.js";
+
+
 export default class SesionesRutas extends BaseRouter {
   init() {
     // Ruta para el registro de usuarios
@@ -22,18 +25,13 @@ export default class SesionesRutas extends BaseRouter {
     );
 
 
-    this.get(
-      "/current",
-      llamarPasaporte("jwt", { strategyType: "jwt" }),
-      (req, res) => {
-        if (!req.user)
-          return res
-            .status(401)
-            .send({ status: "error", error: "Not authenticated" });
+   this.get("/current", ["PUBLIC"], llamarPasaporte("jwt", { strategyType: "jwt" }), (req, res) => {
+  if (!req.user) {
+    return resenviarNoAutorizado({ error: "No autenticado" });
+  }
 
-        res.send({ status: "success", payload: req.user });
-      }
-    );
+  res.send({ status: "success", payload: req.user });
+});
 
 
 
