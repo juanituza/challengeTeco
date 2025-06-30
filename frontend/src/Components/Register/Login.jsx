@@ -10,50 +10,72 @@ import "./Login.css";
 
 
 function Login() {
+    // Estado local para manejar los valores del formulario
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
-    const { setIsAuthenticated } = useAuth();
+    // Obtenemos funciones del contexto de autenticación
+    const { setUser, setIsAuthenticated } = useAuth();
 
-
+    /**
+   * Función que maneja el envío del formulario de login.
+   * - Evita el comportamiento por defecto del formulario.
+   * - Envía una solicitud al backend con email y contraseña.
+   * - Si el login es exitoso:
+   *   - Se guarda el usuario y el estado de autenticación.
+   *   - Se muestra una notificación y se redirige a /home.
+   * - Si falla, se muestra una alerta de error.
+   */
 
 
 
     const handleSubmit = async (e) => {
+        // Previene recarga de la página
         e.preventDefault();
 
         try {
+            // Enviamos los datos de login al backend
             const response = await fetch('http://localhost:8080/api/sesiones/login', {
                 method: 'POST',
                 headers: {
+                    
                     'Content-Type': 'application/json',
                 },
+                // Enviamos los datos como JSON
                 body: JSON.stringify({ email, password }),
-                credentials: 'include' // importante si usás cookies
+                // Importante: permite enviar cookies (sesión)
+                credentials: 'include'
             });
-
+            // Parseamos la respuesta del servidor
             const responseData = await response.json();
-
+           
+            // Si el login fue exitoso
             if (responseData.status === "success") {
+                // Indicamos que el usuario está autenticado
+                setIsAuthenticated(true);
+                // Guardamos el usuario recibido
+                setUser(responseData.payload);
 
+                // Mostramos un mensaje de éxito con redirección automática
                 Swal.fire({
-                    title: 'Successfully logged in',
-                    text: 'Redirecting to home...',
+                    title:'Ingreso exitoso',
+                    text: 'Serás redirigido a la página de inicio.',
                     icon: 'success',
                     timer: 2000,
                     showConfirmButton: false,
                     timerProgressBar: true,
                 }).then(() => {
-                    setIsAuthenticated(true);
-                    navigate("/home");
+                    // Redirigimos manualmente (podés usar `navegar("/home")` también)
+                    window.location.href = "/home"
+                    
                 });
 
 
             } else {
+                // Si el servidor devuelve error (credenciales incorrectas, etc.)
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: responseData.error || "Login failed",
+                    text: responseData.error || "Error de inicio de sesion",
                 });
             }
         } catch (error) {

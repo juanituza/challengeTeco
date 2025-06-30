@@ -1,20 +1,35 @@
 // import { usersService } from "../dao/Managers/Mongo/index.js";
 import { servicioUsuarios } from "../services/repositorios/index.js";
-import usersDTO from "../dto/UserDTO.js";
-import { documentsExist } from "../constants/userError.js";
-import ErrorService from "../services/ErrorServicer.js";
-import EErrors from "../constants/EErrors.js";
-import LoggerService from "../dao/MySql/Managers/LoggerManager.js";
+import { createHash } from ".././middlewares/utils.js";
 
 // Obtener los usuarios
 const obtenerUsaruios = async (req, res) => {
   //Obtener los usuarios desde el servicio
-  const usuarios = await servicioUsuarios.obtenerUsuarios();
-  //
-  const analizadorUsuarios = usuarios.map((usuario) => new usersDTO(usuario));
-  
-  res.enviarExitoConCarga(analizadorUsuarios);
+   try {
+    const usuarios = await servicioUsuarios.obtenerUsuarios();
+    res.enviarExitoConCarga(usuarios);
+  } catch (error) {
+    res.enviarErrorInterno("Error al obtener los usuarios");
+  }
 };
+// Obtener un usuario por ID
+const obtenerUsuarioPorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const usuario = await servicioUsuarios.obtenerUsuarioPorId(id);
+
+    if (!usuario) {
+      return res.status(404).json({ status: "error", error: "Usuario no encontrado" });
+    }
+
+    res.enviarExitoConCarga(usuario);
+  } catch (error) {
+    console.error("Error al obtener el usuario:", error);
+    res.enviarErrorInterno("Error al obtener el usuario");
+  }
+};
+
 
 // Guardar un nuevo usuario
 const guardarUsuarios = async (req, res) => {
@@ -35,36 +50,80 @@ const guardarUsuarios = async (req, res) => {
   }
 };
 
-//Editar usuario
+// //Editar usuario
+// const editarUsuario = async (req, res) => {
+//   try {
+//     //Capturar el ID del usuario desde los parámetros de la solicitud
+//     const usuarioId = req.params.id;
+    
+    
+    
+    
+//     //Capturar los datos del usuario desde el cuerpo de la solicitud
+//     const { nombre, email, password } = req.body;
+//     const datoModificado = { nombre, email };
+   
+    
+//     if (password && password.trim() !== "") {
+//       const hashed = await hashPassword(password); // tu función de hash
+//       datoModificado.password = hashed;
+//     }
+    
+//     //Editar el usuario
+//      await servicioUsuarios.editarUsuario( usuarioId, datoModificado);
+      
+      
+//     // res.sendSuccessWithPayload({ result });
+//     res.enviarExitoConCarga("Usuario actualizado correctamente : " );
+//   } catch (error) {
+//     res.enviarErrorInterno("Error interno, contactá al administrador");
+//   }
+// };
+
 const editarUsuario = async (req, res) => {
   try {
-    //Capturar el ID del usuario desde los parámetros de la solicitud
-    const usuarioId = req.params.uid;
-    //Capturar los datos del usuario desde el cuerpo de la solicitud
-    const usuarioEditado = req.body.role;
-    //Editar el usuario
-    await servicioUsuarios.editarUsuario(
-      { _id: usuarioId },
-      { role: usuarioEditado }
-    );
-  
-    // res.sendSuccessWithPayload({ result });
-    res.enviarExito("Usuario actualizado correctamente");
+    const usuarioId = req.params.id;
+
+    const { nombre, email, password, rol } = req.body;
+
+    const datoModificado = {};
+
+    if (nombre) datoModificado.nombre = nombre;
+    if (email) datoModificado.email = email;
+    if (rol) datoModificado.rol = rol;
+
+    if (password && password.trim() !== "") {
+      const hashed = await createHash(password);
+      datoModificado.password = hashed;
+    }
+
+    const resultado = await servicioUsuarios.editarUsuario(usuarioId, datoModificado);
+
+    res.enviarExitoConCarga("Usuario actualizado correctamente", resultado);
   } catch (error) {
+    console.error("Error al editar usuario:", error);
     res.enviarErrorInterno("Error interno, contactá al administrador");
   }
 };
+
+
+
+
+
 // Eliminar usuario
 const eliminarUsuario = async (req, res) => {
   //Capturar el ID del usuario desde los parámetros de la solicitud
-  const usuarioId = req.params.uid;
+  const usuarioId = req.params.id;
+  console.log(usuarioId);
+  
   //Eliminar el usuario
-  await servicioUsuarios.eliminarUsuario({ _id: usuarioId });
+  await servicioUsuarios.eliminarUsuario( usuarioId );
   res.enviarExito("usuario eliminado correctamente");
 };
 
 
 export default {
+  obtenerUsuarioPorId,
   obtenerUsaruios,
   guardarUsuarios,
   editarUsuario,

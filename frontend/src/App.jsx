@@ -7,6 +7,8 @@ import Home from "./Components/home/Home";
 import Navbar from "./Components/Navbar/Navbar";
 import Pokedex from "./Components/pokedex/pokedex";
 import PanelEdicion from "./Components/PanelEdicion/PanelEdicion";
+import CrearUsuario from "./Components/CrearUsuario/CrearUsuario";
+import EditarUsuario from "./Components/EditarUsuario/EditarUsuario";
 
 import RutaPorRol from "./Components/Routes/RutaPorRol";
 import RutaInvitado from "./Components/Routes/RutaInvitado";
@@ -41,8 +43,7 @@ function App() {
             element={
               <RutaPrivada>
                 <Navbar />
-                <Home />
-               
+                <Home />               
               </RutaPrivada>
             }
           />
@@ -59,11 +60,33 @@ function App() {
             path="/panel-admin"
             element={
               <RutaPorRol rolesPermitidos={["ADMIN","EDITOR"]}>
+                <Navbar />
                 <PanelEdicion />
+                
               </RutaPorRol>
             }
           />
-          {/* Puedes agregar más rutas privadas */}
+          <Route
+            path="/crear-usuario"
+            element={
+              <RutaPorRol rolesPermitidos={["ADMIN","EDITOR"]}>
+                <Navbar />
+                
+                <CrearUsuario />
+              </RutaPorRol>
+            }
+          />
+          <Route
+            path="/editar-usuario/:id"
+            element={
+              <RutaPorRol rolesPermitidos={["ADMIN","EDITOR"]}>
+                <Navbar />
+                
+                <EditarUsuario />
+              </RutaPorRol>
+            }
+          />
+         
         </Routes>
       </BrowserRouter>
     </AuthProvider>

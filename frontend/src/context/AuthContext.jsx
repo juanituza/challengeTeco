@@ -13,15 +13,18 @@ export function AuthProvider({ children }) {
     const checkSession = async () => {
       try {
         const res = await fetch("http://localhost:8080/api/sesiones/current", {
+          method: "GET",
           credentials: "include"
         });
 
         const data = await res.json();
+         console.log(data.payload.rol);
         
         if (data.status === "success") {
-          setIsAuthenticated(true);
-          
-          setUser(data.payload); // 👈 muy importante
+          setIsAuthenticated(true);          
+          setUser(data.payload);
+           
+           
         } else {
           setIsAuthenticated(false);
           setUser(null);
@@ -37,7 +40,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{  isAuthenticated,
-      setIsAuthenticated,  // 👈 esto faltaba
+      setIsAuthenticated, 
       user,
       setUser   }}>
       {children}

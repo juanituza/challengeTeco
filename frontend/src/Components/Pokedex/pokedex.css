@@ -8,10 +8,37 @@
     
 }
 .character-container{
-    width: 160px;
+    width: 200px;
     box-shadow: 0 2px 5px rgba(13, 109, 253, 0.589);
 }
 .imagen-pokemon{
     width: 120px;
     margin: 0 auto;
+}
+.characters{
+    margin-top: 100px;
+    display: block;
+}
+
+.title{
+    color: #4400A3;
+    font-size: 40px;
+    font-family: cursive, sans-serif;
+    margin-bottom: 0;
+}
+.imagen-pokemon{
+    width:120px;
+}
+h3{
+    color: #4400A3 !important;
+    
+    font-family: cursive, sans-serif;
+    margin-bottom: 0;
+    text-transform: capitalize;
+}
+.text{
+    color: #000000 !important;
+    font-family: cursive, sans-serif;
+    margin-bottom: 0;
+    text-transform: capitalize;
 }

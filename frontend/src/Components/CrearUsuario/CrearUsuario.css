@@ -1,0 +1,14 @@
+.contenedoPrimario
+{
+    margin-top: 150px; 
+    margin-bottom: 80px;
+     align-items: center;
+     display: flex;
+  flex-direction: column;
+}
+.title{
+    color: #4400A3;
+    font-size: 40px;
+    font-family: cursive, sans-serif;
+    margin-bottom: 0;
+}

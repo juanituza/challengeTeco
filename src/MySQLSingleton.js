@@ -5,9 +5,11 @@ import LoggerService from "./dao/MySql/Managers/LoggerManager.js";
 export default class MySQLSingleton  {
     static #instance;
      static #connection;
-
+    //Constructor privado que crea la conexión a MySQL .
     constructor() {
+          //si aún no existe conexion  
           if (!MySQLSingleton.#connection) {
+            //creo la conexion
             MySQLSingleton.#connection = mysql.createConnection({
                 host: config.connection.HOST,
                 database: config.connection.DATABASE,
@@ -15,7 +17,7 @@ export default class MySQLSingleton  {
                 password: config.connection.PASS,
                 port: config.connection.PORT
             });
-
+            //Si no existe envio el error
             MySQLSingleton.#connection.connect((err) => {
                 if (err) {
                     LoggerService.logger.error('Error de conexión a MySQL:', err);
@@ -26,16 +28,16 @@ export default class MySQLSingleton  {
         }
         
     }
-
-    static getInstance() {
-        // si existe una instance
+    //Creo la instancia 
+    static obtenerInstancia() {
+         // Si la instancia ya fue creada, la reutilizamos
         if (this.#instance) {
-            LoggerService.logger.info("instance already exists ");
+            LoggerService.logger.info("La instancia ya existe ");
             return this.#instance;
         }
-        //Si no hay instance
+        // Si no hay instancia, creamos la primera
         this.#instance = new MySQLSingleton();
-        LoggerService.logger.info("connected first instance");
+        LoggerService.logger.info("Primera instancia conectada");
         return this.#instance;
     }
 
