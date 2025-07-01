@@ -1,6 +1,6 @@
 // import { usersService } from "../dao/Managers/Mongo/index.js";
 import { servicioUsuarios } from "../services/repositorios/index.js";
-import { createHash } from ".././middlewares/utils.js";
+import { createHash } from "../middlewares/utils.js";
 
 // Obtener los usuarios
 const obtenerUsaruios = async (req, res) => {
@@ -29,8 +29,6 @@ const obtenerUsuarioPorId = async (req, res) => {
     res.enviarErrorInterno("Error al obtener el usuario");
   }
 };
-
-
 // Guardar un nuevo usuario
 const guardarUsuarios = async (req, res) => {
   try {

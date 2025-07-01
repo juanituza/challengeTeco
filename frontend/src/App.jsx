@@ -9,6 +9,7 @@ import Pokedex from "./Components/pokedex/pokedex";
 import PanelEdicion from "./Components/PanelEdicion/PanelEdicion";
 import CrearUsuario from "./Components/CrearUsuario/CrearUsuario";
 import EditarUsuario from "./Components/EditarUsuario/EditarUsuario";
+import NoAutorizado from "./Components/NoAutorizado/NoAutorizado";
 
 import RutaPorRol from "./Components/Routes/RutaPorRol";
 import RutaInvitado from "./Components/Routes/RutaInvitado";
@@ -43,7 +44,7 @@ function App() {
             element={
               <RutaPrivada>
                 <Navbar />
-                <Home />               
+                <Home />
               </RutaPrivada>
             }
           />
@@ -59,19 +60,19 @@ function App() {
           <Route
             path="/panel-admin"
             element={
-              <RutaPorRol rolesPermitidos={["ADMIN","EDITOR"]}>
+              <RutaPorRol rolesPermitidos={["ADMIN", "EDITOR"]}>
                 <Navbar />
                 <PanelEdicion />
-                
+
               </RutaPorRol>
             }
           />
           <Route
             path="/crear-usuario"
             element={
-              <RutaPorRol rolesPermitidos={["ADMIN","EDITOR"]}>
+              <RutaPorRol rolesPermitidos={["ADMIN", "EDITOR"]}>
                 <Navbar />
-                
+
                 <CrearUsuario />
               </RutaPorRol>
             }
@@ -79,14 +80,20 @@ function App() {
           <Route
             path="/editar-usuario/:id"
             element={
-              <RutaPorRol rolesPermitidos={["ADMIN","EDITOR"]}>
+              <RutaPorRol rolesPermitidos={["ADMIN", "EDITOR"]}>
                 <Navbar />
-                
+
                 <EditarUsuario />
               </RutaPorRol>
             }
           />
-         
+          <Route
+            path="/unauthorized"
+            element={
+              <NoAutorizado />
+            }
+          />
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>

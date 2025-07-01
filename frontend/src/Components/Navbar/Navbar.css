@@ -1,20 +1,6 @@
-/* .logo{
-  height: 100px;
-  width: 100px;
-  padding: 0px;
-  margin: 0px;  
-}
-
-.navbar {
-  padding: 0;
-} */
-
-
-
-
 /* Contenedor principal del navbar */
 #header {
-  background-color: #4400A3;
+  background-color: #4B0082;
   padding: 10px 40px;
   display: flex;
   justify-content: space-between;
@@ -53,13 +39,27 @@
 .navbar .nav-link.active {
   color: #ffffff;
 }
+
 .navbar .nav-link.active:hover {
   color: #c7c7c7;
 }
+
 /* Estilo de contacto a la derecha */
 .contacto-link {
   color: #0056ff;
   font-weight: bold;
   text-decoration: underline;
   font-size: 16px;
+}
+
+.nav-link.active {
+  color: #00adef !important;
+  /* Color celeste estilo Flow Argentina */
+  /* font-weight: bold; */
+  text-shadow: 0 0 2px rgba(0, 173, 239, 0.6);
+}
+
+
+.nav-link:hover {
+  color: #00adef !important;
 }

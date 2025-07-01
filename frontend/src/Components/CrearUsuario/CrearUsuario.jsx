@@ -5,11 +5,17 @@ import { CiUser, CiMail } from "react-icons/ci";
 import { RiLockPasswordLine } from "react-icons/ri";
 
 import './CrearUsuario.css';
-
-function CrearUsuario () {
+// Componente CrearUsuario: permite crear un usuario con los datos proporcionados
+function CrearUsuario() {
+    // useRef para acceder directamente al formulario HTML
     const formRef = useRef(null);
+    // Hook de React Router para redirigir luego de editar
     const navigate = useNavigate();
-
+    /**
+         * Función que se ejecuta al enviar el formulario.
+         * Toma los datos del formulario, los convierte en objeto y
+         * realiza una solicitud POST al backend para crear el usuario.
+         */
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -18,6 +24,7 @@ function CrearUsuario () {
         data.forEach((value, key) => (obj[key] = value));
 
         try {
+            // Enviamos los datos de usuario al backend
             const response = await fetch("http://localhost:8080/api/sesiones/register", {
                 method: "POST",
                 body: JSON.stringify(obj),
@@ -61,11 +68,11 @@ function CrearUsuario () {
             <div className="container-fluid h-custom contenedoPrimario">
                 <h2 className="title">Crear Usuarios</h2>
             </div>
-            
+
             <div className="container-fluid h-custom card ">
-                
+
                 <div className="row align-items-center bg-light py-3 contenedorLogin ">
-                    
+
 
                     <div className="row d-flex justify-content-center align-items-center h-100">
 
@@ -106,7 +113,7 @@ function CrearUsuario () {
                                     <button
                                         type="submit"
                                         className="btn btn-primary boton-crear-usuario"
-                                        
+
                                     >
                                         Crear Usuario
                                     </button>
@@ -121,4 +128,4 @@ function CrearUsuario () {
     );
 }
 
-export default CrearUsuario ;
+export default CrearUsuario;

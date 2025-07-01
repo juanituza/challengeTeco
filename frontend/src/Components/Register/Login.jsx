@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState } from "react";
+import {  Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 import "aos/dist/aos.css";
@@ -133,7 +133,7 @@ function Login() {
                                 </div>
 
                                 <div className="text-center text-lg-start mt-4 pt-2">
-                                    <button type="submit" className="btn btn-primary boton btn-lg" style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}>
+                                    <button type="submit" className="btn btn-primary boton btn-lg">
                                         Ingresar
                                     </button>
                                     <p className="small fw-bold mt-2 pt-1 mb-0">

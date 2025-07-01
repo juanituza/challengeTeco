@@ -2,113 +2,114 @@ import React from "react";
 import { useNavigate, NavLink, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useAuth } from "../../context/AuthContext.jsx";
-import "./NavBar.css";
+import "./NavBar.css"; // Asegurate que no sobreescriba mal las clases
 
-
-// Componente Navbar: Encargado de mostrar la navegación y cerrar sesión
 const Navbar = () => {
-    // Hook de React Router para redireccionar
-    const navegar = useNavigate();
-    // Obtenemos el estado de autenticación y datos del usuario desde el contexto
-    const { setIsAuthenticated, user } = useAuth(); 
+  const navegar = useNavigate();
+  const { setIsAuthenticated, user } = useAuth();
 
-    /**
-   * Función que se ejecuta cuando el usuario hace clic en "Cerrar sesión".
-   * - Realiza una solicitud POST al backend para cerrar sesión.
-   * - Si tiene éxito, actualiza el estado local de autenticación.
-   * - Muestra una notificación con SweetAlert y redirige al login.
-   */
-    const cerrarSesion = async () => {
-        try {
-            // Solicitud al endpoint de logout (elimina la cookie/token)
-            const response = await fetch("http://localhost:8080/api/sesiones/logout", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                // Incluye cookies para que el backend pueda invalidar la sesión
-                credentials: "include",
-            });
+  const cerrarSesion = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/sesiones/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
-            const responseData = await response.json();
-            // Si el backend responde con éxito:
-            if (responseData.status === "success") {
-                // Actualiza el estado global para marcar que el usuario ya no está autenticado
-                setIsAuthenticated(false);
-                // Muestra una alerta de cierre de sesión exitoso
-                Swal.fire({
-                    title: "Has cerrado sesión exitosamente",
-                    text: "Esperamos que nos visites pronto.",
-                    icon: "success",
-                    timer: 2000,
-                    showConfirmButton: false,
-                    timerProgressBar: true,
-                    didClose: () => {
-                        navegar("/login");
-                    },
-                });
-            }
-        } catch (error) {
-            // Si ocurre un error en la solicitud, lo muestra por consola
-            console.error("Error al cerrar sesión:", error);
-        }
-    };
+      const responseData = await response.json();
 
-    return (
-        <div className="row">
-            <header id="header" className="fixed-top d-flex align-items-center">
-                <div className="container-fluid container-xl d-flex align-items-center justify-content-lg-between">
-                    <Link to="/home" className="col-1">
-                        <img src="/telecom_argentina_logo.jpeg" alt="Logo" className="logo" />
-                    </Link>
+      if (responseData.status === "success") {
+        setIsAuthenticated(false);
+        Swal.fire({
+          title: "Has cerrado sesión exitosamente",
+          text: "Esperamos que nos visites pronto.",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+          timerProgressBar: true,
+          didClose: () => {
+            navegar("/login");
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
 
-                    <nav id="navbar" className="navbar order-last order-lg-0">
-                        <ul>
-                            <li>
-                                <NavLink
-                                    to="/home"
-                                    className={({ isActive }) =>
-                                        "nav-link scrollto" + (isActive ? " active" : "")
-                                    }
-                                >
-                                    Inicio
-                                </NavLink>
-                            </li>
+  return (
+    <nav className="navbar navbar-expand-lg bg-dark fixed-top shadow header">
 
-                            <li>
-                                <NavLink
-                                    to="/pokedex"
-                                    className={({ isActive }) =>
-                                        "nav-link scrollto" + (isActive ? " active" : "")
-                                    }
-                                >
-                                    Pokédex
-                                </NavLink>
-                            </li>
+      <div className="container-fluid" id="header">
+        {/* Logo */}
+        <Link to="/home" className="navbar-brand d-flex align-items-center">
+          <span className="text-light">Telecom</span>
+        </Link>
 
-                            {/* ✅ Mostrar solo si el usuario es ADMIN */}
-                            {user?.rol === "ADMIN" ||   user?.rol === "editor" &&(
-                                <li>
-                                    <NavLink
-                                        to="/panel-admin"
-                                        className={({ isActive }) =>
-                                            "nav-link scrollto" + (isActive ? " active" : "")
-                                        }
-                                    >
-                                        Administrar usuarios
-                                    </NavLink>
-                                </li>
-                            )}
-                        </ul>
-                    </nav>
+        {/* Botón hamburguesa */}
+        <div className="hamburguesa">
 
-                    <NavLink onClick={cerrarSesion} className="btn btn-light">
-                        Cerrar sesión
-                    </NavLink>
-                </div>
-            </header>
+        
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+          aria-controls="navbarContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon icono"></span>
+        </button>
+</div>
+        {/* Contenido del navbar */}
+        <div className="collapse navbar-collapse" id="navbarContent">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <NavLink
+                to="/home"
+                className={({ isActive }) =>
+                   "nav-link scrollto" + (isActive ? " active" : "")
+                }
+              >
+                Inicio
+              </NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink
+                to="/pokedex"
+                className={({ isActive }) =>
+                  "nav-link scrollto" + (isActive ? " active" : "")
+                }
+              >
+                Pokédex
+              </NavLink>
+            </li>
+
+            {["ADMIN", "EDITOR"].includes(user?.rol?.toUpperCase()) && (
+              <li className="nav-item">
+                <NavLink
+                  to="/panel-admin"
+                  className={({ isActive }) =>
+                     "nav-link scrollto" + (isActive ? " active" : "")
+                  }
+                >
+                  Administrar usuarios
+                </NavLink>
+              </li>
+            )}
+          </ul>
+
+          <button onClick={cerrarSesion} className="btn btn-danger">
+            Cerrar sesión
+          </button>
         </div>
-    );
+      </div>
+    </nav>
+  );
 };
 
 export default Navbar;

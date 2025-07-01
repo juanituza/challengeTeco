@@ -1,6 +1,6 @@
 import BaseRouter from "./baseRouter.js";
 import userController from "../controllers/usuarios.controlador.js";
-import { llamarPasaporte, verificarPermisos } from ".././middlewares/utils.js";
+import { llamarPasaporte, verificarPermisos } from "../middlewares/utils.js";
 import { ROLES } from "../../shared/roles.js";
 
 

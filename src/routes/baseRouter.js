@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { llamarPasaporte } from ".././middlewares/utils.js";
+import { llamarPasaporte } from "../middlewares/utils.js";
 
 
 /**

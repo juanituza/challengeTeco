@@ -4,22 +4,35 @@ import Swal from "sweetalert2";
 import { CiUser, CiMail } from "react-icons/ci";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { ROLES } from "../../../../shared/roles.js";
+import BounceLoader from "react-spinners/BounceLoader";
 
 import "./EditarUsuario.css";
-
+// Componente EditarUsuario: permite editar los datos de un usuario existente
 const EditarUsuario = () => {
-    const { id } = useParams(); // Capturar el ID desde la URL
+     // useParams permite acceder al parámetro ":id" de la URL
+    const { id } = useParams(); 
+     // useRef para acceder directamente al formulario HTML
     const formRef = useRef(null);
+    // Hook de React Router para redirigir luego de editar
     const navigate = useNavigate();
+    // Estado local para guardar la información del usuario a editar
     const [usuario, setUsuario] = useState(null);
 
+
+     /**
+     * useEffect que se ejecuta al montar el componente.
+     * Realiza una petición al backend para obtener los datos del usuario por ID
+     * y los guarda en el estado local.
+     */
     useEffect(() => {
         fetch(`http://localhost:8080/api/usuarios/${id}`, {
+            // Incluye cookies para autenticación
             credentials: "include",
         })
             .then((res) => res.json())
             .then((data) => {
                 if (data.status === "success") {
+                    // Guardamos los datos del usuario para mostrarlos en el formulario
                     setUsuario(data.payload);
                 } else {
                     Swal.fire("Error", "No se pudo cargar el usuario", "error");
@@ -28,15 +41,22 @@ const EditarUsuario = () => {
             .catch((err) => console.error("Error al obtener usuario:", err));
     }, [id]);
 
+     /**
+     * Función que se ejecuta al enviar el formulario.
+     * Toma los datos del formulario, los convierte en objeto y
+     * realiza una solicitud PUT al backend para actualizar el usuario.
+     */
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         const data = new FormData(formRef.current);
 
         const obj = {};
+        // Convierto los datos del formulario en objeto JS
         data.forEach((value, key) => (obj[key] = value));
 
         try {
+            // Enviamos los datos de usuario al backend
             const response = await fetch(`http://localhost:8080/api/usuarios/${id}`, {
                 method: "PUT",
                 headers: {
@@ -45,25 +65,28 @@ const EditarUsuario = () => {
                 credentials: "include",
                 body: JSON.stringify(obj),
             });
-
+             // Parseo la respuesta del servidor
             const result = await response.json();
 
 
 
             if (result.status === "success") {
+                // Si se actualizó con éxito, mostramos alerta y redirigimos
                 Swal.fire("Actualizado", "Usuario actualizado correctamente", "success").then(() =>
                     navigate("/panel-admin")
                 );
             } else {
+                // Si hubo un error de validación o lógica
                 Swal.fire("Error", result.error || "Error al actualizar", "error");
             }
         } catch (err) {
+             // Si falló la conexión o el servidor
             console.error("Error al actualizar usuario:", err);
             Swal.fire("Error", "Error de red o servidor", "error");
         }
     };
-
-    if (!usuario) return <p className="text-center">Cargando usuario...</p>;
+    // Mientras se cargan los datos del usuario, mostramos un mensaje de carga
+    if (!usuario) return  <BounceLoader color="#4B0082" size={50} speedMultiplier={1.5} margin={2} />;
 
     return (
         <section className="vh-100 m-5">

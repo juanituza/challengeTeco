@@ -55,7 +55,7 @@ const initializePassportStrategies = () => {
             rol: "ADMIN",
             email: config.admin.USER,
           }; 
-          return done(null, Usuario);
+          return done(null, usuario);
         }
         let usuario;
         //obtengo el usuario con su email
