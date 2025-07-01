@@ -1,6 +1,6 @@
 # Proyecto CHALLENGE TECO
 
-### ` DEV - Juan Ignacio Mc Kenna`
+### 👨‍💻 `DEV - Juan Ignacio Mc Kenna`
 <div style="display: flex; justify-content: space-around;">
   <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/NodeJS-Dark.svg" width="50" />
   <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/ExpressJS-Dark.svg" width="50" />
@@ -11,23 +11,24 @@
 
 
 
-## Sobre mi proyecto
+## 🧾 Sobre mi proyecto
 
 Este proyecto es una aplicación web Full Stack desarrollada con **Node.js**, **Express**, **React**, y **MySQL**. Ofrece autenticación de usuarios, control de roles y una Pokédex interactiva consumida desde la [PokeAPI](https://pokeapi.co/). Además, los usuarios con permisos de administrador o editor pueden acceder a un panel de gestión completo.
 
 
-## Funcionalidad
+##  ✨ Funcionalidad
 
-- El proyecto comienza en una página inicio de sesion o registro (dependiendo si tiene usuario registrado o no el usuario puede elegir, pero no puede ingresar a la API)
-- Al loguearse es redirigido al home donde tiene la opcion de visualizar una Pokédex consumiendo la API pública https://pokeapi.co/
-- Si el usuario tiene rol ADMIN o EDITOR en el nav bar tendra la opcion de ingresar a un panel donde se podrá "Crear", "Editar", "Leer" o "eliminar" un usuario. Ádemas de visualizar una lista de usuarios generados en su totalidad con: id, nombre, email, rol
+- El proyecto comienza en una pantalla de **inicio de sesión** o **registro**.
+- Solo los usuarios autenticados pueden acceder a la aplicación.
+- Una vez logueado, el usuario es redirigido al Home, donde puede visualizar una **Pokédex** (API pública).
+- Si el usuario tiene rol **admin** o **editor**, verá una opción adicional en el Navbar para ingresar a un **Panel de Administración** con operaciones CRUD sobre usuarios: Crear, Leer, Editar y Eliminar.
+- Cada usuario se muestra con su `id`, `nombre`, `email` y `rol`.
 
 
 
+## 🛠️ **`Tecnologías utilizadas`**
 
-🛠️ **`Tecnologías utilizadas`**
-
-### Frontend
+### 🌐 Frontend
 - **React JS** – Librería principal para la construcción de la interfaz de usuario.
 
 - **React DOM** – Permite renderizar componentes de React en el DOM del navegador.
@@ -51,7 +52,7 @@ Este proyecto es una aplicación web Full Stack desarrollada con **Node.js**, **
 **Iniciar frontend** -Para correr el backend utilizamos : npm run start 
 
 
-### Backend
+### 🖥️ Backend
 - **Node.js** – Entorno de ejecución para JavaScript del lado del servidor.
 
 - **Express** – Framework minimalista para construir APIs RESTful de manera eficiente.
@@ -93,7 +94,7 @@ JWT_COOKIE=authToken
 **El entorno se encuentra configurado en `src/config/config.js` para leer estas variables.**
 
 
-## Formato de la Base de Datos
+## 🗃️ Formato de la Base de Datos
 
 CREATE TABLE usuarios (
 
