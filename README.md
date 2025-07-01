@@ -49,7 +49,7 @@ Este proyecto es una aplicación web Full Stack desarrollada con **Node.js**, **
 
 - **SweetAlert2** – Biblioteca para mostrar alertas y modales con estilo moderno e interactivo.
 
-**Iniciar frontend** -Para correr el backend utilizamos : npm run start 
+**Iniciar frontend** -Para correr el frontend utilizamos : npm run start 
 
 
 ### 🖥️ Backend
