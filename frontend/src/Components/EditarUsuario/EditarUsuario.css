@@ -1,5 +1,16 @@
+
+section {
+   width: 100%;  
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100vh;
+}
+
+
 .contenedoPrimario
-{
+{   
+    
     margin-top: 150px; 
     margin-bottom: 80px;
      align-items: center;

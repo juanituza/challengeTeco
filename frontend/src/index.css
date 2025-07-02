@@ -1,7 +1,12 @@
 #root {
-  max-width: 100%x;
-  margin: 0 auto;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
+
 
 a {
   font-weight: 500;

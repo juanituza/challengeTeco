@@ -89,7 +89,7 @@ const EditarUsuario = () => {
     if (!usuario) return  <BounceLoader color="#4B0082" size={50} speedMultiplier={1.5} margin={2} />;
 
     return (
-        <section className="vh-100 m-5">
+        <section className="vh-100 m-5 ">
             <div className="container-fluid h-custom contenedoPrimario">
                 <h2 className="title">Editar Usuario</h2>
             </div>
